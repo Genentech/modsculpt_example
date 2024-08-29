@@ -1,0 +1,788 @@
+---
+title: "2.1. Model sculpting and interpretation - compas"
+date: last-modified
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Note
+
+The following scripts need to be run first before knitting the document 
+corresponding to `model_type` specified below:
+
+- 3_model_sculpt_compas.R
+- [Sculpting - Main models chunk](#main-models) 
+  (need to manually run in the interactive mode, not run during knitting as
+  it takes some time)
+
+# Setup and load
+
+```{r}
+#| output: FALSE
+#| message: FALSE
+
+library(dplyr)
+library(stringr)
+source(here::here("R/0_setup.R"))
+
+theme_set(theme_bw(base_size = 12))
+
+theme_facets <- theme(
+  text = element_text(size = 16),
+  legend.position = "inside",
+  legend.position.inside = c(0.85, 0.27), 
+  legend.background = element_rect(colour = "black"), 
+  legend.title = element_blank()
+)
+
+theme_single <- theme(text = element_text(size = 16))
+
+# Function to check if the model is trained
+load_model_if_trained <- function(model_type) {
+  model_path <- file.path(storage_folder, sname(paste0(model_type, "-fit_final.rds")))
+  if(file.exists(model_path)) {
+    load_results(sname(paste0(model_type, "-fit_final.rds")))
+  } else {
+    stop(paste0("Model ", model_type, " is not trained for compas, `",
+                model_path, "` does not exist. ",
+                "Please train it first with: ",
+                "`Rscript R/2_train_models.R ", model_type, " compas FALSE`"))
+  }
+}
+```
+
+```{r}
+# set dataset (any with discrete response)
+dataset <- "compas"
+
+# set model_type
+model_type = "xgb_bayes"
+# model_type = "xgb"
+
+# set nr of features for a polished model
+top_k <- 3
+
+# util function for storage
+sname <- function(x, prefix = dataset) {
+  paste0(prefix, "-", x)
+}
+
+# logit functions
+logit <- function(x) log(x / (1-x))
+inv.logit <- function(x) 1 / (1 + exp(-x))
+
+
+# load dataset
+dd <- define_data(dataset)
+
+# load xgb
+xgb <- load_model_if_trained(model_type)
+xgb_fo <- load_model_if_trained("xgb_1_order_bayes")
+
+# get product marginals
+pm <- sample_marginals(dd$data$train[dd$covariates$all], n = 1e4, seed = 1234)
+```
+
+# xgb model
+
+## Sculpting
+
+### Main models
+
+Sculpting on product marginals on logit scale.
+
+```{r}
+#| eval: false
+
+# # get rough model - on pm
+# # Already generated in 3_model_sculpt_compas.R
+# rs_pm <- sculpt_rough(
+#   pm,
+#   seed = 1234,
+#   model_predict_fun = function(x) {
+#     p <- predict(xgb, new_data = x, type = "prob")$.pred_1
+#     logit(p)
+#   }
+# )
+
+
+# # detailed model on pm
+# Already generated in 3_model_sculpt_compas.R
+# ds_pm <- sculpt_detailed_gam(rs_pm)
+
+## Below we use custom smoother for even better fitting smoothings
+gam_cgam_smoother <- function(x, y, is_discrete, column_name, na_ind = NULL) {
+  use_cgam <- TRUE
+  if (column_name == "age") {
+    s.decr <- cgam::s.decr
+    form <- y ~ s.decr(x, numknots = 3)
+  } else if (column_name == "priors") {
+    s.incr <- cgam::s.incr
+    form <- y ~ s.incr(x, numknots = 3)
+  } else if (column_name == "juvenile_crimes") {
+    return(getPAVAest(outcome = y, score = x)) # from stats4phc
+  } else {
+    use_cgam <- FALSE
+  }
+  if (use_cgam) {
+    tryCatch(
+      cgam::cgam(form), 
+      error = function(e) {
+        s <- mgcv::s
+        tryCatch(
+          mgcv::gam(y ~ s(x, k = -1)),
+          error = function(e) {
+            mgcv::gam(y ~ x)
+          }
+        )
+      }
+    )
+  } else {
+    if (is_discrete) {
+      s <- mgcv::s
+      tryCatch(
+        mgcv::gam(y ~ x),
+        error = function(e) {
+          lm(y ~ 0)
+        }
+      )
+    } else {
+      s <- mgcv::s
+      tryCatch(
+        mgcv::gam(y ~ s(x, k = -1)),
+        error = function(e) {
+          mgcv::gam(y ~ x)
+        }
+      )
+    }
+  }
+}
+
+gam_cgam_predict <- function(smoother, new_x, is_discrete, column_name, na_ind = NULL) {
+  if (inherits(smoother, "cgam")) {
+    # cgam fails on extrapolation - need to do this manually
+    if (min(new_x) < min(smoother$xmat0[, 1])) {
+      new_x[new_x < min(smoother$xmat0[, 1])] <- min(smoother$xmat0[, 1])
+    }
+    if (max(new_x) > max(smoother$xmat0[, 1])) {
+      new_x[new_x > max(smoother$xmat0[, 1])] <- max(smoother$xmat0[, 1])
+    }
+    newdata <- data.frame(x = new_x)
+    predict(smoother, newData = newdata)$fit
+  } else if (inherits(smoother, "gam")) {
+    newdata <- data.frame(x = new_x)
+    as.numeric(predict(smoother, newdata = newdata))
+  } else if (is.data.frame(smoother)) {
+    # specific for pava as there is no model returned, just a vector
+    ifelse(
+      new_x == 0, 
+      smoother$estimate[smoother$score == 0][1],
+      ifelse(
+        new_x == 1, 
+        smoother$estimate[smoother$score == 1][1],
+        smoother$estimate[smoother$score == 2][1]
+      )
+    )
+  }
+}
+
+
+polished_smoother <- function(x, y, is_discrete, column_name, na_ind = NULL) {
+  if (column_name == "age") {
+    s.decr <- cgam::s.decr
+    form <- y ~ s.decr(x, numknots = 3)
+  } else if (column_name == "priors") {
+    s.incr <- cgam::s.incr
+    form <- y ~ s.incr(x, numknots = 3)
+  } else if (column_name == "juvenile_crimes") {
+    return(getPAVAest(outcome = y, score = x)) # from stats4phc
+  } else {
+    out <- list()
+    class(out) <- "constant"
+    return(out)
+  }
+  tryCatch(
+    cgam::cgam(form), 
+    error = function(e) {
+      s <- mgcv::s
+      tryCatch(
+        mgcv::gam(y ~ s(x, k = -1)),
+        error = function(e) {
+          mgcv::gam(y ~ x)
+        }
+      )
+    }
+  )
+}
+
+polished_smoother_predict <- function(smoother, new_x, is_discrete, column_name, na_ind = NULL) {
+  if (inherits(smoother, "cgam")) {
+    # cgam fails on extrapolation - need to do this manually
+    if (min(new_x) < min(smoother$xmat0[, 1])) {
+      new_x[new_x < min(smoother$xmat0[, 1])] <- min(smoother$xmat0[, 1])
+    }
+    if (max(new_x) > max(smoother$xmat0[, 1])) {
+      new_x[new_x > max(smoother$xmat0[, 1])] <- max(smoother$xmat0[, 1])
+    }
+    newdata <- data.frame(x = new_x)
+    predict(smoother, newData = newdata)$fit
+  } else if (inherits(smoother, "constant")) { 
+    0
+  } else if (is.data.frame(smoother)) {
+    # specific for pava as there is no model returned, just a vector
+    ifelse(
+      new_x == 0, 
+      smoother$estimate[smoother$score == 0][1],
+      ifelse(
+        new_x == 1, 
+        smoother$estimate[smoother$score == 1][1],
+        smoother$estimate[smoother$score == 2][1]
+      )
+    )
+  }
+}
+
+rs_pm <- load_results(paste0(dataset, "-", model_type, "-sculpt_rough_pm.rds"))
+
+ds_pm_v2 <- sculpt_detailed_generic(
+  rs = rs_pm,
+  smoother_fit = gam_cgam_smoother, 
+  smoother_predict = gam_cgam_predict
+)
+
+# Select variables for polished model
+checkmate::assert_number(top_k, lower = 1)
+vars <- levels(attr(rs_pm, "cumul_R2")$feature)[1:top_k]
+
+rs_pm_top_k <- rs_pm[vars]
+attr(rs_pm_top_k, "offset") <- attr(rs_pm, "offset")
+class(rs_pm_top_k) <- class(rs_pm)
+
+ps_pm_v2 <- sculpt_detailed_generic(
+  rs = rs_pm_top_k,
+  smoother_fit = polished_smoother, 
+  smoother_predict = polished_smoother_predict
+)
+
+store_results(ds_pm_v2, paste0(dataset, "-", model_type, "-sculpt_detailed_pm_v2.rds"))
+store_results(ps_pm_v2, paste0(dataset, "-", model_type, "-sculpt_polished_pm_v2.rds"))
+```
+
+```{r}
+# load sculpted models
+rs_pm <- load_results(paste0(dataset, "-", model_type, "-sculpt_rough_pm.rds"))
+ds_pm <- load_results(paste0(dataset, "-", model_type, "-sculpt_detailed_pm.rds"))
+ps_pm <- load_results(paste0(dataset, "-", model_type, "-sculpt_polished_pm.rds"))
+ds_pm_v2 <- load_results(paste0(dataset, "-", model_type, "-sculpt_detailed_pm_v2.rds"))
+ps_pm_v2 <- load_results(paste0(dataset, "-", model_type, "-sculpt_polished_pm_v2.rds"))
+```
+
+
+### Other sculpting models 
+
+```{r}
+#| output: FALSE
+
+# get rough model - on train
+rs_train <- sculpt_rough(
+  dd$data$train[dd$covariates$all],
+  seed = 1234,
+  model_predict_fun = function(x) {
+    p <- predict(xgb, new_data = x, type = "prob")$.pred_1
+    logit(p)
+  }
+)
+
+# rough model on pm on original scale
+rs_pm_prob <- sculpt_rough(
+  pm,
+  seed = 1234,
+  model_predict_fun = function(x) {
+    predict(xgb, new_data = x, type = "prob")$.pred_1
+  }
+)
+
+# rough model on train on original scale
+rs_train_prob <- sculpt_rough(
+  dd$data$train[dd$covariates$all],
+  seed = 1234,
+  model_predict_fun = function(x) {
+    predict(xgb, new_data = x, type = "prob")$.pred_1
+  }
+)
+
+# First order model
+rs_pm_xgb_fo <- sculpt_rough(
+  pm, 
+  seed = 1234,
+  model_predict_fun = function(x) {
+    p <- predict(xgb_fo, new_data = x, type = "prob")$.pred_1
+    logit(p)
+  }
+)
+```
+
+
+## ICE plots
+
+```{r}
+scale_col_update <- 
+  scale_color_manual(
+    values = c("ICE Profiles" = "gray60", "Rough model (with SE)" = "blue"),
+    labels = c("ICE Profiles", "Rough model"),
+    name = ""
+  )
+
+ice_pm_ceteris <- g_ice(rs_pm, centered = F, show_PDP = F, 
+                        facet_spec = facet_specification(ncol = 3))
+ice_pm_ceteris_prob <- g_ice(rs_pm_prob, centered = F, show_PDP = F, 
+                             facet_spec = facet_specification(ncol = 3))
+ice_pm <- g_ice(rs_pm, centered = T, show_PDP = T, 
+                facet_spec = facet_specification(ncol = 3))
+```
+
+
+::: {.panel-tabset}
+
+### Rough: Logit scale
+
+```{r}
+ice_pm_ceteris$continuous + theme_facets
+```
+
+```{r}
+#| fig-width: 4
+#| fig-height: 3
+
+ice_pm_ceteris$discrete
+```
+
+### Rough: Prob. scale
+
+```{r}
+ice_pm_ceteris_prob$continuous + theme_facets
+```
+
+```{r}
+#| fig-width: 4
+#| fig-height: 3
+
+ice_pm_ceteris_prob$discrete
+```
+
+### Rough: Logit, centered
+
+```{r}
+#| message: FALSE
+#| fig-width: 8
+#| fig-height: 6
+
+ice_pm$continuous + scale_col_update + theme_facets
+```
+
+```{r}
+#| message: FALSE
+#| fig-width: 6
+#| fig-height: 3
+
+ice_pm$discrete + scale_col_update
+```
+
+### Rough vs direct 1st order
+
+```{r}
+#| fig-width: 8
+#| fig-height: 6
+
+# comparison plot
+comp_xgb_bayes <- g_comparison(
+  sculptures = list(rs_pm, rs_pm_xgb_fo),
+  descriptions = c("Rough Model", "Direct Additive XGB"), 
+  facet_spec = facet_specification(ncol = 3)
+)
+
+comp_xgb_bayes$continuous + theme_facets
+```
+
+```{r}
+#| fig-width: 6
+#| fig-height: 3
+
+comp_xgb_bayes$discrete
+```
+
+### Detailed vs rough
+
+```{r}
+#| fig-width: 8
+#| fig-height: 6
+
+# compare detailed and rough
+comp_ds <- 
+  g_comparison(
+    sculptures = list(rs_pm, ds_pm_v2),
+    descriptions = c("Rough Model", "Detailed Model"), 
+    facet_spec = facet_specification(ncol = 3)
+  )
+
+comp_ds$continuous + theme_facets
+```
+
+```{r}
+#| fig-width: 6
+#| fig-height: 3
+
+comp_ds$discrete
+```
+
+
+### Polished vs rough
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4
+
+# compare detailed and rough
+## Select variables for polished model
+checkmate::assert_number(top_k, lower = 1)
+vars <- levels(attr(rs_pm, "cumul_R2")$feature)[1:top_k]
+
+rs_pm_top_k <- rs_pm[vars]
+attr(rs_pm_top_k, "offset") <- attr(rs_pm, "offset")
+class(rs_pm_top_k) <- class(rs_pm)
+
+comp_ps <- 
+  g_comparison(
+    sculptures = list(rs_pm_top_k, ps_pm_v2),
+    descriptions = c("Rough Model", "Polished Model"), 
+    facet_spec = facet_specification(ncol = 3)
+  )
+
+comp_ps$continuous + theme_facets
+```
+
+:::
+
+## Data density
+
+```{r}
+#| fig-width: 10
+#| fig-height: 8
+
+g_density_plots_cont <- g_density_ice_plot_list(ps_pm_v2,
+                                                dd$data$train,
+                                                var_names = dd$covariates$continuous,
+                                                var_labels = dd$covariates$labels,
+                                                task = dd$task)
+# patchwork::wrap_plots(g_density_plots_cont[c("priors", "age", "juvenile_crimes")], ncol = 2) 
+```
+
+
+::: {.panel-tabset}
+
+### priors
+
+```{r}
+#| fig-width: 5
+#| fig-height: 4
+
+g_density_plots_cont[["priors"]]
+```
+
+### age
+
+```{r}
+#| fig-width: 5
+#| fig-height: 4
+
+g_density_plots_cont[["age"]]
+```
+
+### juvenile_crimes
+
+```{r}
+#| fig-width: 5
+#| fig-height: 4
+
+g_density_plots_cont[["juvenile_crimes"]]
+```
+:::
+
+## Additivity evaluation
+
+```{r}
+p1 <- predict(xgb, new_data = pm, type = "prob")$.pred_1
+p2 <- predict(xgb, new_data = dd$data$train, type = "prob")$.pred_1
+p3 <- predict(rs_pm, pm)
+p4 <- predict(rs_train, dd$data$train)
+
+g_additivity(
+  sp = list(inv.logit(p3), inv.logit(p4)),
+  lp = list(p1, p2),
+  descriptions = c("Product Marginals", "Train Set")
+) + 
+    labs(x = "Rough Model Predictions", y = "Strong Learner Predictions") + 
+    theme_single
+```
+
+
+## Variable importance
+
+::: {.panel-tabset}
+
+
+### Logit scale, pm
+
+```{r}
+#| fig-width: 9
+#| fig-height: 6
+
+vi_pm <- g_var_imp(rs_pm, show_pdp_plot = FALSE, textsize = 16, var_imp_type = "ice", 
+                   logodds_to_prob = F)
+plot(vi_pm)
+```
+
+### Prob scale, pm
+
+```{r}
+#| fig-width: 9
+#| fig-height: 6
+
+vi_pm_prob <- g_var_imp(rs_pm, show_pdp_plot = FALSE, textsize = 16, var_imp_type = "ice", 
+                        logodds_to_prob = T)
+plot(vi_pm_prob)
+```
+
+### Logit scale, train
+
+```{r}
+#| fig-width: 9
+#| fig-height: 6
+
+vi_train <- g_var_imp(rs_train, show_pdp_plot = FALSE, textsize = 16, var_imp_type = "ice", 
+                      logodds_to_prob = F)
+plot(vi_train)
+```
+
+### Prob scale, train
+
+```{r}
+#| fig-width: 9
+#| fig-height: 6
+
+vi_train_prob <- g_var_imp(rs_train, show_pdp_plot = FALSE, textsize = 16, var_imp_type = "ice", 
+                           logodds_to_prob = T)
+plot(vi_train_prob)
+```
+
+:::
+
+## Calibration
+
+```{r}
+preds_sculptures <- tibble(
+  obs = as.numeric(as.character(dd$data$holdout[[dd$response]])),
+  obs_fct = factor(dd$data$holdout[[dd$response]], levels = c("0", "1")),
+  xgb_prob = predict(xgb, new_data = dd$data$holdout, type = "prob")$.pred_1,
+  rm_log = predict(rs_pm, newdata = dd$data$holdout),
+  pm_log = predict(ps_pm_v2, newdata = dd$data$holdout),
+  dir_prob = predict(xgb_fo, new_data = dd$data$holdout, type = "prob")$.pred_1
+) %>%
+  mutate(
+    rm_prob = inv.logit(rm_log),
+    pm_prob = inv.logit(pm_log)
+  ) %>%
+  pivot_longer(
+    cols = -c(obs, obs_fct),
+    names_to = c("Model", "type"), names_sep = "_",
+    values_to = "pred"
+  ) %>%
+  filter(type == "prob") %>% 
+  mutate(
+    Model = c(
+      "xgb" = "XGBoost", "rm" = "Rough Model",
+      "pm" = "Polished Model", "dir" = "Direct Additive XGBoost"
+    )[Model],
+    Model = factor(
+      Model, 
+      levels = c(
+        "XGBoost", "Rough Model", "Polished Model", "Direct Additive XGBoost"
+      )
+    )
+  )
+
+calib_plot_sculptures <- ggplot(preds_sculptures) + 
+  geom_smooth(aes(x = pred, y = obs, colour = Model), se = F, method = "gam", formula = y~x, 
+              method.args = list(family = "binomial")) + 
+  geom_abline(linetype = "dashed") + 
+  labs(x = "Prediction", y = "Truth") + 
+  theme_bw() + 
+  theme(text = element_text(size = 18))
+
+calib_plot_sculptures
+```
+
+
+## Predictiveness curve
+
+The plot was generated using the `riskProfile` function from the 
+[`stats4phc`](https://genentech.github.io/stats4phc/main/index.html) package.
+
+```{r}
+
+rp <- riskProfile(
+  outcome = as.numeric(as.character(dd$data$holdout[[dd$response]])),
+  score = inv.logit(predict(ps_pm_v2, dd$data$holdout))
+)
+
+dm_corel <- define_model("corel_publication", dd)
+preds_corel <- predict(dm_corel$workflow, new_data = dd$data$holdout)$.pred_class
+preds_corel_fct <- factor(preds_corel, levels = c("1", "0"))
+
+dat_corel <- tibble(
+  score_percentile = 1 - mean(preds_corel),
+  PPV = ppv_vec(
+    truth = dd$data$holdout[[dd$response]], 
+    estimate = preds_corel_fct, 
+    event_level = "first"
+  ),
+  `1-NPV` = 1 - npv_vec(
+    truth = dd$data$holdout[[dd$response]], 
+    estimate = preds_corel_fct, 
+    event_level = "first"
+  )
+) %>% pivot_longer(cols = c(PPV, `1-NPV`))
+
+# final Predictiveness curve with corel alg.
+pc_plot <- 
+  rp$plot + 
+  geom_point(
+    data = dat_corel,
+    mapping = aes(x = score_percentile, y = value, colour = name),
+    size = 3
+  )
+
+plot(pc_plot)
+```
+
+
+# Compare with linear models
+
+## Load and sculpt
+
+```{r}
+elastic <- load_model_if_trained("log_elastic")
+lasso <- load_model_if_trained("log_lasso")
+ridge <- load_model_if_trained("log_ridge")
+
+dm_linm <- define_model(type = "logistic", data_info = dd)
+linm <- fit(dm_linm$workflow, data = dd$data$train)
+tg_linm <- fit_resamples(dm_linm$workflow, dd$cv)
+```
+
+```{r}
+# sculptures on pm from different models
+rs_pm_elastic <- sculpt_rough(
+  pm,
+  seed = 1234,
+  model_predict_fun = function(x) {
+    p <- predict(elastic, new_data = x, type = "prob")$.pred_1
+    logit(p)
+  }
+)
+rs_pm_lasso <- sculpt_rough(
+  pm,
+  seed = 1234,
+  model_predict_fun = function(x) {
+    p <- predict(lasso, new_data = x, type = "prob")$.pred_1
+    logit(p)
+  }
+)
+rs_pm_ridge <- sculpt_rough(
+  pm,
+  seed = 1234,
+  model_predict_fun = function(x) {
+    p <- predict(ridge, new_data = x, type = "prob")$.pred_1
+    logit(p)
+  }
+)
+rs_pm_linm <- sculpt_rough(
+  pm,
+  seed = 1234,
+  model_predict_fun = function(x) {
+    p <- predict(linm, new_data = x, type = "prob")$.pred_1
+    logit(p)
+  }
+)
+```
+
+## ICE
+
+```{r}
+comp_models <- g_comparison(
+  sculptures = list(rs_pm_elastic, rs_pm_lasso, rs_pm_ridge, rs_pm_linm, ps_pm_v2),
+  descriptions = c("Elastic Net", "Lasso", "Ridge", "Logistic Regression", "Polished"),
+  facet_spec = facet_specification(ncol = 3)
+)
+
+comp_models$continuous + theme_facets
+comp_models$discrete
+```
+
+
+
+
+## Calibration
+
+```{r}
+preds_models <- tibble(
+  obs = as.numeric(as.character(dd$data$holdout[[dd$response]])),
+  obs_fct = factor(dd$data$holdout[[dd$response]], levels = c("0", "1")),
+  xgbPol_log = predict(ps_pm_v2, newdata = dd$data$holdout),
+  linm_log = predict(rs_pm_linm, newdata = dd$data$holdout),
+  elastic_log = predict(rs_pm_elastic, newdata = dd$data$holdout),
+  lasso_log = predict(rs_pm_lasso, newdata = dd$data$holdout),
+  ridge_log = predict(rs_pm_ridge, newdata = dd$data$holdout)
+) %>% 
+  mutate(
+    xgbPol_prob = inv.logit(xgbPol_log),
+    linm_prob = inv.logit(linm_log),
+    elastic_prob = inv.logit(elastic_log),
+    lasso_prob = inv.logit(lasso_log),
+    ridge_prob = inv.logit(ridge_log)
+  ) %>%
+  pivot_longer(
+    cols = -c(obs, obs_fct),
+    names_to = c("Model", "type"), names_sep = "_",
+    values_to = "pred"
+  ) %>%
+  filter(type == "prob") %>% 
+  mutate(
+    Model = c(
+      "xgbPol" = "Polished", 
+      "linm" = "Logistic", "elastic" = "Elastic Net", "lasso" = "Lasso", "ridge" = "Ridge" 
+    )[Model]
+  )
+
+# calibration plot on holdout based on pm sculptures of different linear models
+calib_plot_models <- ggplot(preds_models) + 
+  geom_smooth(aes(x = pred, y = obs, colour = Model), se = F, method = "gam", formula = y~x, 
+              method.args = list(family = "binomial")) + 
+  geom_abline(linetype = "dashed") + 
+  labs(x = "Prediction", y = "Truth") + 
+  theme_bw() + 
+  theme(text = element_text(size = 18))
+
+calib_plot_models
+```
+
+
+# Session info
+
+```{r}
+devtools::session_info()
+```
+
+
+
+

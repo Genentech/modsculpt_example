@@ -1,0 +1,443 @@
+---
+title: "2.2. Model sculpting and interpretation - bike"
+date: last-modified
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Note
+
+The following scripts need to be run first before knitting the document 
+corresponding to `model_type` specified below:
+
+- 3_model_sculpt_bike.R
+
+# Setup and load
+
+```{r}
+#| output: FALSE
+#| message: FALSE
+
+library(dplyr)
+library(stringr)
+source(here::here("R/0_setup.R"))
+
+theme_set(theme_bw(base_size = 12))
+
+theme_facets <- theme(
+  text = element_text(size = 16),
+  legend.position = "inside",
+  legend.position.inside = c(0.85, 0.2), 
+  legend.background = element_rect(colour = "black"), 
+  legend.title = element_blank()
+)
+
+theme_single <- theme(text = element_text(size = 16))
+
+# Function to check if the model is trained
+load_model_if_trained <- function(model_type) {
+  model_path <- file.path(storage_folder, sname(paste0(model_type, "-fit_final.rds")))
+  if(file.exists(model_path)) {
+    load_results(sname(paste0(model_type, "-fit_final.rds")))
+  } else {
+    stop(paste0("Model ", model_type, " is not trained for compas, `",
+                model_path, "` does not exist. ",
+                "Please train it first with: ",
+                "`Rscript R/2_train_models.R ", model_type, " compas FALSE`"))
+  }
+}
+```
+
+```{r}
+# set dataset (any with discrete response)
+dataset <- "bike"
+
+# set model_type
+model_type = "xgb_bayes"
+# model_type = "xgb"
+
+# set nr of features for a polished model
+top_k <- 7
+
+# util function for storage
+sname <- function(x, prefix = dataset) {
+  paste0(prefix, "-", x)
+}
+
+
+# load dataset
+dd <- define_data(dataset)
+
+# load xgb
+xgb <- load_model_if_trained(model_type)
+# xgb_fo <- load_model_if_trained("xgb_1_order_bayes")
+xgb_fo <- load_model_if_trained("xgb_1_order")
+
+# get product marginals
+pm <- sample_marginals(dd$data$train[dd$covariates$all], n = 1e4, seed = 1234)
+```
+
+# xgb model
+
+## Sculpting
+
+### Main models
+
+
+```{r}
+# load sculpted models
+rs_pm <- load_results(paste0(dataset, "-", model_type, "-sculpt_rough_pm.rds"))
+ds_pm <- load_results(paste0(dataset, "-", model_type, "-sculpt_detailed_pm.rds"))
+ps_pm <- load_results(paste0(dataset, "-", model_type, "-sculpt_polished_pm.rds"))
+```
+
+
+### Other sculpting models 
+
+```{r}
+#| output: FALSE
+
+# get rough model - on train
+rs_train <- sculpt_rough(
+  dd$data$train[dd$covariates$all],
+  seed = 1234,
+  model_predict_fun = function(x) {
+    predict(xgb, new_data = x)$.pred
+  }
+)
+
+# First order model
+rs_pm_xgb_fo <- sculpt_rough(
+  pm, 
+  seed = 1234,
+  model_predict_fun = function(x) {
+    predict(xgb_fo, new_data = x)$.pred
+  }
+)
+```
+
+
+## ICE plots
+
+```{r}
+scale_col_update <- 
+  scale_color_manual(
+    values = c("ICE Profiles" = "gray60", "Rough model (with SE)" = "blue"),
+    labels = c("ICE Profiles", "Rough model"),
+    name = ""
+  )
+
+ice_pm_ceteris <- g_ice(rs_pm, centered = F, show_PDP = F, 
+                        facet_spec = facet_specification(ncol = 3))
+ice_pm <- g_ice(rs_pm, centered = T, show_PDP = T, 
+                facet_spec = facet_specification(ncol = 3))
+```
+
+
+::: {.panel-tabset}
+
+### Rough
+
+```{r}
+ice_pm_ceteris$continuous + theme_facets
+```
+
+```{r}
+ice_pm_ceteris$discrete
+```
+
+### Rough: centered
+
+```{r}
+#| message: FALSE
+#| fig-width: 8
+#| fig-height: 6
+
+ice_pm$continuous + scale_col_update + theme_facets
+```
+
+```{r}
+#| message: FALSE
+#| fig-width: 8
+#| fig-height: 6
+
+ice_pm$discrete + scale_col_update + theme_facets
+```
+
+### Rough vs direct 1st order
+
+```{r}
+#| fig-width: 8
+#| fig-height: 6
+#| fig-show: hold
+
+# comparison plot
+comp_xgb_bayes <- g_comparison(
+  sculptures = list(rs_pm, rs_pm_xgb_fo),
+  descriptions = c("Rough Model", "Direct Additive XGB"), 
+  facet_spec = facet_specification(ncol = 3)
+)
+
+comp_xgb_bayes$continuous + theme_facets
+comp_xgb_bayes$discrete
+```
+
+### Detailed vs rough
+
+```{r}
+#| fig-width: 8
+#| fig-height: 6
+#| fig-show: hold
+
+# compare detailed and rough
+comp_ds <- 
+  g_comparison(
+    sculptures = list(rs_pm, ds_pm),
+    descriptions = c("Rough Model", "Detailed Model"), 
+    facet_spec = facet_specification(ncol = 3)
+  )
+
+comp_ds$continuous + theme_facets
+comp_ds$discrete + theme_facets
+```
+
+
+### Polished vs rough
+
+```{r}
+#| fig-width: 8
+#| fig-height: 6
+#| fig-show: hold
+
+# compare detailed and rough
+comp_ps <- 
+  g_comparison(
+    sculptures = list(rs_pm, ps_pm),
+    descriptions = c("Rough Model", "Polished Model"), 
+    facet_spec = facet_specification(ncol = 3)
+  )
+
+comp_ps$continuous + theme_facets
+comp_ps$discrete + theme_facets
+```
+
+
+:::
+
+## Data density
+
+```{r}
+#| fig-width: 10
+#| fig-height: 8
+#| fig-show: hold
+
+g_density_plots <- g_density_ice_plot_list(ps_pm,
+                                           dd$data$train,
+                                           var_names = dd$covariates$all,
+                                           var_labels = dd$covariates$labels,
+                                           task = dd$task)
+cov_cont_ps <- intersect(dd$covariates$continuous, names(ps_pm))
+cov_disc_ps <- intersect(dd$covariates$discrete, names(ps_pm))
+
+patchwork::wrap_plots(g_density_plots[cov_cont_ps], ncol = 2) 
+patchwork::wrap_plots(g_density_plots[cov_disc_ps], ncol = 2) 
+```
+
+
+## Additivity evaluation
+
+```{r}
+p1 <- predict(xgb, new_data = pm)$.pred
+p2 <- predict(xgb, new_data = dd$data$train)$.pred
+p3 <- predict(rs_pm, pm)
+p4 <- predict(rs_train, dd$data$train)
+
+g_additivity(
+  sp = list(p3, p4),
+  lp = list(p1, p2),
+  descriptions = c("Product Marginals", "Train Set")
+) + 
+    labs(x = "Rough Model Predictions", y = "Strong Learner Predictions") + 
+    theme_single
+```
+
+
+## Variable importance
+
+::: {.panel-tabset}
+
+### pm
+
+```{r}
+#| fig-width: 9
+#| fig-height: 6
+
+vi_pm <- g_var_imp(rs_pm, show_pdp_plot = FALSE, textsize = 16, var_imp_type = "ice")
+plot(vi_pm)
+```
+
+### train
+
+```{r}
+#| fig-width: 9
+#| fig-height: 6
+
+vi_train <- g_var_imp(rs_train, show_pdp_plot = FALSE, textsize = 16, var_imp_type = "ice")
+plot(vi_train)
+```
+
+:::
+
+## Calibration
+
+```{r}
+preds_sculptures <- tibble(
+  obs = dd$data$holdout[[dd$response]],
+  xgb = predict(xgb, new_data = dd$data$holdout)$.pred,
+  rm = predict(rs_pm, newdata = dd$data$holdout),
+  pm = predict(ps_pm, newdata = dd$data$holdout),
+  dir = predict(xgb_fo, new_data = dd$data$holdout)$.pred
+) %>%
+  pivot_longer(
+    cols = -obs,
+    names_to = "Model",
+    values_to = "pred"
+  ) %>%
+  mutate(
+    Model = c(
+      "xgb" = "XGBoost", "rm" = "Rough Model",
+      "pm" = "Polished Model", "dir" = "Direct Additive XGBoost"
+    )[Model],
+    Model = factor(
+      Model, 
+      levels = c(
+        "XGBoost", "Rough Model", "Polished Model", "Direct Additive XGBoost"
+      )
+    )
+  )
+
+calib_plot_sculptures <- ggplot(preds_sculptures) + 
+  geom_smooth(aes(x = pred, y = obs, colour = Model), se = F, method = "gam", formula = y~x) + 
+  geom_abline(linetype = "dashed") + 
+  labs(x = "Prediction", y = "Truth") + 
+  theme_bw() + 
+  theme(text = element_text(size = 18))
+
+calib_plot_sculptures
+```
+
+
+# Compare with linear models
+
+## Load and sculpt
+
+```{r}
+#| warning: FALSE
+#| 
+elastic <- load_model_if_trained("lm_elastic")
+lasso <- load_model_if_trained("lm_lasso")
+ridge <- load_model_if_trained("lm_ridge")
+
+dm_linm <- define_model(type = "lm", data_info = dd)
+linm <- fit(dm_linm$workflow, data = dd$data$train)
+tg_linm <- fit_resamples(dm_linm$workflow, dd$cv)
+```
+
+```{r}
+#| warning: FALSE
+
+# sculptures on pm from different models
+rs_pm_elastic <- sculpt_rough(
+  pm,
+  seed = 1234,
+  model_predict_fun = function(x) {
+    predict(elastic, new_data = x)$.pred
+  }
+)
+rs_pm_lasso <- sculpt_rough(
+  pm,
+  seed = 1234,
+  model_predict_fun = function(x) {
+    predict(lasso, new_data = x)$.pred
+  }
+)
+rs_pm_ridge <- sculpt_rough(
+  pm,
+  seed = 1234,
+  model_predict_fun = function(x) {
+    predict(ridge, new_data = x)$.pred
+  }
+)
+rs_pm_linm <- sculpt_rough(
+  pm,
+  seed = 1234,
+  model_predict_fun = function(x) {
+    predict(linm, new_data = x)$.pred
+  }
+)
+```
+
+## ICE
+
+```{r}
+#| fig-width: 8
+#| fig-height: 6
+#| fig-show: hold
+#| 
+comp_models <- g_comparison(
+  sculptures = list(rs_pm_elastic, rs_pm_lasso, rs_pm_ridge, rs_pm_linm, ps_pm),
+  descriptions = c("Elastic Net", "Lasso", "Ridge", "Logistic Regression", "Polished"),
+  facet_spec = facet_specification(ncol = 3)
+)
+
+comp_models$continuous + theme_facets
+comp_models$discrete + theme_facets
+```
+
+
+
+
+## Calibration
+
+```{r}
+preds_models <- tibble(
+  obs = dd$data$holdout[[dd$response]],
+  xgbPol = predict(ps_pm, newdata = dd$data$holdout),
+  linm = predict(rs_pm_linm, newdata = dd$data$holdout),
+  elastic = predict(rs_pm_elastic, newdata = dd$data$holdout),
+  lasso = predict(rs_pm_lasso, newdata = dd$data$holdout),
+  ridge = predict(rs_pm_ridge, newdata = dd$data$holdout)
+) %>% 
+  pivot_longer(
+    cols = -obs,
+    names_to = "Model",
+    values_to = "pred"
+  ) %>%
+  mutate(
+    Model = c(
+      "xgbPol" = "Polished", 
+      "linm" = "Logistic", "elastic" = "Elastic Net", "lasso" = "Lasso", "ridge" = "Ridge" 
+    )[Model]
+  )
+
+# calibration plot on holdout based on pm sculptures of different linear models
+calib_plot_models <- ggplot(preds_models) + 
+  geom_smooth(aes(x = pred, y = obs, colour = Model), se = F, method = "gam", formula = y~x) + 
+  geom_abline(linetype = "dashed") + 
+  labs(x = "Prediction", y = "Truth") + 
+  theme_bw() + 
+  theme(text = element_text(size = 18))
+
+calib_plot_models
+```
+
+
+# Session info
+
+```{r}
+devtools::session_info()
+```
+
+
+
+

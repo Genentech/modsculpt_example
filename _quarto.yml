@@ -1,0 +1,29 @@
+project:
+  type: website
+
+website:
+  title: "Model sculpting examples"
+  sidebar:
+    contents:
+      - index.qmd
+      - section: Notebook
+        contents: notebook/*
+    tools:
+      - icon: github
+        href: https://github.roche.com/yoshidk6/modsculpt_example
+  repo-url: https://github.roche.com/yoshidk6/modsculpt_example
+  repo-actions: [edit, issue]
+  
+format:
+  html:
+    theme: sandstone
+    code-fold: true
+    code-summary: "Show the code"
+    code-tools: true
+    toc: true
+    toc_float: true
+
+date-format: iso
+
+execute:
+  freeze: true

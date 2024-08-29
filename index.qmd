@@ -1,0 +1,30 @@
+---
+title: "Index"
+format:
+  html:
+    theme: sandstone
+    code-fold: true
+    code-summary: "Show the code"
+    code-tools: true
+    toc: true
+    toc_float: true
+listing:
+  id: listings
+  contents: notebook
+  type: table
+  sort: title
+execute:
+  freeze: auto
+---
+
+
+::: {#listings}
+:::
+
+## Important links
+
+- modsculpt package:
+  <https://github.com/Genentech/modsculpt>
+- GitHub repo:
+  <https://github.roche.com/yoshidk6/modsculpt_example>
+  

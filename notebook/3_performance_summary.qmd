@@ -1,0 +1,275 @@
+---
+title: "3. Performance evaluation"
+date: last-modified
+---
+
+# Setup and load
+
+```{r}
+#| warning: false
+#| message: false
+
+library(dplyr)
+library(forcats)
+library(stringr)
+requireNamespace("DT")
+source(here::here("R", "0_setup.R"))
+
+theme_set(theme_bw(base_size = 12))
+```
+
+```{r}
+dataset_to_summarize <- c("compas", "bike")
+
+separate_sculpt_bayes <- function(data) {
+  data %>% 
+    # parse `model` and extract `-sculpt_*`, only keep * part
+    mutate(
+      sculpt = model %>% str_extract("-sculpt_\\w+$") %>% str_remove("-sculpt_"),
+      sculpt = if_else(is.na(sculpt), "orig.", sculpt),
+      sculpt = factor(sculpt, levels = c("orig.", "rough", "detailed", "polished")),
+      tune_bayes = if_else(str_detect(model, "_bayes"), TRUE, FALSE),
+      model_type = model %>% str_remove("-sculpt_\\w+$") %>% str_remove("_bayes$")
+    ) %>%
+    relocate(model_type, tune_bayes, sculpt, .after = model)
+}
+```
+
+# Import data
+
+```{r}
+fls <- list.files(storage_folder, pattern = "metrics-ncv")
+names(fls) <- fls
+res_resample <- map_dfr(fls, load_metrics, .id = "id") %>% 
+  mutate(
+    dataset = id %>% str_extract("^\\w*-") %>% str_remove("-$"),
+    model = id %>% str_remove("-metrics-ncv.csv$") %>% str_remove(paste0("^", dataset, "-"))
+  ) %>% 
+  select(dataset, model, 
+         any_of(c("roc_auc", "mn_log_loss", "rsq", "R2", 
+                  "DI", "MI", "R2C1", "r2C1", "rsq_trad", "rmse",
+                  "R2_ll", "DI_ll", "MI_ll"))) %>% 
+  separate_sculpt_bayes() %>% 
+  filter(dataset %in% dataset_to_summarize) %>% 
+  arrange(dataset, model, sculpt)
+
+fls2 <- list.files(storage_folder, pattern = "metrics-holdout")
+names(fls2) <- fls2
+res_hd <- map_dfr(fls2, load_metrics, .id = "id") %>% 
+  mutate(
+    dataset = id %>% str_extract("^\\w*-") %>% str_remove("-$"),
+    model = id %>% str_remove("-metrics-holdout.csv$") %>% str_remove(paste0("^", dataset, "-"))
+  ) %>% 
+  select(dataset, model,
+         any_of(c("roc_auc", "mn_log_loss", "rsq", "R2", 
+                  "DI", "MI", "R2C1", "r2C1", "rsq_trad", "rmse",
+                  "R2_ll", "DI_ll", "MI_ll"))) %>% 
+  separate_sculpt_bayes() %>% 
+  filter(dataset %in% dataset_to_summarize) %>% 
+  arrange(dataset, model, sculpt)
+```
+
+
+# Figure
+
+```{r}
+plot_tune_bayes <- TRUE
+
+res_resample_plot <- 
+  res_resample %>% 
+  arrange(dataset, model_type, tune_bayes, sculpt) %>% 
+  pivot_longer(any_of(c("R2C1", "DI", "MI")),
+               names_to = "metric", values_to = "value") %>%
+  mutate(metric = factor(metric, levels = c("R2C1", "r2C1", "DI", "MI", "rsq_trad", "rmse")),
+         metric = fct_recode(metric, R2 = "R2C1", r2 = "r2C1"))
+
+
+res_hd_plot <- 
+  res_hd %>% 
+  arrange(dataset, model_type, tune_bayes, sculpt) %>% 
+  pivot_longer(any_of(c("R2C1", "DI", "MI")),
+               names_to = "metric", values_to = "value") %>%
+  mutate(metric = factor(metric, levels = c("R2C1", "r2C1", "DI", "MI", "rsq_trad", "rmse")),
+         metric = fct_recode(metric, R2 = "R2C1", r2 = "r2C1"))
+
+res_plot <- 
+  bind_rows(res_hd_plot %>% mutate(eval = "holdout"), 
+            res_resample_plot %>% mutate(eval = "resample")) %>% 
+  filter(tune_bayes == plot_tune_bayes)
+
+res_plot_compas <- res_plot %>% filter(dataset == "compas")
+res_plot_bike <- res_plot %>% filter(dataset == "bike")
+```
+
+
+
+::: {.panel-tabset}
+
+## Compas
+
+```{r}
+res_plot_compas %>% 
+  filter(model_type == "xgb") %>%
+  ggplot(aes(x = value, y = sculpt, colour = eval)) +
+  geom_path(aes(group = eval), alpha = 0.5) + 
+  geom_point(size = 2) + 
+  facet_grid(cols = vars(metric)) +
+  scale_y_discrete(limits = rev(levels(res_hd$sculpt))) +
+  labs( 
+    title = "XGB sculpted model performance",
+    colour = "Evaluation"
+  ) + 
+  theme(
+    axis.text.x = element_text(angle = 30),
+    axis.title = element_blank()
+  )
+
+models_to_plot_compas <- 
+  tribble(~model_type, ~sculpt, ~mod_lab,
+          "xgb", "orig.", "XGB",
+          "xgb_1_order", "orig.", "XGB (Direct 1st order)",
+          "xgb", "polished", "XGB (Polished)",
+          "log_ridge", "orig.", "Ridge",
+          "log_lasso", "orig.", "Lasso",
+          "log_elastic", "orig.", "Elastic Net") %>% 
+  mutate(mod_lab = fct_inorder(mod_lab))
+
+res_plot_compas %>% 
+  inner_join(models_to_plot_compas, by = c("model_type", "sculpt")) %>%
+  arrange(mod_lab) %>% 
+  ggplot(aes(x = value, y = mod_lab, colour = eval)) +
+  geom_path(aes(group = eval), alpha = 0.5) + 
+  geom_point(size = 2) + 
+  facet_grid(cols = vars(metric)) +
+  scale_y_discrete(limits = rev(levels(models_to_plot_compas$mod_lab))) +
+  labs( 
+    title = "Performance comparison with linear models",
+    colour = "Evaluation"
+  ) + 
+  theme(
+    axis.text.x = element_text(angle = 30),
+    axis.title = element_blank()
+  )
+```
+
+## Bike
+
+```{r}
+res_plot_bike %>% 
+  filter(model_type == "xgb") %>%
+  ggplot(aes(x = value, y = sculpt, colour = eval)) +
+  geom_path(aes(group = eval), alpha = 0.5) + 
+  geom_point(size = 2) + 
+  facet_grid(cols = vars(metric)) +
+  scale_y_discrete(limits = rev(levels(res_hd$sculpt))) +
+  labs( 
+    title = "XGB sculpted model performance",
+    colour = "Evaluation"
+  ) + 
+  theme(
+    axis.text.x = element_text(angle = 30),
+    axis.title = element_blank()
+  )
+
+models_to_plot_bike <- 
+  tribble(~model_type, ~sculpt, ~mod_lab,
+          "xgb", "orig.", "XGB",
+          "xgb_1_order", "orig.", "XGB (Direct 1st order)",
+          "xgb", "polished", "XGB (Polished)",
+          "lm_ridge", "orig.", "Ridge",
+          "lm_lasso", "orig.", "Lasso",
+          "lm_elastic", "orig.", "Elastic Net") %>% 
+  mutate(mod_lab = fct_inorder(mod_lab))
+
+res_plot_bike %>% 
+  inner_join(models_to_plot_bike, by = c("model_type", "sculpt")) %>%
+  arrange(mod_lab) %>% 
+  ggplot(aes(x = value, y = mod_lab, colour = eval)) +
+  geom_path(aes(group = eval), alpha = 0.5) + 
+  geom_point(size = 2) + 
+  facet_grid(cols = vars(metric)) +
+  scale_y_discrete(limits = rev(levels(models_to_plot_bike$mod_lab))) +
+  labs( 
+    title = "Performance comparison with linear models",
+    colour = "Evaluation"
+  ) + 
+  theme(
+    axis.text.x = element_text(angle = 30),
+    axis.title = element_blank()
+  )
+```
+
+:::
+
+# Table
+## Resampling
+
+```{r}
+res_resample %>% 
+  select(-model) %>% 
+  mutate(across(where(is.numeric), \(x) sprintf(x, fmt = '%.4f'))) %>%
+  mutate(across(where(is.character), as.factor)) %>%
+  DT::datatable(filter = "top")
+```
+
+## Holdout
+
+```{r}
+res_hd %>% 
+  select(-model) %>% 
+  mutate(across(where(is.numeric), \(x) sprintf(x, fmt = '%.4f'))) %>%
+  mutate(across(where(is.character), as.factor)) %>%
+  DT::datatable(filter = "top")
+```
+
+```{r}
+#| include: false
+
+# Output for the slide
+
+res_compas_summary <- 
+  bind_rows(res_hd %>% mutate(eval = "holdout"), 
+            res_resample %>% mutate(eval = "resample")) %>% 
+  filter(dataset == "compas") %>% 
+  filter(tune_bayes == plot_tune_bayes) %>% 
+  mutate(across(where(is.numeric), \(x) sprintf(x, fmt = '%.3f')))
+
+res_compas_summary %>% 
+  filter(model_type == "xgb") %>% 
+  select(sculpt, R2C1, DI, MI, eval) %>% 
+  arrange(desc(eval), sculpt) %>% 
+  pivot_wider(names_from = eval, values_from = c(R2C1, DI, MI),
+              names_vary = 'slowest',
+              names_glue = "{eval}_{.value}")
+
+res_compas_summary %>% 
+  filter(model_type == "xgb") %>% 
+  select(sculpt, R2_ll, DI_ll, MI_ll, eval) %>% 
+  arrange(desc(eval), sculpt) %>% 
+  pivot_wider(names_from = eval, values_from = c(R2_ll, DI_ll, MI_ll),
+              names_vary = 'slowest',
+              names_glue = "{eval}_{.value}")
+
+res_compas_summary %>% 
+  inner_join(models_to_plot_compas, by = c("model_type", "sculpt")) %>%
+  select(mod_lab, R2C1, DI, MI, eval) %>% 
+  arrange(desc(eval), mod_lab) %>% 
+  pivot_wider(names_from = eval, values_from = c(R2C1, DI, MI),
+              names_vary = 'slowest',
+              names_glue = "{eval}_{.value}")
+
+res_compas_summary %>% 
+  inner_join(models_to_plot_compas, by = c("model_type", "sculpt")) %>%
+  select(mod_lab, R2_ll, DI_ll, MI_ll, eval) %>% 
+  arrange(desc(eval), mod_lab) %>% 
+  pivot_wider(names_from = eval, values_from = c(R2_ll, DI_ll, MI_ll),
+              names_vary = 'slowest',
+              names_glue = "{eval}_{.value}")
+
+```
+
+# Session info
+
+```{r}
+devtools::session_info()
+```
