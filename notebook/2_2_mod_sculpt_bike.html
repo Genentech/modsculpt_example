@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.551">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2024-08-29">
+
+<title>Model sculpting examples - 2.2. Model sculpting and interpretation - bike</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebook/1_introduction.html">Notebook</a></li><li class="breadcrumb-item"><a href="../notebook/2_2_mod_sculpt_bike.html">2.2. Model sculpting and interpretation - bike</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Model sculpting examples</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.roche.com/yoshidk6/modsculpt_example" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Index</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Notebook</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebook/1_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Introduction of this repository</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebook/2_1_modsculpt_compas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2.1. Model sculpting and interpretation - compas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebook/2_2_mod_sculpt_bike.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">2.2. Model sculpting and interpretation - bike</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebook/3_performance_summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Performance evaluation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#note" id="toc-note" class="nav-link active" data-scroll-target="#note">Note</a></li>
+  <li><a href="#setup-and-load" id="toc-setup-and-load" class="nav-link" data-scroll-target="#setup-and-load">Setup and load</a></li>
+  <li><a href="#xgb-model" id="toc-xgb-model" class="nav-link" data-scroll-target="#xgb-model">xgb model</a>
+  <ul class="collapse">
+  <li><a href="#sculpting" id="toc-sculpting" class="nav-link" data-scroll-target="#sculpting">Sculpting</a>
+  <ul class="collapse">
+  <li><a href="#main-models" id="toc-main-models" class="nav-link" data-scroll-target="#main-models">Main models</a></li>
+  <li><a href="#other-sculpting-models" id="toc-other-sculpting-models" class="nav-link" data-scroll-target="#other-sculpting-models">Other sculpting models</a></li>
+  </ul></li>
+  <li><a href="#ice-plots" id="toc-ice-plots" class="nav-link" data-scroll-target="#ice-plots">ICE plots</a></li>
+  <li><a href="#data-density" id="toc-data-density" class="nav-link" data-scroll-target="#data-density">Data density</a></li>
+  <li><a href="#additivity-evaluation" id="toc-additivity-evaluation" class="nav-link" data-scroll-target="#additivity-evaluation">Additivity evaluation</a></li>
+  <li><a href="#variable-importance" id="toc-variable-importance" class="nav-link" data-scroll-target="#variable-importance">Variable importance</a></li>
+  <li><a href="#calibration" id="toc-calibration" class="nav-link" data-scroll-target="#calibration">Calibration</a></li>
+  </ul></li>
+  <li><a href="#compare-with-linear-models" id="toc-compare-with-linear-models" class="nav-link" data-scroll-target="#compare-with-linear-models">Compare with linear models</a>
+  <ul class="collapse">
+  <li><a href="#load-and-sculpt" id="toc-load-and-sculpt" class="nav-link" data-scroll-target="#load-and-sculpt">Load and sculpt</a></li>
+  <li><a href="#ice" id="toc-ice" class="nav-link" data-scroll-target="#ice">ICE</a></li>
+  <li><a href="#calibration-1" id="toc-calibration-1" class="nav-link" data-scroll-target="#calibration-1">Calibration</a></li>
+  </ul></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session info</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.roche.com/yoshidk6/modsculpt_example/edit/main/notebook/2_2_mod_sculpt_bike.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://github.roche.com/yoshidk6/modsculpt_example/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebook/1_introduction.html">Notebook</a></li><li class="breadcrumb-item"><a href="../notebook/2_2_mod_sculpt_bike.html">2.2. Model sculpting and interpretation - bike</a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">2.2. Model sculpting and interpretation - bike</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2024-08-29</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="note" class="level1">
+<h1>Note</h1>
+<p>The following scripts need to be run first before knitting the document corresponding to <code>model_type</code> specified below:</p>
+<ul>
+<li>3_model_sculpt_bike.R</li>
+</ul>
+</section>
+<section id="setup-and-load" class="level1">
+<h1>Setup and load</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"R/0_setup.R"</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>theme_facets <span class="ot">&lt;-</span> <span class="fu">theme</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.position =</span> <span class="st">"inside"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.position.inside =</span> <span class="fu">c</span>(<span class="fl">0.85</span>, <span class="fl">0.2</span>), </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"black"</span>), </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>theme_single <span class="ot">&lt;-</span> <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to check if the model is trained</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>load_model_if_trained <span class="ot">&lt;-</span> <span class="cf">function</span>(model_type) {</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  model_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(storage_folder, <span class="fu">sname</span>(<span class="fu">paste0</span>(model_type, <span class="st">"-fit_final.rds"</span>)))</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">file.exists</span>(model_path)) {</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">load_results</span>(<span class="fu">sname</span>(<span class="fu">paste0</span>(model_type, <span class="st">"-fit_final.rds"</span>)))</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="fu">paste0</span>(<span class="st">"Model "</span>, model_type, <span class="st">" is not trained for compas, `"</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                model_path, <span class="st">"` does not exist. "</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Please train it first with: "</span>,</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>                <span class="st">"`Rscript R/2_train_models.R "</span>, model_type, <span class="st">" compas FALSE`"</span>))</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set dataset (any with discrete response)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> <span class="st">"bike"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># set model_type</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>model_type <span class="ot">=</span> <span class="st">"xgb_bayes"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># model_type = "xgb"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># set nr of features for a polished model</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>top_k <span class="ot">&lt;-</span> <span class="dv">7</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># util function for storage</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>sname <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">prefix =</span> dataset) {</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(prefix, <span class="st">"-"</span>, x)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># load dataset</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>dd <span class="ot">&lt;-</span> <span class="fu">define_data</span>(dataset)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># load xgb</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>xgb <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(model_type)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># xgb_fo &lt;- load_model_if_trained("xgb_1_order_bayes")</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>xgb_fo <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(<span class="st">"xgb_1_order"</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co"># get product marginals</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>pm <span class="ot">&lt;-</span> <span class="fu">sample_marginals</span>(dd<span class="sc">$</span>data<span class="sc">$</span>train[dd<span class="sc">$</span>covariates<span class="sc">$</span>all], <span class="at">n =</span> <span class="fl">1e4</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="xgb-model" class="level1">
+<h1>xgb model</h1>
+<section id="sculpting" class="level2">
+<h2 class="anchored" data-anchor-id="sculpting">Sculpting</h2>
+<section id="main-models" class="level3">
+<h3 class="anchored" data-anchor-id="main-models">Main models</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load sculpted models</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>rs_pm <span class="ot">&lt;-</span> <span class="fu">load_results</span>(<span class="fu">paste0</span>(dataset, <span class="st">"-"</span>, model_type, <span class="st">"-sculpt_rough_pm.rds"</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>ds_pm <span class="ot">&lt;-</span> <span class="fu">load_results</span>(<span class="fu">paste0</span>(dataset, <span class="st">"-"</span>, model_type, <span class="st">"-sculpt_detailed_pm.rds"</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>ps_pm <span class="ot">&lt;-</span> <span class="fu">load_results</span>(<span class="fu">paste0</span>(dataset, <span class="st">"-"</span>, model_type, <span class="st">"-sculpt_polished_pm.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="other-sculpting-models" class="level3">
+<h3 class="anchored" data-anchor-id="other-sculpting-models">Other sculpting models</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get rough model - on train</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>rs_train <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  dd<span class="sc">$</span>data<span class="sc">$</span>train[dd<span class="sc">$</span>covariates<span class="sc">$</span>all],</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> x)<span class="sc">$</span>.pred</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># First order model</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>rs_pm_xgb_fo <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  pm, </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(xgb_fo, <span class="at">new_data =</span> x)<span class="sc">$</span>.pred</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="ice-plots" class="level2">
+<h2 class="anchored" data-anchor-id="ice-plots">ICE plots</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>scale_col_update <span class="ot">&lt;-</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"ICE Profiles"</span> <span class="ot">=</span> <span class="st">"gray60"</span>, <span class="st">"Rough model (with SE)"</span> <span class="ot">=</span> <span class="st">"blue"</span>),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"ICE Profiles"</span>, <span class="st">"Rough model"</span>),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">""</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris <span class="ot">&lt;-</span> <span class="fu">g_ice</span>(rs_pm, <span class="at">centered =</span> F, <span class="at">show_PDP =</span> F, </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>))</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>ice_pm <span class="ot">&lt;-</span> <span class="fu">g_ice</span>(rs_pm, <span class="at">centered =</span> T, <span class="at">show_PDP =</span> T, </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Rough</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Rough: centered</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Rough vs direct 1st order</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Detailed vs rough</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">Polished vs rough</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris<span class="sc">$</span>discrete</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ice_pm<span class="sc">$</span>continuous <span class="sc">+</span> scale_col_update <span class="sc">+</span> theme_facets</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ice_pm<span class="sc">$</span>discrete <span class="sc">+</span> scale_col_update <span class="sc">+</span> theme_facets</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># comparison plot</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>comp_xgb_bayes <span class="ot">&lt;-</span> <span class="fu">g_comparison</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm, rs_pm_xgb_fo),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Rough Model"</span>, <span class="st">"Direct Additive XGB"</span>), </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>comp_xgb_bayes<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>comp_xgb_bayes<span class="sc">$</span>discrete</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare detailed and rough</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>comp_ds <span class="ot">&lt;-</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">g_comparison</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm, ds_pm),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Rough Model"</span>, <span class="st">"Detailed Model"</span>), </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>comp_ds<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>comp_ds<span class="sc">$</span>discrete <span class="sc">+</span> theme_facets</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare detailed and rough</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>comp_ps <span class="ot">&lt;-</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">g_comparison</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm, ps_pm),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Rough Model"</span>, <span class="st">"Polished Model"</span>), </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>comp_ps<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>comp_ps<span class="sc">$</span>discrete <span class="sc">+</span> theme_facets</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-density" class="level2">
+<h2 class="anchored" data-anchor-id="data-density">Data density</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>g_density_plots <span class="ot">&lt;-</span> <span class="fu">g_density_ice_plot_list</span>(ps_pm,</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                                           dd<span class="sc">$</span>data<span class="sc">$</span>train,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">var_names =</span> dd<span class="sc">$</span>covariates<span class="sc">$</span>all,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">var_labels =</span> dd<span class="sc">$</span>covariates<span class="sc">$</span>labels,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">task =</span> dd<span class="sc">$</span>task)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>cov_cont_ps <span class="ot">&lt;-</span> <span class="fu">intersect</span>(dd<span class="sc">$</span>covariates<span class="sc">$</span>continuous, <span class="fu">names</span>(ps_pm))</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>cov_disc_ps <span class="ot">&lt;-</span> <span class="fu">intersect</span>(dd<span class="sc">$</span>covariates<span class="sc">$</span>discrete, <span class="fu">names</span>(ps_pm))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>patchwork<span class="sc">::</span><span class="fu">wrap_plots</span>(g_density_plots[cov_cont_ps], <span class="at">ncol =</span> <span class="dv">2</span>) </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>patchwork<span class="sc">::</span><span class="fu">wrap_plots</span>(g_density_plots[cov_disc_ps], <span class="at">ncol =</span> <span class="dv">2</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="additivity-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="additivity-evaluation">Additivity evaluation</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> pm)<span class="sc">$</span>.pred</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>train)<span class="sc">$</span>.pred</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(rs_pm, pm)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">predict</span>(rs_train, dd<span class="sc">$</span>data<span class="sc">$</span>train)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">g_additivity</span>(</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">sp =</span> <span class="fu">list</span>(p3, p4),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">lp =</span> <span class="fu">list</span>(p1, p2),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Product Marginals"</span>, <span class="st">"Train Set"</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> </span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Rough Model Predictions"</span>, <span class="at">y =</span> <span class="st">"Strong Learner Predictions"</span>) <span class="sc">+</span> </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    theme_single</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="variable-importance" class="level2">
+<h2 class="anchored" data-anchor-id="variable-importance">Variable importance</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">pm</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">train</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>vi_pm <span class="ot">&lt;-</span> <span class="fu">g_var_imp</span>(rs_pm, <span class="at">show_pdp_plot =</span> <span class="cn">FALSE</span>, <span class="at">textsize =</span> <span class="dv">16</span>, <span class="at">var_imp_type =</span> <span class="st">"ice"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vi_pm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>vi_train <span class="ot">&lt;-</span> <span class="fu">g_var_imp</span>(rs_train, <span class="at">show_pdp_plot =</span> <span class="cn">FALSE</span>, <span class="at">textsize =</span> <span class="dv">16</span>, <span class="at">var_imp_type =</span> <span class="st">"ice"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vi_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="calibration" class="level2">
+<h2 class="anchored" data-anchor-id="calibration">Calibration</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>preds_sculptures <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]],</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">xgb =</span> <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout)<span class="sc">$</span>.pred,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">rm =</span> <span class="fu">predict</span>(rs_pm, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">pm =</span> <span class="fu">predict</span>(ps_pm, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="fu">predict</span>(xgb_fo, <span class="at">new_data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout)<span class="sc">$</span>.pred</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span>obs,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Model"</span>,</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"pred"</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> <span class="fu">c</span>(</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>      <span class="st">"xgb"</span> <span class="ot">=</span> <span class="st">"XGBoost"</span>, <span class="st">"rm"</span> <span class="ot">=</span> <span class="st">"Rough Model"</span>,</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pm"</span> <span class="ot">=</span> <span class="st">"Polished Model"</span>, <span class="st">"dir"</span> <span class="ot">=</span> <span class="st">"Direct Additive XGBoost"</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    )[Model],</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> <span class="fu">factor</span>(</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>      Model, </span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"XGBoost"</span>, <span class="st">"Rough Model"</span>, <span class="st">"Polished Model"</span>, <span class="st">"Direct Additive XGBoost"</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>calib_plot_sculptures <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(preds_sculptures) <span class="sc">+</span> </span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> obs, <span class="at">colour =</span> Model), <span class="at">se =</span> F, <span class="at">method =</span> <span class="st">"gam"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x) <span class="sc">+</span> </span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Prediction"</span>, <span class="at">y =</span> <span class="st">"Truth"</span>) <span class="sc">+</span> </span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>))</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>calib_plot_sculptures</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="compare-with-linear-models" class="level1">
+<h1>Compare with linear models</h1>
+<section id="load-and-sculpt" class="level2">
+<h2 class="anchored" data-anchor-id="load-and-sculpt">Load and sculpt</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>elastic <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(<span class="st">"lm_elastic"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>lasso <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(<span class="st">"lm_lasso"</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>ridge <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(<span class="st">"lm_ridge"</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>dm_linm <span class="ot">&lt;-</span> <span class="fu">define_model</span>(<span class="at">type =</span> <span class="st">"lm"</span>, <span class="at">data_info =</span> dd)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>linm <span class="ot">&lt;-</span> <span class="fu">fit</span>(dm_linm<span class="sc">$</span>workflow, <span class="at">data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>train)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>tg_linm <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(dm_linm<span class="sc">$</span>workflow, dd<span class="sc">$</span>cv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sculptures on pm from different models</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>rs_pm_elastic <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  pm,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(elastic, <span class="at">new_data =</span> x)<span class="sc">$</span>.pred</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>rs_pm_lasso <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  pm,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(lasso, <span class="at">new_data =</span> x)<span class="sc">$</span>.pred</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>rs_pm_ridge <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  pm,</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(ridge, <span class="at">new_data =</span> x)<span class="sc">$</span>.pred</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>rs_pm_linm <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>  pm,</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(linm, <span class="at">new_data =</span> x)<span class="sc">$</span>.pred</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="ice" class="level2">
+<h2 class="anchored" data-anchor-id="ice">ICE</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>comp_models <span class="ot">&lt;-</span> <span class="fu">g_comparison</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm_elastic, rs_pm_lasso, rs_pm_ridge, rs_pm_linm, ps_pm),</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Elastic Net"</span>, <span class="st">"Lasso"</span>, <span class="st">"Ridge"</span>, <span class="st">"Logistic Regression"</span>, <span class="st">"Polished"</span>),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>comp_models<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>comp_models<span class="sc">$</span>discrete <span class="sc">+</span> theme_facets</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-20-2.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="calibration-1" class="level2">
+<h2 class="anchored" data-anchor-id="calibration-1">Calibration</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>preds_models <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]],</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">xgbPol =</span> <span class="fu">predict</span>(ps_pm, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">linm =</span> <span class="fu">predict</span>(rs_pm_linm, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">elastic =</span> <span class="fu">predict</span>(rs_pm_elastic, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">lasso =</span> <span class="fu">predict</span>(rs_pm_lasso, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ridge =</span> <span class="fu">predict</span>(rs_pm_ridge, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span>obs,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Model"</span>,</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"pred"</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> <span class="fu">c</span>(</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>      <span class="st">"xgbPol"</span> <span class="ot">=</span> <span class="st">"Polished"</span>, </span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>      <span class="st">"linm"</span> <span class="ot">=</span> <span class="st">"Logistic"</span>, <span class="st">"elastic"</span> <span class="ot">=</span> <span class="st">"Elastic Net"</span>, <span class="st">"lasso"</span> <span class="ot">=</span> <span class="st">"Lasso"</span>, <span class="st">"ridge"</span> <span class="ot">=</span> <span class="st">"Ridge"</span> </span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    )[Model]</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="co"># calibration plot on holdout based on pm sculptures of different linear models</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>calib_plot_models <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(preds_models) <span class="sc">+</span> </span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> obs, <span class="at">colour =</span> Model), <span class="at">se =</span> F, <span class="at">method =</span> <span class="st">"gam"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x) <span class="sc">+</span> </span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Prediction"</span>, <span class="at">y =</span> <span class="st">"Truth"</span>) <span class="sc">+</span> </span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>))</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>calib_plot_models</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2_2_mod_sculpt_bike_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="session-info" class="level1">
+<h1>Session info</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.3.3 (2024-02-29)
+ os       Ubuntu 22.04.4 LTS
+ system   x86_64, linux-gnu
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       Etc/UTC
+ date     2024-08-28
+ pandoc   3.1.13 @ /opt/conda/bin/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package      * version    date (UTC) lib source
+ backports      1.4.1      2021-12-13 [2] RSPM (R 4.3.0)
+ broom        * 1.0.5      2023-06-09 [2] RSPM (R 4.3.0)
+ cachem         1.0.8      2023-05-01 [2] RSPM (R 4.3.0)
+ checkmate      2.3.1      2023-12-04 [2] RSPM (R 4.3.0)
+ class          7.3-22     2023-05-03 [2] RSPM (R 4.3.0)
+ cli            3.6.2      2023-12-11 [2] RSPM (R 4.3.0)
+ codetools      0.2-20     2024-03-31 [4] RSPM (R 4.3.3)
+ colorspace     2.1-0      2023-01-23 [2] RSPM (R 4.3.0)
+ data.table     1.15.4     2024-03-30 [2] RSPM (R 4.3.0)
+ devtools       2.4.5      2022-10-11 [1] RSPM (R 4.3.0)
+ dials        * 1.2.1      2024-02-22 [1] RSPM (R 4.3.0)
+ DiceDesign     1.10       2023-12-07 [1] RSPM (R 4.3.0)
+ digest         0.6.35     2024-03-11 [2] RSPM (R 4.3.0)
+ dplyr        * 1.1.4      2023-11-17 [2] RSPM (R 4.3.0)
+ ellipsis       0.3.2      2021-04-29 [2] RSPM (R 4.3.0)
+ evaluate       0.23       2023-11-01 [2] RSPM (R 4.3.0)
+ fansi          1.0.6      2023-12-08 [2] RSPM (R 4.3.0)
+ farver         2.1.1      2022-07-06 [2] RSPM (R 4.3.0)
+ fastmap        1.1.1      2023-02-24 [2] RSPM (R 4.3.0)
+ foreach        1.5.2      2022-02-02 [1] RSPM (R 4.3.0)
+ fs             1.6.3      2023-07-20 [2] RSPM (R 4.3.0)
+ furrr          0.3.1      2022-08-15 [1] RSPM (R 4.3.0)
+ future         1.33.2     2024-03-26 [1] RSPM (R 4.3.0)
+ future.apply   1.11.2     2024-03-28 [1] RSPM (R 4.3.0)
+ generics       0.1.3      2022-07-05 [2] RSPM (R 4.3.0)
+ ggplot2      * 3.5.0      2024-02-23 [2] RSPM (R 4.3.0)
+ ggrepel        0.9.5      2024-01-10 [1] RSPM (R 4.3.0)
+ glmnet         4.1-8      2023-08-22 [1] RSPM (R 4.3.0)
+ globals        0.16.3     2024-03-08 [1] RSPM (R 4.3.0)
+ glue           1.7.0      2024-01-09 [2] RSPM (R 4.3.0)
+ gower          1.0.1      2022-12-22 [1] RSPM (R 4.3.0)
+ GPfit          1.0-8      2019-02-08 [1] RSPM (R 4.3.0)
+ gridExtra      2.3        2017-09-09 [2] RSPM (R 4.3.0)
+ gtable         0.3.4      2023-08-21 [2] RSPM (R 4.3.0)
+ hardhat        1.3.1      2024-02-02 [1] RSPM (R 4.3.0)
+ here           1.0.1      2020-12-13 [1] RSPM (R 4.3.0)
+ htmltools      0.5.8.1    2024-04-04 [2] RSPM (R 4.3.0)
+ htmlwidgets    1.6.4      2023-12-06 [2] RSPM (R 4.3.0)
+ httpuv         1.6.15     2024-03-26 [2] RSPM (R 4.3.0)
+ infer        * 1.0.7      2024-03-25 [1] RSPM (R 4.3.0)
+ ipred          0.9-14     2023-03-09 [1] RSPM (R 4.3.0)
+ iterators      1.0.14     2022-02-05 [1] RSPM (R 4.3.0)
+ jsonlite       1.8.8      2023-12-04 [2] RSPM (R 4.3.0)
+ knitr          1.46       2024-04-06 [2] RSPM (R 4.3.0)
+ labeling       0.4.3      2023-08-29 [2] RSPM (R 4.3.0)
+ later          1.3.2      2023-12-06 [2] RSPM (R 4.3.0)
+ lattice        0.22-6     2024-03-20 [4] RSPM (R 4.3.3)
+ lava           1.8.0      2024-03-05 [1] RSPM (R 4.3.0)
+ lhs            1.1.6      2022-12-17 [1] RSPM (R 4.3.0)
+ lifecycle      1.0.4      2023-11-07 [2] RSPM (R 4.3.0)
+ listenv        0.9.1      2024-01-29 [1] RSPM (R 4.3.0)
+ lubridate      1.9.3      2023-09-27 [2] RSPM (R 4.3.0)
+ magrittr       2.0.3      2022-03-30 [2] RSPM (R 4.3.0)
+ MASS           7.3-60.0.1 2024-01-13 [4] RSPM (R 4.3.3)
+ Matrix         1.6-5      2024-01-11 [4] RSPM (R 4.3.3)
+ memoise        2.0.1      2021-11-26 [2] RSPM (R 4.3.0)
+ mgcv         * 1.9-1      2023-12-21 [4] RSPM (R 4.3.3)
+ mime           0.12       2021-09-28 [2] RSPM (R 4.3.0)
+ miniUI         0.1.1.1    2018-05-18 [2] RSPM (R 4.3.0)
+ modeldata    * 1.3.0      2024-01-21 [1] RSPM (R 4.3.0)
+ modsculpt    * 0.1        2024-06-20 [1] Github (genentech/modsculpt@93ba66a)
+ munsell        0.5.1      2024-04-01 [2] RSPM (R 4.3.0)
+ nlme         * 3.1-164    2023-11-27 [4] RSPM (R 4.3.3)
+ nnet           7.3-19     2023-05-03 [4] RSPM (R 4.3.3)
+ parallelly     1.37.1     2024-02-29 [1] RSPM (R 4.3.0)
+ parsnip      * 1.2.1      2024-03-22 [1] RSPM (R 4.3.0)
+ patchwork      1.2.0      2024-01-08 [1] RSPM (R 4.3.0)
+ pillar         1.9.0      2023-03-22 [2] RSPM (R 4.3.0)
+ pkgbuild       1.4.4      2024-03-17 [2] RSPM (R 4.3.0)
+ pkgconfig      2.0.3      2019-09-22 [2] RSPM (R 4.3.0)
+ pkgload        1.3.4      2024-01-16 [2] RSPM (R 4.3.0)
+ prodlim        2023.08.28 2023-08-28 [1] RSPM (R 4.3.0)
+ profvis        0.3.8      2023-05-02 [1] RSPM (R 4.3.0)
+ promises       1.3.0      2024-04-05 [2] RSPM (R 4.3.0)
+ purrr        * 1.0.2      2023-08-10 [2] RSPM (R 4.3.0)
+ R6             2.5.1      2021-08-19 [2] RSPM (R 4.3.0)
+ Rcpp           1.0.12     2024-01-09 [2] RSPM (R 4.3.0)
+ recipes      * 1.0.10     2024-02-18 [1] RSPM (R 4.3.0)
+ remotes        2.5.0      2024-03-17 [2] RSPM (R 4.3.0)
+ rlang          1.1.3      2024-01-10 [2] RSPM (R 4.3.0)
+ rmarkdown      2.26       2024-03-05 [2] RSPM (R 4.3.0)
+ rpart          4.1.23     2023-12-05 [4] RSPM (R 4.3.3)
+ rprojroot      2.0.4      2023-11-05 [2] RSPM (R 4.3.0)
+ rsample      * 1.2.1      2024-03-25 [1] RSPM (R 4.3.0)
+ rstudioapi     0.16.0     2024-03-24 [2] RSPM (R 4.3.0)
+ scales       * 1.3.0      2023-11-28 [2] RSPM (R 4.3.0)
+ sessioninfo    1.2.2      2021-12-06 [1] RSPM (R 4.3.0)
+ shape          1.4.6.1    2024-02-23 [1] RSPM (R 4.3.0)
+ shiny          1.8.1.1    2024-04-02 [2] RSPM (R 4.3.0)
+ stats4phc    * 0.1.1      2024-06-20 [1] Github (genentech/stats4phc@e868e23)
+ stringi        1.8.3      2023-12-11 [2] RSPM (R 4.3.0)
+ stringr      * 1.5.1      2023-11-14 [2] RSPM (R 4.3.0)
+ survival       3.5-8      2024-02-14 [4] RSPM (R 4.3.3)
+ tibble       * 3.2.1      2023-03-20 [2] RSPM (R 4.3.0)
+ tidymodels   * 1.2.0      2024-03-25 [1] RSPM (R 4.3.0)
+ tidyr        * 1.3.1      2024-01-24 [2] RSPM (R 4.3.0)
+ tidyselect     1.2.1      2024-03-11 [2] RSPM (R 4.3.0)
+ timechange     0.3.0      2024-01-18 [2] RSPM (R 4.3.0)
+ timeDate       4032.109   2023-12-14 [1] RSPM (R 4.3.0)
+ tune         * 1.2.0      2024-03-20 [1] RSPM (R 4.3.0)
+ urlchecker     1.0.1      2021-11-30 [1] RSPM (R 4.3.0)
+ usethis        2.2.2      2023-07-06 [1] RSPM (R 4.3.0)
+ utf8           1.2.4      2023-10-22 [2] RSPM (R 4.3.0)
+ vctrs          0.6.5      2023-12-01 [2] RSPM (R 4.3.0)
+ viridisLite    0.4.2      2023-05-02 [2] RSPM (R 4.3.0)
+ withr          3.0.0      2024-01-16 [2] RSPM (R 4.3.0)
+ workflows    * 1.1.4      2024-02-19 [1] RSPM (R 4.3.0)
+ workflowsets * 1.1.0      2024-03-21 [1] RSPM (R 4.3.0)
+ xfun           0.43       2024-03-25 [4] RSPM (R 4.3.3)
+ xgboost        1.7.7.1    2024-01-25 [1] RSPM (R 4.3.0)
+ xtable         1.8-4      2019-04-21 [2] RSPM (R 4.3.0)
+ yaml           2.3.8      2023-12-11 [2] RSPM (R 4.3.0)
+ yardstick    * 1.3.1      2024-03-21 [1] RSPM (R 4.3.0)
+
+ [1] /home/yoshidk6/R/x86_64-pc-linux-gnu-library/4.3
+ [2] /usr/local/lib/R/site-library
+ [3] /usr/lib/R/site-library
+ [4] /usr/lib/R/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb24" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "2.2. Model sculpting and interpretation - bike"</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> last-modified</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="an">editor_options:</span><span class="co"> </span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co">  chunk_output_type: inline</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="fu"># Note</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>The following scripts need to be run first before knitting the document </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>corresponding to <span class="in">`model_type`</span> specified below:</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>3_model_sculpt_bike.R</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="fu"># Setup and load</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: FALSE</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: FALSE</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"R/0_setup.R"</span>))</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>))</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>theme_facets <span class="ot">&lt;-</span> <span class="fu">theme</span>(</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.position =</span> <span class="st">"inside"</span>,</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.position.inside =</span> <span class="fu">c</span>(<span class="fl">0.85</span>, <span class="fl">0.2</span>), </span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"black"</span>), </span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>theme_single <span class="ot">&lt;-</span> <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>))</span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to check if the model is trained</span></span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>load_model_if_trained <span class="ot">&lt;-</span> <span class="cf">function</span>(model_type) {</span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>  model_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(storage_folder, <span class="fu">sname</span>(<span class="fu">paste0</span>(model_type, <span class="st">"-fit_final.rds"</span>)))</span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">file.exists</span>(model_path)) {</span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">load_results</span>(<span class="fu">sname</span>(<span class="fu">paste0</span>(model_type, <span class="st">"-fit_final.rds"</span>)))</span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="fu">paste0</span>(<span class="st">"Model "</span>, model_type, <span class="st">" is not trained for compas, `"</span>,</span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a>                model_path, <span class="st">"` does not exist. "</span>,</span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Please train it first with: "</span>,</span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a>                <span class="st">"`Rscript R/2_train_models.R "</span>, model_type, <span class="st">" compas FALSE`"</span>))</span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a><span class="co"># set dataset (any with discrete response)</span></span>
+<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> <span class="st">"bike"</span></span>
+<span id="cb24-58"><a href="#cb24-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-59"><a href="#cb24-59" aria-hidden="true" tabindex="-1"></a><span class="co"># set model_type</span></span>
+<span id="cb24-60"><a href="#cb24-60" aria-hidden="true" tabindex="-1"></a>model_type <span class="ot">=</span> <span class="st">"xgb_bayes"</span></span>
+<span id="cb24-61"><a href="#cb24-61" aria-hidden="true" tabindex="-1"></a><span class="co"># model_type = "xgb"</span></span>
+<span id="cb24-62"><a href="#cb24-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-63"><a href="#cb24-63" aria-hidden="true" tabindex="-1"></a><span class="co"># set nr of features for a polished model</span></span>
+<span id="cb24-64"><a href="#cb24-64" aria-hidden="true" tabindex="-1"></a>top_k <span class="ot">&lt;-</span> <span class="dv">7</span></span>
+<span id="cb24-65"><a href="#cb24-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-66"><a href="#cb24-66" aria-hidden="true" tabindex="-1"></a><span class="co"># util function for storage</span></span>
+<span id="cb24-67"><a href="#cb24-67" aria-hidden="true" tabindex="-1"></a>sname <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">prefix =</span> dataset) {</span>
+<span id="cb24-68"><a href="#cb24-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(prefix, <span class="st">"-"</span>, x)</span>
+<span id="cb24-69"><a href="#cb24-69" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-70"><a href="#cb24-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-71"><a href="#cb24-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-72"><a href="#cb24-72" aria-hidden="true" tabindex="-1"></a><span class="co"># load dataset</span></span>
+<span id="cb24-73"><a href="#cb24-73" aria-hidden="true" tabindex="-1"></a>dd <span class="ot">&lt;-</span> <span class="fu">define_data</span>(dataset)</span>
+<span id="cb24-74"><a href="#cb24-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-75"><a href="#cb24-75" aria-hidden="true" tabindex="-1"></a><span class="co"># load xgb</span></span>
+<span id="cb24-76"><a href="#cb24-76" aria-hidden="true" tabindex="-1"></a>xgb <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(model_type)</span>
+<span id="cb24-77"><a href="#cb24-77" aria-hidden="true" tabindex="-1"></a><span class="co"># xgb_fo &lt;- load_model_if_trained("xgb_1_order_bayes")</span></span>
+<span id="cb24-78"><a href="#cb24-78" aria-hidden="true" tabindex="-1"></a>xgb_fo <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(<span class="st">"xgb_1_order"</span>)</span>
+<span id="cb24-79"><a href="#cb24-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-80"><a href="#cb24-80" aria-hidden="true" tabindex="-1"></a><span class="co"># get product marginals</span></span>
+<span id="cb24-81"><a href="#cb24-81" aria-hidden="true" tabindex="-1"></a>pm <span class="ot">&lt;-</span> <span class="fu">sample_marginals</span>(dd<span class="sc">$</span>data<span class="sc">$</span>train[dd<span class="sc">$</span>covariates<span class="sc">$</span>all], <span class="at">n =</span> <span class="fl">1e4</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span>
+<span id="cb24-82"><a href="#cb24-82" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-83"><a href="#cb24-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-84"><a href="#cb24-84" aria-hidden="true" tabindex="-1"></a><span class="fu"># xgb model</span></span>
+<span id="cb24-85"><a href="#cb24-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-86"><a href="#cb24-86" aria-hidden="true" tabindex="-1"></a><span class="fu">## Sculpting</span></span>
+<span id="cb24-87"><a href="#cb24-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-88"><a href="#cb24-88" aria-hidden="true" tabindex="-1"></a><span class="fu">### Main models</span></span>
+<span id="cb24-89"><a href="#cb24-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-90"><a href="#cb24-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-93"><a href="#cb24-93" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-94"><a href="#cb24-94" aria-hidden="true" tabindex="-1"></a><span class="co"># load sculpted models</span></span>
+<span id="cb24-95"><a href="#cb24-95" aria-hidden="true" tabindex="-1"></a>rs_pm <span class="ot">&lt;-</span> <span class="fu">load_results</span>(<span class="fu">paste0</span>(dataset, <span class="st">"-"</span>, model_type, <span class="st">"-sculpt_rough_pm.rds"</span>))</span>
+<span id="cb24-96"><a href="#cb24-96" aria-hidden="true" tabindex="-1"></a>ds_pm <span class="ot">&lt;-</span> <span class="fu">load_results</span>(<span class="fu">paste0</span>(dataset, <span class="st">"-"</span>, model_type, <span class="st">"-sculpt_detailed_pm.rds"</span>))</span>
+<span id="cb24-97"><a href="#cb24-97" aria-hidden="true" tabindex="-1"></a>ps_pm <span class="ot">&lt;-</span> <span class="fu">load_results</span>(<span class="fu">paste0</span>(dataset, <span class="st">"-"</span>, model_type, <span class="st">"-sculpt_polished_pm.rds"</span>))</span>
+<span id="cb24-98"><a href="#cb24-98" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-99"><a href="#cb24-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-100"><a href="#cb24-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-101"><a href="#cb24-101" aria-hidden="true" tabindex="-1"></a><span class="fu">### Other sculpting models </span></span>
+<span id="cb24-102"><a href="#cb24-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-105"><a href="#cb24-105" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-106"><a href="#cb24-106" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: FALSE</span></span>
+<span id="cb24-107"><a href="#cb24-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-108"><a href="#cb24-108" aria-hidden="true" tabindex="-1"></a><span class="co"># get rough model - on train</span></span>
+<span id="cb24-109"><a href="#cb24-109" aria-hidden="true" tabindex="-1"></a>rs_train <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb24-110"><a href="#cb24-110" aria-hidden="true" tabindex="-1"></a>  dd<span class="sc">$</span>data<span class="sc">$</span>train[dd<span class="sc">$</span>covariates<span class="sc">$</span>all],</span>
+<span id="cb24-111"><a href="#cb24-111" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb24-112"><a href="#cb24-112" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb24-113"><a href="#cb24-113" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> x)<span class="sc">$</span>.pred</span>
+<span id="cb24-114"><a href="#cb24-114" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-115"><a href="#cb24-115" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-116"><a href="#cb24-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-117"><a href="#cb24-117" aria-hidden="true" tabindex="-1"></a><span class="co"># First order model</span></span>
+<span id="cb24-118"><a href="#cb24-118" aria-hidden="true" tabindex="-1"></a>rs_pm_xgb_fo <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb24-119"><a href="#cb24-119" aria-hidden="true" tabindex="-1"></a>  pm, </span>
+<span id="cb24-120"><a href="#cb24-120" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb24-121"><a href="#cb24-121" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb24-122"><a href="#cb24-122" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(xgb_fo, <span class="at">new_data =</span> x)<span class="sc">$</span>.pred</span>
+<span id="cb24-123"><a href="#cb24-123" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-124"><a href="#cb24-124" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-125"><a href="#cb24-125" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-126"><a href="#cb24-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-127"><a href="#cb24-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-128"><a href="#cb24-128" aria-hidden="true" tabindex="-1"></a><span class="fu">## ICE plots</span></span>
+<span id="cb24-129"><a href="#cb24-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-132"><a href="#cb24-132" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-133"><a href="#cb24-133" aria-hidden="true" tabindex="-1"></a>scale_col_update <span class="ot">&lt;-</span> </span>
+<span id="cb24-134"><a href="#cb24-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(</span>
+<span id="cb24-135"><a href="#cb24-135" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"ICE Profiles"</span> <span class="ot">=</span> <span class="st">"gray60"</span>, <span class="st">"Rough model (with SE)"</span> <span class="ot">=</span> <span class="st">"blue"</span>),</span>
+<span id="cb24-136"><a href="#cb24-136" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"ICE Profiles"</span>, <span class="st">"Rough model"</span>),</span>
+<span id="cb24-137"><a href="#cb24-137" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">""</span></span>
+<span id="cb24-138"><a href="#cb24-138" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-139"><a href="#cb24-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-140"><a href="#cb24-140" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris <span class="ot">&lt;-</span> <span class="fu">g_ice</span>(rs_pm, <span class="at">centered =</span> F, <span class="at">show_PDP =</span> F, </span>
+<span id="cb24-141"><a href="#cb24-141" aria-hidden="true" tabindex="-1"></a>                        <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>))</span>
+<span id="cb24-142"><a href="#cb24-142" aria-hidden="true" tabindex="-1"></a>ice_pm <span class="ot">&lt;-</span> <span class="fu">g_ice</span>(rs_pm, <span class="at">centered =</span> T, <span class="at">show_PDP =</span> T, </span>
+<span id="cb24-143"><a href="#cb24-143" aria-hidden="true" tabindex="-1"></a>                <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>))</span>
+<span id="cb24-144"><a href="#cb24-144" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-145"><a href="#cb24-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-146"><a href="#cb24-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-147"><a href="#cb24-147" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb24-148"><a href="#cb24-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-149"><a href="#cb24-149" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rough</span></span>
+<span id="cb24-150"><a href="#cb24-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-153"><a href="#cb24-153" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-154"><a href="#cb24-154" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb24-155"><a href="#cb24-155" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-156"><a href="#cb24-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-159"><a href="#cb24-159" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-160"><a href="#cb24-160" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris<span class="sc">$</span>discrete</span>
+<span id="cb24-161"><a href="#cb24-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-162"><a href="#cb24-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-163"><a href="#cb24-163" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rough: centered</span></span>
+<span id="cb24-164"><a href="#cb24-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-167"><a href="#cb24-167" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-168"><a href="#cb24-168" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: FALSE</span></span>
+<span id="cb24-169"><a href="#cb24-169" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb24-170"><a href="#cb24-170" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb24-171"><a href="#cb24-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-172"><a href="#cb24-172" aria-hidden="true" tabindex="-1"></a>ice_pm<span class="sc">$</span>continuous <span class="sc">+</span> scale_col_update <span class="sc">+</span> theme_facets</span>
+<span id="cb24-173"><a href="#cb24-173" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-174"><a href="#cb24-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-177"><a href="#cb24-177" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-178"><a href="#cb24-178" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: FALSE</span></span>
+<span id="cb24-179"><a href="#cb24-179" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb24-180"><a href="#cb24-180" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb24-181"><a href="#cb24-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-182"><a href="#cb24-182" aria-hidden="true" tabindex="-1"></a>ice_pm<span class="sc">$</span>discrete <span class="sc">+</span> scale_col_update <span class="sc">+</span> theme_facets</span>
+<span id="cb24-183"><a href="#cb24-183" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-184"><a href="#cb24-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-185"><a href="#cb24-185" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rough vs direct 1st order</span></span>
+<span id="cb24-186"><a href="#cb24-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-189"><a href="#cb24-189" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-190"><a href="#cb24-190" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb24-191"><a href="#cb24-191" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb24-192"><a href="#cb24-192" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-show: hold</span></span>
+<span id="cb24-193"><a href="#cb24-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-194"><a href="#cb24-194" aria-hidden="true" tabindex="-1"></a><span class="co"># comparison plot</span></span>
+<span id="cb24-195"><a href="#cb24-195" aria-hidden="true" tabindex="-1"></a>comp_xgb_bayes <span class="ot">&lt;-</span> <span class="fu">g_comparison</span>(</span>
+<span id="cb24-196"><a href="#cb24-196" aria-hidden="true" tabindex="-1"></a>  <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm, rs_pm_xgb_fo),</span>
+<span id="cb24-197"><a href="#cb24-197" aria-hidden="true" tabindex="-1"></a>  <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Rough Model"</span>, <span class="st">"Direct Additive XGB"</span>), </span>
+<span id="cb24-198"><a href="#cb24-198" aria-hidden="true" tabindex="-1"></a>  <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb24-199"><a href="#cb24-199" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-200"><a href="#cb24-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-201"><a href="#cb24-201" aria-hidden="true" tabindex="-1"></a>comp_xgb_bayes<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb24-202"><a href="#cb24-202" aria-hidden="true" tabindex="-1"></a>comp_xgb_bayes<span class="sc">$</span>discrete</span>
+<span id="cb24-203"><a href="#cb24-203" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-204"><a href="#cb24-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-205"><a href="#cb24-205" aria-hidden="true" tabindex="-1"></a><span class="fu">### Detailed vs rough</span></span>
+<span id="cb24-206"><a href="#cb24-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-209"><a href="#cb24-209" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-210"><a href="#cb24-210" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb24-211"><a href="#cb24-211" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb24-212"><a href="#cb24-212" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-show: hold</span></span>
+<span id="cb24-213"><a href="#cb24-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-214"><a href="#cb24-214" aria-hidden="true" tabindex="-1"></a><span class="co"># compare detailed and rough</span></span>
+<span id="cb24-215"><a href="#cb24-215" aria-hidden="true" tabindex="-1"></a>comp_ds <span class="ot">&lt;-</span> </span>
+<span id="cb24-216"><a href="#cb24-216" aria-hidden="true" tabindex="-1"></a>  <span class="fu">g_comparison</span>(</span>
+<span id="cb24-217"><a href="#cb24-217" aria-hidden="true" tabindex="-1"></a>    <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm, ds_pm),</span>
+<span id="cb24-218"><a href="#cb24-218" aria-hidden="true" tabindex="-1"></a>    <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Rough Model"</span>, <span class="st">"Detailed Model"</span>), </span>
+<span id="cb24-219"><a href="#cb24-219" aria-hidden="true" tabindex="-1"></a>    <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb24-220"><a href="#cb24-220" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-221"><a href="#cb24-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-222"><a href="#cb24-222" aria-hidden="true" tabindex="-1"></a>comp_ds<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb24-223"><a href="#cb24-223" aria-hidden="true" tabindex="-1"></a>comp_ds<span class="sc">$</span>discrete <span class="sc">+</span> theme_facets</span>
+<span id="cb24-224"><a href="#cb24-224" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-225"><a href="#cb24-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-226"><a href="#cb24-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-227"><a href="#cb24-227" aria-hidden="true" tabindex="-1"></a><span class="fu">### Polished vs rough</span></span>
+<span id="cb24-228"><a href="#cb24-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-231"><a href="#cb24-231" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-232"><a href="#cb24-232" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb24-233"><a href="#cb24-233" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb24-234"><a href="#cb24-234" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-show: hold</span></span>
+<span id="cb24-235"><a href="#cb24-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-236"><a href="#cb24-236" aria-hidden="true" tabindex="-1"></a><span class="co"># compare detailed and rough</span></span>
+<span id="cb24-237"><a href="#cb24-237" aria-hidden="true" tabindex="-1"></a>comp_ps <span class="ot">&lt;-</span> </span>
+<span id="cb24-238"><a href="#cb24-238" aria-hidden="true" tabindex="-1"></a>  <span class="fu">g_comparison</span>(</span>
+<span id="cb24-239"><a href="#cb24-239" aria-hidden="true" tabindex="-1"></a>    <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm, ps_pm),</span>
+<span id="cb24-240"><a href="#cb24-240" aria-hidden="true" tabindex="-1"></a>    <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Rough Model"</span>, <span class="st">"Polished Model"</span>), </span>
+<span id="cb24-241"><a href="#cb24-241" aria-hidden="true" tabindex="-1"></a>    <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb24-242"><a href="#cb24-242" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-243"><a href="#cb24-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-244"><a href="#cb24-244" aria-hidden="true" tabindex="-1"></a>comp_ps<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb24-245"><a href="#cb24-245" aria-hidden="true" tabindex="-1"></a>comp_ps<span class="sc">$</span>discrete <span class="sc">+</span> theme_facets</span>
+<span id="cb24-246"><a href="#cb24-246" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-247"><a href="#cb24-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-248"><a href="#cb24-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-249"><a href="#cb24-249" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb24-250"><a href="#cb24-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-251"><a href="#cb24-251" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data density</span></span>
+<span id="cb24-252"><a href="#cb24-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-255"><a href="#cb24-255" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-256"><a href="#cb24-256" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
+<span id="cb24-257"><a href="#cb24-257" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 8</span></span>
+<span id="cb24-258"><a href="#cb24-258" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-show: hold</span></span>
+<span id="cb24-259"><a href="#cb24-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-260"><a href="#cb24-260" aria-hidden="true" tabindex="-1"></a>g_density_plots <span class="ot">&lt;-</span> <span class="fu">g_density_ice_plot_list</span>(ps_pm,</span>
+<span id="cb24-261"><a href="#cb24-261" aria-hidden="true" tabindex="-1"></a>                                           dd<span class="sc">$</span>data<span class="sc">$</span>train,</span>
+<span id="cb24-262"><a href="#cb24-262" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">var_names =</span> dd<span class="sc">$</span>covariates<span class="sc">$</span>all,</span>
+<span id="cb24-263"><a href="#cb24-263" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">var_labels =</span> dd<span class="sc">$</span>covariates<span class="sc">$</span>labels,</span>
+<span id="cb24-264"><a href="#cb24-264" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">task =</span> dd<span class="sc">$</span>task)</span>
+<span id="cb24-265"><a href="#cb24-265" aria-hidden="true" tabindex="-1"></a>cov_cont_ps <span class="ot">&lt;-</span> <span class="fu">intersect</span>(dd<span class="sc">$</span>covariates<span class="sc">$</span>continuous, <span class="fu">names</span>(ps_pm))</span>
+<span id="cb24-266"><a href="#cb24-266" aria-hidden="true" tabindex="-1"></a>cov_disc_ps <span class="ot">&lt;-</span> <span class="fu">intersect</span>(dd<span class="sc">$</span>covariates<span class="sc">$</span>discrete, <span class="fu">names</span>(ps_pm))</span>
+<span id="cb24-267"><a href="#cb24-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-268"><a href="#cb24-268" aria-hidden="true" tabindex="-1"></a>patchwork<span class="sc">::</span><span class="fu">wrap_plots</span>(g_density_plots[cov_cont_ps], <span class="at">ncol =</span> <span class="dv">2</span>) </span>
+<span id="cb24-269"><a href="#cb24-269" aria-hidden="true" tabindex="-1"></a>patchwork<span class="sc">::</span><span class="fu">wrap_plots</span>(g_density_plots[cov_disc_ps], <span class="at">ncol =</span> <span class="dv">2</span>) </span>
+<span id="cb24-270"><a href="#cb24-270" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-271"><a href="#cb24-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-272"><a href="#cb24-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-273"><a href="#cb24-273" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additivity evaluation</span></span>
+<span id="cb24-274"><a href="#cb24-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-277"><a href="#cb24-277" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-278"><a href="#cb24-278" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> pm)<span class="sc">$</span>.pred</span>
+<span id="cb24-279"><a href="#cb24-279" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>train)<span class="sc">$</span>.pred</span>
+<span id="cb24-280"><a href="#cb24-280" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(rs_pm, pm)</span>
+<span id="cb24-281"><a href="#cb24-281" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">predict</span>(rs_train, dd<span class="sc">$</span>data<span class="sc">$</span>train)</span>
+<span id="cb24-282"><a href="#cb24-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-283"><a href="#cb24-283" aria-hidden="true" tabindex="-1"></a><span class="fu">g_additivity</span>(</span>
+<span id="cb24-284"><a href="#cb24-284" aria-hidden="true" tabindex="-1"></a>  <span class="at">sp =</span> <span class="fu">list</span>(p3, p4),</span>
+<span id="cb24-285"><a href="#cb24-285" aria-hidden="true" tabindex="-1"></a>  <span class="at">lp =</span> <span class="fu">list</span>(p1, p2),</span>
+<span id="cb24-286"><a href="#cb24-286" aria-hidden="true" tabindex="-1"></a>  <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Product Marginals"</span>, <span class="st">"Train Set"</span>)</span>
+<span id="cb24-287"><a href="#cb24-287" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> </span>
+<span id="cb24-288"><a href="#cb24-288" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Rough Model Predictions"</span>, <span class="at">y =</span> <span class="st">"Strong Learner Predictions"</span>) <span class="sc">+</span> </span>
+<span id="cb24-289"><a href="#cb24-289" aria-hidden="true" tabindex="-1"></a>    theme_single</span>
+<span id="cb24-290"><a href="#cb24-290" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-291"><a href="#cb24-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-292"><a href="#cb24-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-293"><a href="#cb24-293" aria-hidden="true" tabindex="-1"></a><span class="fu">## Variable importance</span></span>
+<span id="cb24-294"><a href="#cb24-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-295"><a href="#cb24-295" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb24-296"><a href="#cb24-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-297"><a href="#cb24-297" aria-hidden="true" tabindex="-1"></a><span class="fu">### pm</span></span>
+<span id="cb24-298"><a href="#cb24-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-301"><a href="#cb24-301" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-302"><a href="#cb24-302" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
+<span id="cb24-303"><a href="#cb24-303" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb24-304"><a href="#cb24-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-305"><a href="#cb24-305" aria-hidden="true" tabindex="-1"></a>vi_pm <span class="ot">&lt;-</span> <span class="fu">g_var_imp</span>(rs_pm, <span class="at">show_pdp_plot =</span> <span class="cn">FALSE</span>, <span class="at">textsize =</span> <span class="dv">16</span>, <span class="at">var_imp_type =</span> <span class="st">"ice"</span>)</span>
+<span id="cb24-306"><a href="#cb24-306" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vi_pm)</span>
+<span id="cb24-307"><a href="#cb24-307" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-308"><a href="#cb24-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-309"><a href="#cb24-309" aria-hidden="true" tabindex="-1"></a><span class="fu">### train</span></span>
+<span id="cb24-310"><a href="#cb24-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-313"><a href="#cb24-313" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-314"><a href="#cb24-314" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
+<span id="cb24-315"><a href="#cb24-315" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb24-316"><a href="#cb24-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-317"><a href="#cb24-317" aria-hidden="true" tabindex="-1"></a>vi_train <span class="ot">&lt;-</span> <span class="fu">g_var_imp</span>(rs_train, <span class="at">show_pdp_plot =</span> <span class="cn">FALSE</span>, <span class="at">textsize =</span> <span class="dv">16</span>, <span class="at">var_imp_type =</span> <span class="st">"ice"</span>)</span>
+<span id="cb24-318"><a href="#cb24-318" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vi_train)</span>
+<span id="cb24-319"><a href="#cb24-319" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-320"><a href="#cb24-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-321"><a href="#cb24-321" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb24-322"><a href="#cb24-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-323"><a href="#cb24-323" aria-hidden="true" tabindex="-1"></a><span class="fu">## Calibration</span></span>
+<span id="cb24-324"><a href="#cb24-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-327"><a href="#cb24-327" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-328"><a href="#cb24-328" aria-hidden="true" tabindex="-1"></a>preds_sculptures <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb24-329"><a href="#cb24-329" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]],</span>
+<span id="cb24-330"><a href="#cb24-330" aria-hidden="true" tabindex="-1"></a>  <span class="at">xgb =</span> <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout)<span class="sc">$</span>.pred,</span>
+<span id="cb24-331"><a href="#cb24-331" aria-hidden="true" tabindex="-1"></a>  <span class="at">rm =</span> <span class="fu">predict</span>(rs_pm, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb24-332"><a href="#cb24-332" aria-hidden="true" tabindex="-1"></a>  <span class="at">pm =</span> <span class="fu">predict</span>(ps_pm, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb24-333"><a href="#cb24-333" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="fu">predict</span>(xgb_fo, <span class="at">new_data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout)<span class="sc">$</span>.pred</span>
+<span id="cb24-334"><a href="#cb24-334" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-335"><a href="#cb24-335" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb24-336"><a href="#cb24-336" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span>obs,</span>
+<span id="cb24-337"><a href="#cb24-337" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Model"</span>,</span>
+<span id="cb24-338"><a href="#cb24-338" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"pred"</span></span>
+<span id="cb24-339"><a href="#cb24-339" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb24-340"><a href="#cb24-340" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb24-341"><a href="#cb24-341" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> <span class="fu">c</span>(</span>
+<span id="cb24-342"><a href="#cb24-342" aria-hidden="true" tabindex="-1"></a>      <span class="st">"xgb"</span> <span class="ot">=</span> <span class="st">"XGBoost"</span>, <span class="st">"rm"</span> <span class="ot">=</span> <span class="st">"Rough Model"</span>,</span>
+<span id="cb24-343"><a href="#cb24-343" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pm"</span> <span class="ot">=</span> <span class="st">"Polished Model"</span>, <span class="st">"dir"</span> <span class="ot">=</span> <span class="st">"Direct Additive XGBoost"</span></span>
+<span id="cb24-344"><a href="#cb24-344" aria-hidden="true" tabindex="-1"></a>    )[Model],</span>
+<span id="cb24-345"><a href="#cb24-345" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> <span class="fu">factor</span>(</span>
+<span id="cb24-346"><a href="#cb24-346" aria-hidden="true" tabindex="-1"></a>      Model, </span>
+<span id="cb24-347"><a href="#cb24-347" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(</span>
+<span id="cb24-348"><a href="#cb24-348" aria-hidden="true" tabindex="-1"></a>        <span class="st">"XGBoost"</span>, <span class="st">"Rough Model"</span>, <span class="st">"Polished Model"</span>, <span class="st">"Direct Additive XGBoost"</span></span>
+<span id="cb24-349"><a href="#cb24-349" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb24-350"><a href="#cb24-350" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb24-351"><a href="#cb24-351" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-352"><a href="#cb24-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-353"><a href="#cb24-353" aria-hidden="true" tabindex="-1"></a>calib_plot_sculptures <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(preds_sculptures) <span class="sc">+</span> </span>
+<span id="cb24-354"><a href="#cb24-354" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> obs, <span class="at">colour =</span> Model), <span class="at">se =</span> F, <span class="at">method =</span> <span class="st">"gam"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x) <span class="sc">+</span> </span>
+<span id="cb24-355"><a href="#cb24-355" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
+<span id="cb24-356"><a href="#cb24-356" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Prediction"</span>, <span class="at">y =</span> <span class="st">"Truth"</span>) <span class="sc">+</span> </span>
+<span id="cb24-357"><a href="#cb24-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb24-358"><a href="#cb24-358" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>))</span>
+<span id="cb24-359"><a href="#cb24-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-360"><a href="#cb24-360" aria-hidden="true" tabindex="-1"></a>calib_plot_sculptures</span>
+<span id="cb24-361"><a href="#cb24-361" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-362"><a href="#cb24-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-363"><a href="#cb24-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-364"><a href="#cb24-364" aria-hidden="true" tabindex="-1"></a><span class="fu"># Compare with linear models</span></span>
+<span id="cb24-365"><a href="#cb24-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-366"><a href="#cb24-366" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load and sculpt</span></span>
+<span id="cb24-367"><a href="#cb24-367" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-370"><a href="#cb24-370" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-371"><a href="#cb24-371" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: FALSE</span></span>
+<span id="cb24-372"><a href="#cb24-372" aria-hidden="true" tabindex="-1"></a><span class="co">#| </span></span>
+<span id="cb24-373"><a href="#cb24-373" aria-hidden="true" tabindex="-1"></a>elastic <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(<span class="st">"lm_elastic"</span>)</span>
+<span id="cb24-374"><a href="#cb24-374" aria-hidden="true" tabindex="-1"></a>lasso <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(<span class="st">"lm_lasso"</span>)</span>
+<span id="cb24-375"><a href="#cb24-375" aria-hidden="true" tabindex="-1"></a>ridge <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(<span class="st">"lm_ridge"</span>)</span>
+<span id="cb24-376"><a href="#cb24-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-377"><a href="#cb24-377" aria-hidden="true" tabindex="-1"></a>dm_linm <span class="ot">&lt;-</span> <span class="fu">define_model</span>(<span class="at">type =</span> <span class="st">"lm"</span>, <span class="at">data_info =</span> dd)</span>
+<span id="cb24-378"><a href="#cb24-378" aria-hidden="true" tabindex="-1"></a>linm <span class="ot">&lt;-</span> <span class="fu">fit</span>(dm_linm<span class="sc">$</span>workflow, <span class="at">data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>train)</span>
+<span id="cb24-379"><a href="#cb24-379" aria-hidden="true" tabindex="-1"></a>tg_linm <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(dm_linm<span class="sc">$</span>workflow, dd<span class="sc">$</span>cv)</span>
+<span id="cb24-380"><a href="#cb24-380" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-381"><a href="#cb24-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-384"><a href="#cb24-384" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-385"><a href="#cb24-385" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: FALSE</span></span>
+<span id="cb24-386"><a href="#cb24-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-387"><a href="#cb24-387" aria-hidden="true" tabindex="-1"></a><span class="co"># sculptures on pm from different models</span></span>
+<span id="cb24-388"><a href="#cb24-388" aria-hidden="true" tabindex="-1"></a>rs_pm_elastic <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb24-389"><a href="#cb24-389" aria-hidden="true" tabindex="-1"></a>  pm,</span>
+<span id="cb24-390"><a href="#cb24-390" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb24-391"><a href="#cb24-391" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb24-392"><a href="#cb24-392" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(elastic, <span class="at">new_data =</span> x)<span class="sc">$</span>.pred</span>
+<span id="cb24-393"><a href="#cb24-393" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-394"><a href="#cb24-394" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-395"><a href="#cb24-395" aria-hidden="true" tabindex="-1"></a>rs_pm_lasso <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb24-396"><a href="#cb24-396" aria-hidden="true" tabindex="-1"></a>  pm,</span>
+<span id="cb24-397"><a href="#cb24-397" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb24-398"><a href="#cb24-398" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb24-399"><a href="#cb24-399" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(lasso, <span class="at">new_data =</span> x)<span class="sc">$</span>.pred</span>
+<span id="cb24-400"><a href="#cb24-400" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-401"><a href="#cb24-401" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-402"><a href="#cb24-402" aria-hidden="true" tabindex="-1"></a>rs_pm_ridge <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb24-403"><a href="#cb24-403" aria-hidden="true" tabindex="-1"></a>  pm,</span>
+<span id="cb24-404"><a href="#cb24-404" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb24-405"><a href="#cb24-405" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb24-406"><a href="#cb24-406" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(ridge, <span class="at">new_data =</span> x)<span class="sc">$</span>.pred</span>
+<span id="cb24-407"><a href="#cb24-407" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-408"><a href="#cb24-408" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-409"><a href="#cb24-409" aria-hidden="true" tabindex="-1"></a>rs_pm_linm <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb24-410"><a href="#cb24-410" aria-hidden="true" tabindex="-1"></a>  pm,</span>
+<span id="cb24-411"><a href="#cb24-411" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb24-412"><a href="#cb24-412" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb24-413"><a href="#cb24-413" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(linm, <span class="at">new_data =</span> x)<span class="sc">$</span>.pred</span>
+<span id="cb24-414"><a href="#cb24-414" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-415"><a href="#cb24-415" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-416"><a href="#cb24-416" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-417"><a href="#cb24-417" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-418"><a href="#cb24-418" aria-hidden="true" tabindex="-1"></a><span class="fu">## ICE</span></span>
+<span id="cb24-419"><a href="#cb24-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-422"><a href="#cb24-422" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-423"><a href="#cb24-423" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb24-424"><a href="#cb24-424" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb24-425"><a href="#cb24-425" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-show: hold</span></span>
+<span id="cb24-426"><a href="#cb24-426" aria-hidden="true" tabindex="-1"></a><span class="co">#| </span></span>
+<span id="cb24-427"><a href="#cb24-427" aria-hidden="true" tabindex="-1"></a>comp_models <span class="ot">&lt;-</span> <span class="fu">g_comparison</span>(</span>
+<span id="cb24-428"><a href="#cb24-428" aria-hidden="true" tabindex="-1"></a>  <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm_elastic, rs_pm_lasso, rs_pm_ridge, rs_pm_linm, ps_pm),</span>
+<span id="cb24-429"><a href="#cb24-429" aria-hidden="true" tabindex="-1"></a>  <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Elastic Net"</span>, <span class="st">"Lasso"</span>, <span class="st">"Ridge"</span>, <span class="st">"Logistic Regression"</span>, <span class="st">"Polished"</span>),</span>
+<span id="cb24-430"><a href="#cb24-430" aria-hidden="true" tabindex="-1"></a>  <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb24-431"><a href="#cb24-431" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-432"><a href="#cb24-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-433"><a href="#cb24-433" aria-hidden="true" tabindex="-1"></a>comp_models<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb24-434"><a href="#cb24-434" aria-hidden="true" tabindex="-1"></a>comp_models<span class="sc">$</span>discrete <span class="sc">+</span> theme_facets</span>
+<span id="cb24-435"><a href="#cb24-435" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-436"><a href="#cb24-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-437"><a href="#cb24-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-438"><a href="#cb24-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-439"><a href="#cb24-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-440"><a href="#cb24-440" aria-hidden="true" tabindex="-1"></a><span class="fu">## Calibration</span></span>
+<span id="cb24-441"><a href="#cb24-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-444"><a href="#cb24-444" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-445"><a href="#cb24-445" aria-hidden="true" tabindex="-1"></a>preds_models <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb24-446"><a href="#cb24-446" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]],</span>
+<span id="cb24-447"><a href="#cb24-447" aria-hidden="true" tabindex="-1"></a>  <span class="at">xgbPol =</span> <span class="fu">predict</span>(ps_pm, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb24-448"><a href="#cb24-448" aria-hidden="true" tabindex="-1"></a>  <span class="at">linm =</span> <span class="fu">predict</span>(rs_pm_linm, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb24-449"><a href="#cb24-449" aria-hidden="true" tabindex="-1"></a>  <span class="at">elastic =</span> <span class="fu">predict</span>(rs_pm_elastic, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb24-450"><a href="#cb24-450" aria-hidden="true" tabindex="-1"></a>  <span class="at">lasso =</span> <span class="fu">predict</span>(rs_pm_lasso, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb24-451"><a href="#cb24-451" aria-hidden="true" tabindex="-1"></a>  <span class="at">ridge =</span> <span class="fu">predict</span>(rs_pm_ridge, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout)</span>
+<span id="cb24-452"><a href="#cb24-452" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-453"><a href="#cb24-453" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb24-454"><a href="#cb24-454" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span>obs,</span>
+<span id="cb24-455"><a href="#cb24-455" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Model"</span>,</span>
+<span id="cb24-456"><a href="#cb24-456" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"pred"</span></span>
+<span id="cb24-457"><a href="#cb24-457" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb24-458"><a href="#cb24-458" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb24-459"><a href="#cb24-459" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> <span class="fu">c</span>(</span>
+<span id="cb24-460"><a href="#cb24-460" aria-hidden="true" tabindex="-1"></a>      <span class="st">"xgbPol"</span> <span class="ot">=</span> <span class="st">"Polished"</span>, </span>
+<span id="cb24-461"><a href="#cb24-461" aria-hidden="true" tabindex="-1"></a>      <span class="st">"linm"</span> <span class="ot">=</span> <span class="st">"Logistic"</span>, <span class="st">"elastic"</span> <span class="ot">=</span> <span class="st">"Elastic Net"</span>, <span class="st">"lasso"</span> <span class="ot">=</span> <span class="st">"Lasso"</span>, <span class="st">"ridge"</span> <span class="ot">=</span> <span class="st">"Ridge"</span> </span>
+<span id="cb24-462"><a href="#cb24-462" aria-hidden="true" tabindex="-1"></a>    )[Model]</span>
+<span id="cb24-463"><a href="#cb24-463" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-464"><a href="#cb24-464" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-465"><a href="#cb24-465" aria-hidden="true" tabindex="-1"></a><span class="co"># calibration plot on holdout based on pm sculptures of different linear models</span></span>
+<span id="cb24-466"><a href="#cb24-466" aria-hidden="true" tabindex="-1"></a>calib_plot_models <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(preds_models) <span class="sc">+</span> </span>
+<span id="cb24-467"><a href="#cb24-467" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> obs, <span class="at">colour =</span> Model), <span class="at">se =</span> F, <span class="at">method =</span> <span class="st">"gam"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x) <span class="sc">+</span> </span>
+<span id="cb24-468"><a href="#cb24-468" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
+<span id="cb24-469"><a href="#cb24-469" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Prediction"</span>, <span class="at">y =</span> <span class="st">"Truth"</span>) <span class="sc">+</span> </span>
+<span id="cb24-470"><a href="#cb24-470" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb24-471"><a href="#cb24-471" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>))</span>
+<span id="cb24-472"><a href="#cb24-472" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-473"><a href="#cb24-473" aria-hidden="true" tabindex="-1"></a>calib_plot_models</span>
+<span id="cb24-474"><a href="#cb24-474" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-475"><a href="#cb24-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-476"><a href="#cb24-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-477"><a href="#cb24-477" aria-hidden="true" tabindex="-1"></a><span class="fu"># Session info</span></span>
+<span id="cb24-478"><a href="#cb24-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-481"><a href="#cb24-481" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-482"><a href="#cb24-482" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span>
+<span id="cb24-483"><a href="#cb24-483" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-484"><a href="#cb24-484" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-485"><a href="#cb24-485" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-486"><a href="#cb24-486" aria-hidden="true" tabindex="-1"></a></span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.roche.com/yoshidk6/modsculpt_example/edit/main/notebook/2_2_mod_sculpt_bike.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://github.roche.com/yoshidk6/modsculpt_example/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

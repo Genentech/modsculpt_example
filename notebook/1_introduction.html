@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.551">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2024-08-29">
+
+<title>Model sculpting examples - 1. Introduction of this repository</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebook/1_introduction.html">Notebook</a></li><li class="breadcrumb-item"><a href="../notebook/1_introduction.html">1. Introduction of this repository</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Model sculpting examples</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.roche.com/yoshidk6/modsculpt_example" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Index</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Notebook</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebook/1_introduction.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">1. Introduction of this repository</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebook/2_1_modsculpt_compas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2.1. Model sculpting and interpretation - compas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebook/2_2_mod_sculpt_bike.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2.2. Model sculpting and interpretation - bike</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebook/3_performance_summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Performance evaluation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#important-links" id="toc-important-links" class="nav-link active" data-scroll-target="#important-links">Important links</a></li>
+  <li><a href="#table-of-contents" id="toc-table-of-contents" class="nav-link" data-scroll-target="#table-of-contents">Table Of Contents</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a>
+  <ul class="collapse">
+  <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up">1. Set-up</a></li>
+  <li><a href="#tuning-and-training-models" id="toc-tuning-and-training-models" class="nav-link" data-scroll-target="#tuning-and-training-models">2. Tuning and training models</a></li>
+  <li><a href="#model-sculpting" id="toc-model-sculpting" class="nav-link" data-scroll-target="#model-sculpting">3. Model sculpting</a></li>
+  <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">4. Model evaluation</a></li>
+  </ul></li>
+  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a>
+  <ul class="collapse">
+  <li><a href="#install-the-packages" id="toc-install-the-packages" class="nav-link" data-scroll-target="#install-the-packages">Install the packages</a></li>
+  <li><a href="#data-examples" id="toc-data-examples" class="nav-link" data-scroll-target="#data-examples">Data examples</a></li>
+  <li><a href="#model-options" id="toc-model-options" class="nav-link" data-scroll-target="#model-options">Model options</a></li>
+  <li><a href="#job-submission" id="toc-job-submission" class="nav-link" data-scroll-target="#job-submission">Job submission</a></li>
+  </ul></li>
+  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix">Appendix</a>
+  <ul class="collapse">
+  <li><a href="#continuous-endpoint-example" id="toc-continuous-endpoint-example" class="nav-link" data-scroll-target="#continuous-endpoint-example">Continuous endpoint example</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.roche.com/yoshidk6/modsculpt_example/edit/main/notebook/1_introduction.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://github.roche.com/yoshidk6/modsculpt_example/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebook/1_introduction.html">Notebook</a></li><li class="breadcrumb-item"><a href="../notebook/1_introduction.html">1. Introduction of this repository</a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">1. Introduction of this repository</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2024-08-29</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="important-links" class="level2">
+<h2 class="anchored" data-anchor-id="important-links">Important links</h2>
+<ul>
+<li>modsculpt package: <a href="https://github.com/Genentech/modsculpt" class="uri">https://github.com/Genentech/modsculpt</a></li>
+<li>Output examples (GitHub Pages): <a href="https://pages.github.roche.com/yoshidk6/modsculpt_example/" class="uri">https://pages.github.roche.com/yoshidk6/modsculpt_example/</a></li>
+</ul>
+</section>
+<section id="table-of-contents" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-contents">Table Of Contents</h2>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#overview">Overview</a>
+<ul>
+<li><a href="#1-set-up">1. Set-up</a></li>
+<li><a href="#2-tuning-and-training-models">2. Tuning and training models</a></li>
+<li><a href="#3-model-sculpting">3. Model sculpting</a></li>
+<li><a href="#4-model-evaluation">4. Model evaluation</a></li>
+</ul></li>
+<li><a href="#details">Details</a>
+<ul>
+<li><a href="#install-the-packages">Install the packages</a></li>
+<li><a href="#data-examples">Data examples</a></li>
+<li><a href="#model-options">Model options</a></li>
+<li><a href="#job-submission">Job submission</a></li>
+</ul></li>
+<li><a href="#appendix">Appendix</a>
+<ul>
+<li><a href="#continuous-endpoint-example">Continuous endpoint example</a></li>
+</ul></li>
+</ul>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>This repository provides a fully worked-out example of model sculpting, a method to develop interpretable, trustworthy, and high-performing additive models. The example presented here accompanies the <a href="https://github.com/Genentech/modsculpt"><code>modsculpt</code></a> package, which provides a set of tools to perform model sculpting, and <a href="#placeholder">the slide deck (still in development)</a> that explains the concept of model sculpting.</p>
+<p>Here we provide an example workflow of how to develop strong learner with hyperparameter tuning, to perform proper performance evaluation using nested cross-validation, to sculpt the strong learner into an interpretable model, and to evaluate and interpret the sculpted model.</p>
+<p>Simpler examples are provided in the original <a href="https://genentech.github.io/modsculpt/main/articles/modsculpt.html"><code>modsculpt</code> repository</a>.</p>
+</section>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<section id="set-up" class="level3">
+<h3 class="anchored" data-anchor-id="set-up">1. Set-up</h3>
+<ol type="1">
+<li>Clone the repository</li>
+<li>Open the R project file <code>modsculpt_example.Rproj</code> in RStudio</li>
+<li><a href="#install-the-packages">Install the necessary packages</a></li>
+<li>Open the R script <code>R/0_setup.R</code> and modify the storage folder as necessary
+<ul>
+<li>By default it is set at <code>output/sculpt_results</code> folder, but you can specify any folder, including one outside of this repository (e.g.&nbsp;when you run this code in a cluster).</li>
+</ul></li>
+</ol>
+</section>
+<section id="tuning-and-training-models" class="level3">
+<h3 class="anchored" data-anchor-id="tuning-and-training-models">2. Tuning and training models</h3>
+<ol type="1">
+<li>Run the R script <code>R/1_prepare_data.R</code> to <a href="#data-examples">prepare the example data</a>
+<ul>
+<li><a href="#data-examples">You can define your own data</a> in <code>R/define_data.R</code></li>
+</ul></li>
+<li>Run the R script <code>R/2_train_models.R</code> to train the models
+<ul>
+<li><p>See below for <a href="#data-examples">data examples</a> and <a href="#model-options">model options</a></p></li>
+<li><p>You can run <code>R/2_train_models.R</code> interactively, or execute it in a batch mode with the command line.<br>
+See <a href="#job-submission">job submission</a> for details</p></li>
+<li><p>The following models need to be trained on the <code>compas</code> dataset if you want to follow the steps below</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that xgb training can take some time (~1 hr on M2 MacBook Air)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> R/2_train_models.R xgb compas FALSE </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># xgb_1_order is a bit faster (~30 min)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> R/2_train_models.R xgb_1_order compas FALSE </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Following models are faster (&lt;1 min)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> R/2_train_models.R log_elastic compas FALSE</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> R/2_train_models.R log_lasso compas FALSE</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> R/2_train_models.R log_ridge compas FALSE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul></li>
+<li><em>[Optional]</em> Run the R script <code>R/2_train_models_ncv.R</code> to perform nested cross-validation on the models
+<ul>
+<li>This script is necessary only if you want to perform nested cross-validation for model evaluation</li>
+<li>You can run this script interactively, or execute it in a batch mode with the command line.<br>
+See <a href="#job-submission">job submission</a> for details</li>
+</ul></li>
+</ol>
+</section>
+<section id="model-sculpting" class="level3">
+<h3 class="anchored" data-anchor-id="model-sculpting">3. Model sculpting</h3>
+<ol type="1">
+<li>Run the R script <code>R/3_model_sculpt_compas.R</code> to perform model sculpting on the <code>compas</code> dataset
+<ul>
+<li>You can modify the script to evaluate the models on the <code>bike</code> dataset</li>
+</ul></li>
+<li><em>[Optional]</em> Run the R script <code>R/3_model_sculpt_ncv_compas.R</code> to perform model sculpting on nested cross-validation outputs for sculpted model performance evaluation</li>
+</ol>
+</section>
+<section id="model-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="model-evaluation">4. Model evaluation</h3>
+<ol type="1">
+<li>Evaluation/interpretation of sculpted models: <code>notebooks/2_1_modsculpt_compas.qmd</code></li>
+<li>Performance summary: <code>notebooks/3_performance_summary.qmd</code></li>
+<li><a href="https://pages.github.roche.com/yoshidk6/modsculpt_example/">Sample outputs</a></li>
+</ol>
+</section>
+</section>
+<section id="details" class="level2">
+<h2 class="anchored" data-anchor-id="details">Details</h2>
+<section id="install-the-packages" class="level3">
+<h3 class="anchored" data-anchor-id="install-the-packages">Install the packages</h3>
+<p>The following packages are required to run the example in this repository.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install necessary packages</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>install_if_not_available <span class="ot">&lt;-</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(pkg, <span class="at">from_github =</span> <span class="cn">FALSE</span>, <span class="at">ref =</span> <span class="cn">NULL</span>, <span class="at">min_version =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check whether it's installed and the version is ok</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    is_installed <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">suppressPackageStartupMessages</span>(<span class="fu">require</span>(pkg, <span class="at">character.only =</span> <span class="cn">TRUE</span>)))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    version_ok <span class="ot">&lt;-</span> <span class="fu">is.null</span>(min_version)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (is_installed <span class="sc">&amp;</span> <span class="sc">!</span>version_ok) version_ok <span class="ot">&lt;-</span> <span class="fu">packageVersion</span>(pkg) <span class="sc">&gt;=</span> min_version</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Install if necessary</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span>is_installed <span class="sc">|</span> <span class="sc">!</span>version_ok) {</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (from_github) {</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        remotes<span class="sc">::</span><span class="fu">install_github</span>(pkg, <span class="at">ref =</span> ref)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">install.packages</span>(pkg)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"dplyr"</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"tidyr"</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"readr"</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"purrr"</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"lubridate"</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"here"</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"DT"</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"data.table"</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"mgcv"</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"tidymodels"</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"glmnet"</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"xgboost"</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_version('xgboost', '1.7.7.1') # Version used for generating the outputs</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"tune"</span>)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"parallel"</span>) </span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"doParallel"</span>) </span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Install the following packages from GitHub</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"remotes"</span>)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"modsculpt"</span>, <span class="at">from_github =</span> <span class="cn">TRUE</span>, <span class="at">ref =</span> <span class="st">"v0.1"</span>)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"stats4phc"</span>, <span class="at">from_github =</span> <span class="cn">TRUE</span>, <span class="at">ref =</span> <span class="st">"v0.1.1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="data-examples" class="level3">
+<h3 class="anchored" data-anchor-id="data-examples">Data examples</h3>
+<p>Two example datasets were provided, <code>compas</code> and <code>bike</code>.</p>
+<ul>
+<li><code>compas</code>: A dataset from the COMPAS recidivism risk assessment tool, used in the publication <a href="https://www.nature.com/articles/s42256-019-0048-x">“Stop Explaining Black Box Machine Learning Models for High Stakes Decisions and Use Interpretable Models Instead” by Rudin et al.</a>, available <a href="https://github.com/propublica/compas-analysis">here</a>. This is an example for binary classification.</li>
+<li><code>bike</code>: A dataset from the Capital Bikeshare program in Washington, D.C., available <a href="https://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset">here</a>. This is an example for regression.</li>
+</ul>
+<p>If you are interested in using your own data, you can define it in <code>R/define_data.R</code>. For binary classification task, the response variable is to be a factor with the the first level being “positive”; otherwise some of the codes make a wrong conversion.</p>
+</section>
+<section id="model-options" class="level3">
+<h3 class="anchored" data-anchor-id="model-options">Model options</h3>
+<p>The following <code>model_types</code> are currently supported, made available with <code>parsnip</code> package. See <code>R/define_model.R</code> for the implementation details.</p>
+<table class="table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 14%">
+<col style="width: 31%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>model_type</th>
+<th>task</th>
+<th>description</th>
+<th>packages</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>xgb</code></td>
+<td>reg. or class.</td>
+<td>XGBoost</td>
+<td><code>xgboost</code></td>
+</tr>
+<tr class="even">
+<td><code>xgb_monotone</code></td>
+<td>reg. or class.</td>
+<td>XGBoost with monotone constraints as defined in <code>R/define_data.R</code></td>
+<td><code>xgboost</code></td>
+</tr>
+<tr class="odd">
+<td><code>xgb_*_order</code></td>
+<td>reg. or class.</td>
+<td>XGBoost with <code>*</code> order constraints; replace <code>*</code> with the number to indicate the number of your choice, e.g.&nbsp;<code>xgb_1_order</code></td>
+<td><code>xgboost</code></td>
+</tr>
+<tr class="even">
+<td><code>xgb_*_order_monotone</code></td>
+<td>reg. or class.</td>
+<td>XGBoost with *_order and the monotone constraints</td>
+<td><code>xgboost</code></td>
+</tr>
+<tr class="odd">
+<td><code>lm</code> / <code>logistic</code></td>
+<td>reg. / class.</td>
+<td>Linear model / Logistic regression</td>
+<td><code>stats</code> / <code>glm</code></td>
+</tr>
+<tr class="even">
+<td><code>lm_elastic</code> / <code>log_elastic</code></td>
+<td>reg. / class.</td>
+<td>Elastic net</td>
+<td><code>glmnet</code></td>
+</tr>
+<tr class="odd">
+<td><code>lm_lasso</code> / <code>log_lasso</code></td>
+<td>reg. / class.</td>
+<td>Lasso</td>
+<td><code>glmnet</code></td>
+</tr>
+<tr class="even">
+<td><code>lm_ridge</code> / <code>log_ridge</code></td>
+<td>reg. / class.</td>
+<td>Ridge</td>
+<td><code>glmnet</code></td>
+</tr>
+<tr class="odd">
+<td><code>rf</code></td>
+<td>reg. or class.</td>
+<td>Random forest</td>
+<td><code>ranger</code></td>
+</tr>
+<tr class="even">
+<td><code>lgb</code></td>
+<td>reg. or class.</td>
+<td>LightGBM</td>
+<td><code>bonsai</code>, <code>lightgbm</code></td>
+</tr>
+<tr class="odd">
+<td><code>rpart</code></td>
+<td>class.</td>
+<td>Recursive partitioning</td>
+<td><code>rpart</code></td>
+</tr>
+<tr class="even">
+<td><code>rpart_regression</code></td>
+<td>reg.</td>
+<td>Recursive partitioning</td>
+<td><code>rpart</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="job-submission" class="level3">
+<h3 class="anchored" data-anchor-id="job-submission">Job submission</h3>
+<p>You can run the training script <code>R/2_train_models.R</code> and <code>R/2_train_models_ncv.R</code> in a batch mode with the command line. The scripts takes three arguments: model type, dataset name, and whether to use Bayesian optimization in addition to the grid search.</p>
+<p>This is particularly useful when you run the code on a cluster.</p>
+<p>On you local computer, you should be able to use any terminal; on Windows PC, the terminal tab in RStudio might be the easiest.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> R/2_train_models.R <span class="va">$1</span> <span class="va">$2</span> <span class="va">$3</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> R/2_train_models_ncv.R <span class="va">$1</span> <span class="va">$2</span> <span class="va">$3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>where</p>
+<ul>
+<li><code>$1</code> is the model type (e.g.&nbsp;<code>xgb</code>, see <a href="#model-options">model options</a> for the full list of model types)</li>
+<li><code>$2</code> is the dataset name (e.g.&nbsp;<code>compas</code> or <code>bike</code>)</li>
+<li><code>$3</code> is whether to use Bayesian optimization (e.g.&nbsp;<code>TRUE</code> or <code>FALSE</code>) in addition to the grid search
+<ul>
+<li>Bayesian optimization takes a long time to run, so it is recommended to set this to “FALSE” for an interactive run</li>
+</ul></li>
+</ul>
+<p>For example,</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> R/2_train_models.R xgb compas FALSE</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> R/2_train_models.R lm_elastic bike FALSE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="appendix" class="level2">
+<h2 class="anchored" data-anchor-id="appendix">Appendix</h2>
+<section id="continuous-endpoint-example" class="level3">
+<h3 class="anchored" data-anchor-id="continuous-endpoint-example">Continuous endpoint example</h3>
+<p>Example with bike dataset</p>
+<ol type="1">
+<li><p>Run the R scripts <code>R/2_train_models.R</code> (&amp; <code>R/2_train_models_ncv.R</code>) to train the models</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> R/2_train_models.R xgb bike FALSE </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> R/2_train_models.R xgb_1_order bike FALSE </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> R/2_train_models.R log_elastic bike FALSE</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> R/2_train_models.R log_lasso bike FALSE</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> R/2_train_models.R log_ridge bike FALSE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Run the R script <code>R/3_model_sculpt_bike.R</code> (&amp; <code>R/3_model_sculpt_ncv_bike.R</code>) to perform model sculpting (and nested cross-validation performance evaluation) on the <code>bike</code> dataset</p></li>
+<li><p>Evaluation/interpretation of sculpted models: <code>notebooks/2_1_modsculpt_bike.qmd</code></p></li>
+<li><p>Performance summary: <code>notebooks/3_performance_summary.qmd</code></p></li>
+<li><p><a href="https://pages.github.roche.com/yoshidk6/modsculpt_example/">Sample outputs</a></p></li>
+</ol>
+
+
+<!-- -->
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb6" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "1. Introduction of this repository"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> last-modified</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="an">editor_options:</span><span class="co"> </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">  chunk_output_type: inline</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>{{&lt; include ../README.md &gt;}}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.roche.com/yoshidk6/modsculpt_example/edit/main/notebook/1_introduction.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://github.roche.com/yoshidk6/modsculpt_example/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
