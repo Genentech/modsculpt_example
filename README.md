@@ -4,7 +4,7 @@
 - modsculpt package:
   <https://github.com/Genentech/modsculpt>
 - Output examples (GitHub Pages):
-  <https://pages.github.roche.com/yoshidk6/modsculpt_example/>
+  <https://genentech.github.io/modsculpt_example/>
 
 ## Table Of Contents
 - [Introduction](#introduction)

@@ -26,5 +26,5 @@ execute:
 - modsculpt package:
   <https://github.com/Genentech/modsculpt>
 - GitHub repo:
-  <https://github.roche.com/yoshidk6/modsculpt_example>
+  <https://genentech.github.io/modsculpt_example/>
   
