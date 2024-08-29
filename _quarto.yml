@@ -10,8 +10,8 @@ website:
         contents: notebook/*
     tools:
       - icon: github
-        href: https://github.roche.com/yoshidk6/modsculpt_example
-  repo-url: https://github.roche.com/yoshidk6/modsculpt_example
+        href: https://github.com/Genentech/modsculpt_example
+  repo-url: https://github.com/Genentech/modsculpt_example
   repo-actions: [edit, issue]
   
 format:
