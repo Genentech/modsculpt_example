@@ -362,7 +362,7 @@ See <a href="#job-submission">job submission</a> for details</li>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Install if necessary</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span>is_installed <span class="sc">|</span> <span class="sc">!</span>version_ok) {</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (from_github) {</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        remotes<span class="sc">::</span><span class="fu">install_github</span>(pkg, <span class="at">ref =</span> ref)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="fu">paste0</span>(<span class="st">"Genentech/"</span>, pkg), <span class="at">ref =</span> ref)</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">install.packages</span>(pkg)</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>      }</span>
@@ -388,7 +388,7 @@ See <a href="#job-submission">job submission</a> for details</li>
 <span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Install the following packages from GitHub</span></span>
 <span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"remotes"</span>)</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"modsculpt"</span>, <span class="at">from_github =</span> <span class="cn">TRUE</span>, <span class="at">ref =</span> <span class="st">"v0.1"</span>)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"modsculpt"</span>, <span class="at">from_github =</span> <span class="cn">TRUE</span>, <span class="at">ref =</span> <span class="st">"v0.1.1"</span>)</span>
 <span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_not_available</span>(<span class="st">"stats4phc"</span>, <span class="at">from_github =</span> <span class="cn">TRUE</span>, <span class="at">ref =</span> <span class="st">"v0.1.1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="data-examples" class="level3">

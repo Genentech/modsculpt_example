@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-08-29">
+<meta name="dcterms.date" content="2024-09-05">
 
 <title>Model sculpting examples - 2.1. Model sculpting and interpretation - compas</title>
 <style>
@@ -235,7 +235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024-08-29</p>
+      <p class="date">2024-09-05</p>
     </div>
   </div>
   
@@ -533,36 +533,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># rough model on pm on original scale</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>rs_pm_prob <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  pm,</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co"># rough model on train on original scale</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>rs_train_prob <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  dd<span class="sc">$</span>data<span class="sc">$</span>train[dd<span class="sc">$</span>covariates<span class="sc">$</span>all],</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co"># First order model</span></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>rs_pm_xgb_fo <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  pm, </span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb_fo, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p)</span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_as_marginals =</span> <span class="cn">TRUE</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># rough model on pm on original scale</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>rs_pm_prob <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  pm,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># rough model on train on original scale</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>rs_train_prob <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  dd<span class="sc">$</span>data<span class="sc">$</span>train[dd<span class="sc">$</span>covariates<span class="sc">$</span>all],</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_as_marginals =</span> <span class="cn">TRUE</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co"># First order model</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>rs_pm_xgb_fo <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  pm, </span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb_fo, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -1212,7 +1214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       Etc/UTC
- date     2024-08-28
+ date     2024-09-05
  pandoc   3.1.13 @ /opt/conda/bin/ (via rmarkdown)
 
 ─ Packages ───────────────────────────────────────────────────────────────────
@@ -1282,7 +1284,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  miniUI         0.1.1.1    2018-05-18 [2] RSPM (R 4.3.0)
  minqa          1.2.6      2023-09-11 [2] RSPM (R 4.3.0)
  modeldata    * 1.3.0      2024-01-21 [1] RSPM (R 4.3.0)
- modsculpt    * 0.1        2024-06-20 [1] Github (genentech/modsculpt@93ba66a)
+ modsculpt    * 0.1.1      2024-09-05 [1] Github (Genentech/modsculpt@65bdd78)
  munsell        0.5.1      2024-04-01 [2] RSPM (R 4.3.0)
  nlme         * 3.1-164    2023-11-27 [4] RSPM (R 4.3.3)
  nloptr         2.0.3      2022-05-26 [2] RSPM (R 4.3.0)
@@ -2107,500 +2109,502 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb36-300"><a href="#cb36-300" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
 <span id="cb36-301"><a href="#cb36-301" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
 <span id="cb36-302"><a href="#cb36-302" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p)</span>
-<span id="cb36-303"><a href="#cb36-303" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb36-304"><a href="#cb36-304" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-305"><a href="#cb36-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-306"><a href="#cb36-306" aria-hidden="true" tabindex="-1"></a><span class="co"># rough model on pm on original scale</span></span>
-<span id="cb36-307"><a href="#cb36-307" aria-hidden="true" tabindex="-1"></a>rs_pm_prob <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
-<span id="cb36-308"><a href="#cb36-308" aria-hidden="true" tabindex="-1"></a>  pm,</span>
-<span id="cb36-309"><a href="#cb36-309" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
-<span id="cb36-310"><a href="#cb36-310" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
-<span id="cb36-311"><a href="#cb36-311" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
-<span id="cb36-312"><a href="#cb36-312" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb36-313"><a href="#cb36-313" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-314"><a href="#cb36-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-315"><a href="#cb36-315" aria-hidden="true" tabindex="-1"></a><span class="co"># rough model on train on original scale</span></span>
-<span id="cb36-316"><a href="#cb36-316" aria-hidden="true" tabindex="-1"></a>rs_train_prob <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
-<span id="cb36-317"><a href="#cb36-317" aria-hidden="true" tabindex="-1"></a>  dd<span class="sc">$</span>data<span class="sc">$</span>train[dd<span class="sc">$</span>covariates<span class="sc">$</span>all],</span>
-<span id="cb36-318"><a href="#cb36-318" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
-<span id="cb36-319"><a href="#cb36-319" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
-<span id="cb36-320"><a href="#cb36-320" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
-<span id="cb36-321"><a href="#cb36-321" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb36-322"><a href="#cb36-322" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-323"><a href="#cb36-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-324"><a href="#cb36-324" aria-hidden="true" tabindex="-1"></a><span class="co"># First order model</span></span>
-<span id="cb36-325"><a href="#cb36-325" aria-hidden="true" tabindex="-1"></a>rs_pm_xgb_fo <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
-<span id="cb36-326"><a href="#cb36-326" aria-hidden="true" tabindex="-1"></a>  pm, </span>
-<span id="cb36-327"><a href="#cb36-327" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
-<span id="cb36-328"><a href="#cb36-328" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
-<span id="cb36-329"><a href="#cb36-329" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb_fo, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
-<span id="cb36-330"><a href="#cb36-330" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p)</span>
-<span id="cb36-331"><a href="#cb36-331" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb36-332"><a href="#cb36-332" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-333"><a href="#cb36-333" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-334"><a href="#cb36-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-335"><a href="#cb36-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-336"><a href="#cb36-336" aria-hidden="true" tabindex="-1"></a><span class="fu">## ICE plots</span></span>
+<span id="cb36-303"><a href="#cb36-303" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb36-304"><a href="#cb36-304" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_as_marginals =</span> <span class="cn">TRUE</span></span>
+<span id="cb36-305"><a href="#cb36-305" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-306"><a href="#cb36-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-307"><a href="#cb36-307" aria-hidden="true" tabindex="-1"></a><span class="co"># rough model on pm on original scale</span></span>
+<span id="cb36-308"><a href="#cb36-308" aria-hidden="true" tabindex="-1"></a>rs_pm_prob <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb36-309"><a href="#cb36-309" aria-hidden="true" tabindex="-1"></a>  pm,</span>
+<span id="cb36-310"><a href="#cb36-310" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb36-311"><a href="#cb36-311" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb36-312"><a href="#cb36-312" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
+<span id="cb36-313"><a href="#cb36-313" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb36-314"><a href="#cb36-314" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-315"><a href="#cb36-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-316"><a href="#cb36-316" aria-hidden="true" tabindex="-1"></a><span class="co"># rough model on train on original scale</span></span>
+<span id="cb36-317"><a href="#cb36-317" aria-hidden="true" tabindex="-1"></a>rs_train_prob <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb36-318"><a href="#cb36-318" aria-hidden="true" tabindex="-1"></a>  dd<span class="sc">$</span>data<span class="sc">$</span>train[dd<span class="sc">$</span>covariates<span class="sc">$</span>all],</span>
+<span id="cb36-319"><a href="#cb36-319" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb36-320"><a href="#cb36-320" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb36-321"><a href="#cb36-321" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
+<span id="cb36-322"><a href="#cb36-322" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb36-323"><a href="#cb36-323" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_as_marginals =</span> <span class="cn">TRUE</span></span>
+<span id="cb36-324"><a href="#cb36-324" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-325"><a href="#cb36-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-326"><a href="#cb36-326" aria-hidden="true" tabindex="-1"></a><span class="co"># First order model</span></span>
+<span id="cb36-327"><a href="#cb36-327" aria-hidden="true" tabindex="-1"></a>rs_pm_xgb_fo <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb36-328"><a href="#cb36-328" aria-hidden="true" tabindex="-1"></a>  pm, </span>
+<span id="cb36-329"><a href="#cb36-329" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb36-330"><a href="#cb36-330" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb36-331"><a href="#cb36-331" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb_fo, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
+<span id="cb36-332"><a href="#cb36-332" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p)</span>
+<span id="cb36-333"><a href="#cb36-333" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb36-334"><a href="#cb36-334" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-335"><a href="#cb36-335" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-336"><a href="#cb36-336" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-337"><a href="#cb36-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-340"><a href="#cb36-340" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-341"><a href="#cb36-341" aria-hidden="true" tabindex="-1"></a>scale_col_update <span class="ot">&lt;-</span> </span>
-<span id="cb36-342"><a href="#cb36-342" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(</span>
-<span id="cb36-343"><a href="#cb36-343" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"ICE Profiles"</span> <span class="ot">=</span> <span class="st">"gray60"</span>, <span class="st">"Rough model (with SE)"</span> <span class="ot">=</span> <span class="st">"blue"</span>),</span>
-<span id="cb36-344"><a href="#cb36-344" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"ICE Profiles"</span>, <span class="st">"Rough model"</span>),</span>
-<span id="cb36-345"><a href="#cb36-345" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">""</span></span>
-<span id="cb36-346"><a href="#cb36-346" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb36-347"><a href="#cb36-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-348"><a href="#cb36-348" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris <span class="ot">&lt;-</span> <span class="fu">g_ice</span>(rs_pm, <span class="at">centered =</span> F, <span class="at">show_PDP =</span> F, </span>
-<span id="cb36-349"><a href="#cb36-349" aria-hidden="true" tabindex="-1"></a>                        <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>))</span>
-<span id="cb36-350"><a href="#cb36-350" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris_prob <span class="ot">&lt;-</span> <span class="fu">g_ice</span>(rs_pm_prob, <span class="at">centered =</span> F, <span class="at">show_PDP =</span> F, </span>
-<span id="cb36-351"><a href="#cb36-351" aria-hidden="true" tabindex="-1"></a>                             <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>))</span>
-<span id="cb36-352"><a href="#cb36-352" aria-hidden="true" tabindex="-1"></a>ice_pm <span class="ot">&lt;-</span> <span class="fu">g_ice</span>(rs_pm, <span class="at">centered =</span> T, <span class="at">show_PDP =</span> T, </span>
-<span id="cb36-353"><a href="#cb36-353" aria-hidden="true" tabindex="-1"></a>                <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>))</span>
-<span id="cb36-354"><a href="#cb36-354" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-355"><a href="#cb36-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-356"><a href="#cb36-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-357"><a href="#cb36-357" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb36-338"><a href="#cb36-338" aria-hidden="true" tabindex="-1"></a><span class="fu">## ICE plots</span></span>
+<span id="cb36-339"><a href="#cb36-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-342"><a href="#cb36-342" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-343"><a href="#cb36-343" aria-hidden="true" tabindex="-1"></a>scale_col_update <span class="ot">&lt;-</span> </span>
+<span id="cb36-344"><a href="#cb36-344" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(</span>
+<span id="cb36-345"><a href="#cb36-345" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"ICE Profiles"</span> <span class="ot">=</span> <span class="st">"gray60"</span>, <span class="st">"Rough model (with SE)"</span> <span class="ot">=</span> <span class="st">"blue"</span>),</span>
+<span id="cb36-346"><a href="#cb36-346" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"ICE Profiles"</span>, <span class="st">"Rough model"</span>),</span>
+<span id="cb36-347"><a href="#cb36-347" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">""</span></span>
+<span id="cb36-348"><a href="#cb36-348" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-349"><a href="#cb36-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-350"><a href="#cb36-350" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris <span class="ot">&lt;-</span> <span class="fu">g_ice</span>(rs_pm, <span class="at">centered =</span> F, <span class="at">show_PDP =</span> F, </span>
+<span id="cb36-351"><a href="#cb36-351" aria-hidden="true" tabindex="-1"></a>                        <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>))</span>
+<span id="cb36-352"><a href="#cb36-352" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris_prob <span class="ot">&lt;-</span> <span class="fu">g_ice</span>(rs_pm_prob, <span class="at">centered =</span> F, <span class="at">show_PDP =</span> F, </span>
+<span id="cb36-353"><a href="#cb36-353" aria-hidden="true" tabindex="-1"></a>                             <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>))</span>
+<span id="cb36-354"><a href="#cb36-354" aria-hidden="true" tabindex="-1"></a>ice_pm <span class="ot">&lt;-</span> <span class="fu">g_ice</span>(rs_pm, <span class="at">centered =</span> T, <span class="at">show_PDP =</span> T, </span>
+<span id="cb36-355"><a href="#cb36-355" aria-hidden="true" tabindex="-1"></a>                <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>))</span>
+<span id="cb36-356"><a href="#cb36-356" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-357"><a href="#cb36-357" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-358"><a href="#cb36-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-359"><a href="#cb36-359" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rough: Logit scale</span></span>
+<span id="cb36-359"><a href="#cb36-359" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
 <span id="cb36-360"><a href="#cb36-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-363"><a href="#cb36-363" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-364"><a href="#cb36-364" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
-<span id="cb36-365"><a href="#cb36-365" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-366"><a href="#cb36-366" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-369"><a href="#cb36-369" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-370"><a href="#cb36-370" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 4</span></span>
-<span id="cb36-371"><a href="#cb36-371" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3</span></span>
-<span id="cb36-372"><a href="#cb36-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-373"><a href="#cb36-373" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris<span class="sc">$</span>discrete</span>
-<span id="cb36-374"><a href="#cb36-374" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-375"><a href="#cb36-375" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-376"><a href="#cb36-376" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rough: Prob. scale</span></span>
+<span id="cb36-361"><a href="#cb36-361" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rough: Logit scale</span></span>
+<span id="cb36-362"><a href="#cb36-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-365"><a href="#cb36-365" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-366"><a href="#cb36-366" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb36-367"><a href="#cb36-367" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-368"><a href="#cb36-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-371"><a href="#cb36-371" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-372"><a href="#cb36-372" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 4</span></span>
+<span id="cb36-373"><a href="#cb36-373" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3</span></span>
+<span id="cb36-374"><a href="#cb36-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-375"><a href="#cb36-375" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris<span class="sc">$</span>discrete</span>
+<span id="cb36-376"><a href="#cb36-376" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-377"><a href="#cb36-377" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-380"><a href="#cb36-380" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-381"><a href="#cb36-381" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris_prob<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
-<span id="cb36-382"><a href="#cb36-382" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-383"><a href="#cb36-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-386"><a href="#cb36-386" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-387"><a href="#cb36-387" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 4</span></span>
-<span id="cb36-388"><a href="#cb36-388" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3</span></span>
-<span id="cb36-389"><a href="#cb36-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-390"><a href="#cb36-390" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris_prob<span class="sc">$</span>discrete</span>
-<span id="cb36-391"><a href="#cb36-391" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-392"><a href="#cb36-392" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-393"><a href="#cb36-393" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rough: Logit, centered</span></span>
+<span id="cb36-378"><a href="#cb36-378" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rough: Prob. scale</span></span>
+<span id="cb36-379"><a href="#cb36-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-382"><a href="#cb36-382" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-383"><a href="#cb36-383" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris_prob<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb36-384"><a href="#cb36-384" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-385"><a href="#cb36-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-388"><a href="#cb36-388" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-389"><a href="#cb36-389" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 4</span></span>
+<span id="cb36-390"><a href="#cb36-390" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3</span></span>
+<span id="cb36-391"><a href="#cb36-391" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-392"><a href="#cb36-392" aria-hidden="true" tabindex="-1"></a>ice_pm_ceteris_prob<span class="sc">$</span>discrete</span>
+<span id="cb36-393"><a href="#cb36-393" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-394"><a href="#cb36-394" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-397"><a href="#cb36-397" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-398"><a href="#cb36-398" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: FALSE</span></span>
-<span id="cb36-399"><a href="#cb36-399" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
-<span id="cb36-400"><a href="#cb36-400" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
-<span id="cb36-401"><a href="#cb36-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-402"><a href="#cb36-402" aria-hidden="true" tabindex="-1"></a>ice_pm<span class="sc">$</span>continuous <span class="sc">+</span> scale_col_update <span class="sc">+</span> theme_facets</span>
-<span id="cb36-403"><a href="#cb36-403" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-404"><a href="#cb36-404" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-407"><a href="#cb36-407" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-408"><a href="#cb36-408" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: FALSE</span></span>
-<span id="cb36-409"><a href="#cb36-409" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 6</span></span>
-<span id="cb36-410"><a href="#cb36-410" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3</span></span>
-<span id="cb36-411"><a href="#cb36-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-412"><a href="#cb36-412" aria-hidden="true" tabindex="-1"></a>ice_pm<span class="sc">$</span>discrete <span class="sc">+</span> scale_col_update</span>
-<span id="cb36-413"><a href="#cb36-413" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-414"><a href="#cb36-414" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-415"><a href="#cb36-415" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rough vs direct 1st order</span></span>
+<span id="cb36-395"><a href="#cb36-395" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rough: Logit, centered</span></span>
+<span id="cb36-396"><a href="#cb36-396" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-399"><a href="#cb36-399" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-400"><a href="#cb36-400" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: FALSE</span></span>
+<span id="cb36-401"><a href="#cb36-401" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb36-402"><a href="#cb36-402" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb36-403"><a href="#cb36-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-404"><a href="#cb36-404" aria-hidden="true" tabindex="-1"></a>ice_pm<span class="sc">$</span>continuous <span class="sc">+</span> scale_col_update <span class="sc">+</span> theme_facets</span>
+<span id="cb36-405"><a href="#cb36-405" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-406"><a href="#cb36-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-409"><a href="#cb36-409" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-410"><a href="#cb36-410" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: FALSE</span></span>
+<span id="cb36-411"><a href="#cb36-411" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 6</span></span>
+<span id="cb36-412"><a href="#cb36-412" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3</span></span>
+<span id="cb36-413"><a href="#cb36-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-414"><a href="#cb36-414" aria-hidden="true" tabindex="-1"></a>ice_pm<span class="sc">$</span>discrete <span class="sc">+</span> scale_col_update</span>
+<span id="cb36-415"><a href="#cb36-415" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-416"><a href="#cb36-416" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-419"><a href="#cb36-419" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-420"><a href="#cb36-420" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
-<span id="cb36-421"><a href="#cb36-421" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
-<span id="cb36-422"><a href="#cb36-422" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-423"><a href="#cb36-423" aria-hidden="true" tabindex="-1"></a><span class="co"># comparison plot</span></span>
-<span id="cb36-424"><a href="#cb36-424" aria-hidden="true" tabindex="-1"></a>comp_xgb_bayes <span class="ot">&lt;-</span> <span class="fu">g_comparison</span>(</span>
-<span id="cb36-425"><a href="#cb36-425" aria-hidden="true" tabindex="-1"></a>  <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm, rs_pm_xgb_fo),</span>
-<span id="cb36-426"><a href="#cb36-426" aria-hidden="true" tabindex="-1"></a>  <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Rough Model"</span>, <span class="st">"Direct Additive XGB"</span>), </span>
-<span id="cb36-427"><a href="#cb36-427" aria-hidden="true" tabindex="-1"></a>  <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb36-428"><a href="#cb36-428" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-429"><a href="#cb36-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-430"><a href="#cb36-430" aria-hidden="true" tabindex="-1"></a>comp_xgb_bayes<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
-<span id="cb36-431"><a href="#cb36-431" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-432"><a href="#cb36-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-435"><a href="#cb36-435" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-436"><a href="#cb36-436" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 6</span></span>
-<span id="cb36-437"><a href="#cb36-437" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3</span></span>
-<span id="cb36-438"><a href="#cb36-438" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-439"><a href="#cb36-439" aria-hidden="true" tabindex="-1"></a>comp_xgb_bayes<span class="sc">$</span>discrete</span>
-<span id="cb36-440"><a href="#cb36-440" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-441"><a href="#cb36-441" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-442"><a href="#cb36-442" aria-hidden="true" tabindex="-1"></a><span class="fu">### Detailed vs rough</span></span>
+<span id="cb36-417"><a href="#cb36-417" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rough vs direct 1st order</span></span>
+<span id="cb36-418"><a href="#cb36-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-421"><a href="#cb36-421" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-422"><a href="#cb36-422" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb36-423"><a href="#cb36-423" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb36-424"><a href="#cb36-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-425"><a href="#cb36-425" aria-hidden="true" tabindex="-1"></a><span class="co"># comparison plot</span></span>
+<span id="cb36-426"><a href="#cb36-426" aria-hidden="true" tabindex="-1"></a>comp_xgb_bayes <span class="ot">&lt;-</span> <span class="fu">g_comparison</span>(</span>
+<span id="cb36-427"><a href="#cb36-427" aria-hidden="true" tabindex="-1"></a>  <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm, rs_pm_xgb_fo),</span>
+<span id="cb36-428"><a href="#cb36-428" aria-hidden="true" tabindex="-1"></a>  <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Rough Model"</span>, <span class="st">"Direct Additive XGB"</span>), </span>
+<span id="cb36-429"><a href="#cb36-429" aria-hidden="true" tabindex="-1"></a>  <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb36-430"><a href="#cb36-430" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-431"><a href="#cb36-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-432"><a href="#cb36-432" aria-hidden="true" tabindex="-1"></a>comp_xgb_bayes<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb36-433"><a href="#cb36-433" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-434"><a href="#cb36-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-437"><a href="#cb36-437" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-438"><a href="#cb36-438" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 6</span></span>
+<span id="cb36-439"><a href="#cb36-439" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3</span></span>
+<span id="cb36-440"><a href="#cb36-440" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-441"><a href="#cb36-441" aria-hidden="true" tabindex="-1"></a>comp_xgb_bayes<span class="sc">$</span>discrete</span>
+<span id="cb36-442"><a href="#cb36-442" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-443"><a href="#cb36-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-446"><a href="#cb36-446" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-447"><a href="#cb36-447" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
-<span id="cb36-448"><a href="#cb36-448" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
-<span id="cb36-449"><a href="#cb36-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-450"><a href="#cb36-450" aria-hidden="true" tabindex="-1"></a><span class="co"># compare detailed and rough</span></span>
-<span id="cb36-451"><a href="#cb36-451" aria-hidden="true" tabindex="-1"></a>comp_ds <span class="ot">&lt;-</span> </span>
-<span id="cb36-452"><a href="#cb36-452" aria-hidden="true" tabindex="-1"></a>  <span class="fu">g_comparison</span>(</span>
-<span id="cb36-453"><a href="#cb36-453" aria-hidden="true" tabindex="-1"></a>    <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm, ds_pm_v2),</span>
-<span id="cb36-454"><a href="#cb36-454" aria-hidden="true" tabindex="-1"></a>    <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Rough Model"</span>, <span class="st">"Detailed Model"</span>), </span>
-<span id="cb36-455"><a href="#cb36-455" aria-hidden="true" tabindex="-1"></a>    <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb36-456"><a href="#cb36-456" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb36-457"><a href="#cb36-457" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-458"><a href="#cb36-458" aria-hidden="true" tabindex="-1"></a>comp_ds<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
-<span id="cb36-459"><a href="#cb36-459" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-460"><a href="#cb36-460" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-463"><a href="#cb36-463" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-464"><a href="#cb36-464" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 6</span></span>
-<span id="cb36-465"><a href="#cb36-465" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3</span></span>
-<span id="cb36-466"><a href="#cb36-466" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-467"><a href="#cb36-467" aria-hidden="true" tabindex="-1"></a>comp_ds<span class="sc">$</span>discrete</span>
-<span id="cb36-468"><a href="#cb36-468" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-469"><a href="#cb36-469" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-470"><a href="#cb36-470" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-471"><a href="#cb36-471" aria-hidden="true" tabindex="-1"></a><span class="fu">### Polished vs rough</span></span>
+<span id="cb36-444"><a href="#cb36-444" aria-hidden="true" tabindex="-1"></a><span class="fu">### Detailed vs rough</span></span>
+<span id="cb36-445"><a href="#cb36-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-448"><a href="#cb36-448" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-449"><a href="#cb36-449" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb36-450"><a href="#cb36-450" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb36-451"><a href="#cb36-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-452"><a href="#cb36-452" aria-hidden="true" tabindex="-1"></a><span class="co"># compare detailed and rough</span></span>
+<span id="cb36-453"><a href="#cb36-453" aria-hidden="true" tabindex="-1"></a>comp_ds <span class="ot">&lt;-</span> </span>
+<span id="cb36-454"><a href="#cb36-454" aria-hidden="true" tabindex="-1"></a>  <span class="fu">g_comparison</span>(</span>
+<span id="cb36-455"><a href="#cb36-455" aria-hidden="true" tabindex="-1"></a>    <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm, ds_pm_v2),</span>
+<span id="cb36-456"><a href="#cb36-456" aria-hidden="true" tabindex="-1"></a>    <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Rough Model"</span>, <span class="st">"Detailed Model"</span>), </span>
+<span id="cb36-457"><a href="#cb36-457" aria-hidden="true" tabindex="-1"></a>    <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb36-458"><a href="#cb36-458" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-459"><a href="#cb36-459" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-460"><a href="#cb36-460" aria-hidden="true" tabindex="-1"></a>comp_ds<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb36-461"><a href="#cb36-461" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-462"><a href="#cb36-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-465"><a href="#cb36-465" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-466"><a href="#cb36-466" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 6</span></span>
+<span id="cb36-467"><a href="#cb36-467" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3</span></span>
+<span id="cb36-468"><a href="#cb36-468" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-469"><a href="#cb36-469" aria-hidden="true" tabindex="-1"></a>comp_ds<span class="sc">$</span>discrete</span>
+<span id="cb36-470"><a href="#cb36-470" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-471"><a href="#cb36-471" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-472"><a href="#cb36-472" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-475"><a href="#cb36-475" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-476"><a href="#cb36-476" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
-<span id="cb36-477"><a href="#cb36-477" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 4</span></span>
-<span id="cb36-478"><a href="#cb36-478" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-479"><a href="#cb36-479" aria-hidden="true" tabindex="-1"></a><span class="co"># compare detailed and rough</span></span>
-<span id="cb36-480"><a href="#cb36-480" aria-hidden="true" tabindex="-1"></a><span class="do">## Select variables for polished model</span></span>
-<span id="cb36-481"><a href="#cb36-481" aria-hidden="true" tabindex="-1"></a>checkmate<span class="sc">::</span><span class="fu">assert_number</span>(top_k, <span class="at">lower =</span> <span class="dv">1</span>)</span>
-<span id="cb36-482"><a href="#cb36-482" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">levels</span>(<span class="fu">attr</span>(rs_pm, <span class="st">"cumul_R2"</span>)<span class="sc">$</span>feature)[<span class="dv">1</span><span class="sc">:</span>top_k]</span>
-<span id="cb36-483"><a href="#cb36-483" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-484"><a href="#cb36-484" aria-hidden="true" tabindex="-1"></a>rs_pm_top_k <span class="ot">&lt;-</span> rs_pm[vars]</span>
-<span id="cb36-485"><a href="#cb36-485" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(rs_pm_top_k, <span class="st">"offset"</span>) <span class="ot">&lt;-</span> <span class="fu">attr</span>(rs_pm, <span class="st">"offset"</span>)</span>
-<span id="cb36-486"><a href="#cb36-486" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(rs_pm_top_k) <span class="ot">&lt;-</span> <span class="fu">class</span>(rs_pm)</span>
-<span id="cb36-487"><a href="#cb36-487" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-488"><a href="#cb36-488" aria-hidden="true" tabindex="-1"></a>comp_ps <span class="ot">&lt;-</span> </span>
-<span id="cb36-489"><a href="#cb36-489" aria-hidden="true" tabindex="-1"></a>  <span class="fu">g_comparison</span>(</span>
-<span id="cb36-490"><a href="#cb36-490" aria-hidden="true" tabindex="-1"></a>    <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm_top_k, ps_pm_v2),</span>
-<span id="cb36-491"><a href="#cb36-491" aria-hidden="true" tabindex="-1"></a>    <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Rough Model"</span>, <span class="st">"Polished Model"</span>), </span>
-<span id="cb36-492"><a href="#cb36-492" aria-hidden="true" tabindex="-1"></a>    <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb36-493"><a href="#cb36-493" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb36-494"><a href="#cb36-494" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-495"><a href="#cb36-495" aria-hidden="true" tabindex="-1"></a>comp_ps<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
-<span id="cb36-496"><a href="#cb36-496" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-497"><a href="#cb36-497" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-498"><a href="#cb36-498" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb36-473"><a href="#cb36-473" aria-hidden="true" tabindex="-1"></a><span class="fu">### Polished vs rough</span></span>
+<span id="cb36-474"><a href="#cb36-474" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-477"><a href="#cb36-477" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-478"><a href="#cb36-478" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb36-479"><a href="#cb36-479" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 4</span></span>
+<span id="cb36-480"><a href="#cb36-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-481"><a href="#cb36-481" aria-hidden="true" tabindex="-1"></a><span class="co"># compare detailed and rough</span></span>
+<span id="cb36-482"><a href="#cb36-482" aria-hidden="true" tabindex="-1"></a><span class="do">## Select variables for polished model</span></span>
+<span id="cb36-483"><a href="#cb36-483" aria-hidden="true" tabindex="-1"></a>checkmate<span class="sc">::</span><span class="fu">assert_number</span>(top_k, <span class="at">lower =</span> <span class="dv">1</span>)</span>
+<span id="cb36-484"><a href="#cb36-484" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">levels</span>(<span class="fu">attr</span>(rs_pm, <span class="st">"cumul_R2"</span>)<span class="sc">$</span>feature)[<span class="dv">1</span><span class="sc">:</span>top_k]</span>
+<span id="cb36-485"><a href="#cb36-485" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-486"><a href="#cb36-486" aria-hidden="true" tabindex="-1"></a>rs_pm_top_k <span class="ot">&lt;-</span> rs_pm[vars]</span>
+<span id="cb36-487"><a href="#cb36-487" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(rs_pm_top_k, <span class="st">"offset"</span>) <span class="ot">&lt;-</span> <span class="fu">attr</span>(rs_pm, <span class="st">"offset"</span>)</span>
+<span id="cb36-488"><a href="#cb36-488" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(rs_pm_top_k) <span class="ot">&lt;-</span> <span class="fu">class</span>(rs_pm)</span>
+<span id="cb36-489"><a href="#cb36-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-490"><a href="#cb36-490" aria-hidden="true" tabindex="-1"></a>comp_ps <span class="ot">&lt;-</span> </span>
+<span id="cb36-491"><a href="#cb36-491" aria-hidden="true" tabindex="-1"></a>  <span class="fu">g_comparison</span>(</span>
+<span id="cb36-492"><a href="#cb36-492" aria-hidden="true" tabindex="-1"></a>    <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm_top_k, ps_pm_v2),</span>
+<span id="cb36-493"><a href="#cb36-493" aria-hidden="true" tabindex="-1"></a>    <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Rough Model"</span>, <span class="st">"Polished Model"</span>), </span>
+<span id="cb36-494"><a href="#cb36-494" aria-hidden="true" tabindex="-1"></a>    <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb36-495"><a href="#cb36-495" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-496"><a href="#cb36-496" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-497"><a href="#cb36-497" aria-hidden="true" tabindex="-1"></a>comp_ps<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb36-498"><a href="#cb36-498" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-499"><a href="#cb36-499" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-500"><a href="#cb36-500" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data density</span></span>
+<span id="cb36-500"><a href="#cb36-500" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb36-501"><a href="#cb36-501" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-504"><a href="#cb36-504" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-505"><a href="#cb36-505" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
-<span id="cb36-506"><a href="#cb36-506" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 8</span></span>
-<span id="cb36-507"><a href="#cb36-507" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-508"><a href="#cb36-508" aria-hidden="true" tabindex="-1"></a>g_density_plots_cont <span class="ot">&lt;-</span> <span class="fu">g_density_ice_plot_list</span>(ps_pm_v2,</span>
-<span id="cb36-509"><a href="#cb36-509" aria-hidden="true" tabindex="-1"></a>                                                dd<span class="sc">$</span>data<span class="sc">$</span>train,</span>
-<span id="cb36-510"><a href="#cb36-510" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">var_names =</span> dd<span class="sc">$</span>covariates<span class="sc">$</span>continuous,</span>
-<span id="cb36-511"><a href="#cb36-511" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">var_labels =</span> dd<span class="sc">$</span>covariates<span class="sc">$</span>labels,</span>
-<span id="cb36-512"><a href="#cb36-512" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">task =</span> dd<span class="sc">$</span>task)</span>
-<span id="cb36-513"><a href="#cb36-513" aria-hidden="true" tabindex="-1"></a><span class="co"># patchwork::wrap_plots(g_density_plots_cont[c("priors", "age", "juvenile_crimes")], ncol = 2) </span></span>
-<span id="cb36-514"><a href="#cb36-514" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-515"><a href="#cb36-515" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-516"><a href="#cb36-516" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-517"><a href="#cb36-517" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb36-502"><a href="#cb36-502" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data density</span></span>
+<span id="cb36-503"><a href="#cb36-503" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-506"><a href="#cb36-506" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-507"><a href="#cb36-507" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
+<span id="cb36-508"><a href="#cb36-508" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 8</span></span>
+<span id="cb36-509"><a href="#cb36-509" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-510"><a href="#cb36-510" aria-hidden="true" tabindex="-1"></a>g_density_plots_cont <span class="ot">&lt;-</span> <span class="fu">g_density_ice_plot_list</span>(ps_pm_v2,</span>
+<span id="cb36-511"><a href="#cb36-511" aria-hidden="true" tabindex="-1"></a>                                                dd<span class="sc">$</span>data<span class="sc">$</span>train,</span>
+<span id="cb36-512"><a href="#cb36-512" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">var_names =</span> dd<span class="sc">$</span>covariates<span class="sc">$</span>continuous,</span>
+<span id="cb36-513"><a href="#cb36-513" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">var_labels =</span> dd<span class="sc">$</span>covariates<span class="sc">$</span>labels,</span>
+<span id="cb36-514"><a href="#cb36-514" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">task =</span> dd<span class="sc">$</span>task)</span>
+<span id="cb36-515"><a href="#cb36-515" aria-hidden="true" tabindex="-1"></a><span class="co"># patchwork::wrap_plots(g_density_plots_cont[c("priors", "age", "juvenile_crimes")], ncol = 2) </span></span>
+<span id="cb36-516"><a href="#cb36-516" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-517"><a href="#cb36-517" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-518"><a href="#cb36-518" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-519"><a href="#cb36-519" aria-hidden="true" tabindex="-1"></a><span class="fu">### priors</span></span>
+<span id="cb36-519"><a href="#cb36-519" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
 <span id="cb36-520"><a href="#cb36-520" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-523"><a href="#cb36-523" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-524"><a href="#cb36-524" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 5</span></span>
-<span id="cb36-525"><a href="#cb36-525" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 4</span></span>
-<span id="cb36-526"><a href="#cb36-526" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-527"><a href="#cb36-527" aria-hidden="true" tabindex="-1"></a>g_density_plots_cont[[<span class="st">"priors"</span>]]</span>
-<span id="cb36-528"><a href="#cb36-528" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-529"><a href="#cb36-529" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-530"><a href="#cb36-530" aria-hidden="true" tabindex="-1"></a><span class="fu">### age</span></span>
+<span id="cb36-521"><a href="#cb36-521" aria-hidden="true" tabindex="-1"></a><span class="fu">### priors</span></span>
+<span id="cb36-522"><a href="#cb36-522" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-525"><a href="#cb36-525" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-526"><a href="#cb36-526" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 5</span></span>
+<span id="cb36-527"><a href="#cb36-527" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 4</span></span>
+<span id="cb36-528"><a href="#cb36-528" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-529"><a href="#cb36-529" aria-hidden="true" tabindex="-1"></a>g_density_plots_cont[[<span class="st">"priors"</span>]]</span>
+<span id="cb36-530"><a href="#cb36-530" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-531"><a href="#cb36-531" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-534"><a href="#cb36-534" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-535"><a href="#cb36-535" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 5</span></span>
-<span id="cb36-536"><a href="#cb36-536" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 4</span></span>
-<span id="cb36-537"><a href="#cb36-537" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-538"><a href="#cb36-538" aria-hidden="true" tabindex="-1"></a>g_density_plots_cont[[<span class="st">"age"</span>]]</span>
-<span id="cb36-539"><a href="#cb36-539" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-540"><a href="#cb36-540" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-541"><a href="#cb36-541" aria-hidden="true" tabindex="-1"></a><span class="fu">### juvenile_crimes</span></span>
+<span id="cb36-532"><a href="#cb36-532" aria-hidden="true" tabindex="-1"></a><span class="fu">### age</span></span>
+<span id="cb36-533"><a href="#cb36-533" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-536"><a href="#cb36-536" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-537"><a href="#cb36-537" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 5</span></span>
+<span id="cb36-538"><a href="#cb36-538" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 4</span></span>
+<span id="cb36-539"><a href="#cb36-539" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-540"><a href="#cb36-540" aria-hidden="true" tabindex="-1"></a>g_density_plots_cont[[<span class="st">"age"</span>]]</span>
+<span id="cb36-541"><a href="#cb36-541" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-542"><a href="#cb36-542" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-545"><a href="#cb36-545" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-546"><a href="#cb36-546" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 5</span></span>
-<span id="cb36-547"><a href="#cb36-547" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 4</span></span>
-<span id="cb36-548"><a href="#cb36-548" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-549"><a href="#cb36-549" aria-hidden="true" tabindex="-1"></a>g_density_plots_cont[[<span class="st">"juvenile_crimes"</span>]]</span>
-<span id="cb36-550"><a href="#cb36-550" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-551"><a href="#cb36-551" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb36-552"><a href="#cb36-552" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-553"><a href="#cb36-553" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additivity evaluation</span></span>
+<span id="cb36-543"><a href="#cb36-543" aria-hidden="true" tabindex="-1"></a><span class="fu">### juvenile_crimes</span></span>
+<span id="cb36-544"><a href="#cb36-544" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-547"><a href="#cb36-547" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-548"><a href="#cb36-548" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 5</span></span>
+<span id="cb36-549"><a href="#cb36-549" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 4</span></span>
+<span id="cb36-550"><a href="#cb36-550" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-551"><a href="#cb36-551" aria-hidden="true" tabindex="-1"></a>g_density_plots_cont[[<span class="st">"juvenile_crimes"</span>]]</span>
+<span id="cb36-552"><a href="#cb36-552" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-553"><a href="#cb36-553" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb36-554"><a href="#cb36-554" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-557"><a href="#cb36-557" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-558"><a href="#cb36-558" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> pm, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
-<span id="cb36-559"><a href="#cb36-559" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>train, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
-<span id="cb36-560"><a href="#cb36-560" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(rs_pm, pm)</span>
-<span id="cb36-561"><a href="#cb36-561" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">predict</span>(rs_train, dd<span class="sc">$</span>data<span class="sc">$</span>train)</span>
-<span id="cb36-562"><a href="#cb36-562" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-563"><a href="#cb36-563" aria-hidden="true" tabindex="-1"></a><span class="fu">g_additivity</span>(</span>
-<span id="cb36-564"><a href="#cb36-564" aria-hidden="true" tabindex="-1"></a>  <span class="at">sp =</span> <span class="fu">list</span>(<span class="fu">inv.logit</span>(p3), <span class="fu">inv.logit</span>(p4)),</span>
-<span id="cb36-565"><a href="#cb36-565" aria-hidden="true" tabindex="-1"></a>  <span class="at">lp =</span> <span class="fu">list</span>(p1, p2),</span>
-<span id="cb36-566"><a href="#cb36-566" aria-hidden="true" tabindex="-1"></a>  <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Product Marginals"</span>, <span class="st">"Train Set"</span>)</span>
-<span id="cb36-567"><a href="#cb36-567" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> </span>
-<span id="cb36-568"><a href="#cb36-568" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Rough Model Predictions"</span>, <span class="at">y =</span> <span class="st">"Strong Learner Predictions"</span>) <span class="sc">+</span> </span>
-<span id="cb36-569"><a href="#cb36-569" aria-hidden="true" tabindex="-1"></a>    theme_single</span>
-<span id="cb36-570"><a href="#cb36-570" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-571"><a href="#cb36-571" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-572"><a href="#cb36-572" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-573"><a href="#cb36-573" aria-hidden="true" tabindex="-1"></a><span class="fu">## Variable importance</span></span>
+<span id="cb36-555"><a href="#cb36-555" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additivity evaluation</span></span>
+<span id="cb36-556"><a href="#cb36-556" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-559"><a href="#cb36-559" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-560"><a href="#cb36-560" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> pm, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
+<span id="cb36-561"><a href="#cb36-561" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>train, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
+<span id="cb36-562"><a href="#cb36-562" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(rs_pm, pm)</span>
+<span id="cb36-563"><a href="#cb36-563" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">predict</span>(rs_train, dd<span class="sc">$</span>data<span class="sc">$</span>train)</span>
+<span id="cb36-564"><a href="#cb36-564" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-565"><a href="#cb36-565" aria-hidden="true" tabindex="-1"></a><span class="fu">g_additivity</span>(</span>
+<span id="cb36-566"><a href="#cb36-566" aria-hidden="true" tabindex="-1"></a>  <span class="at">sp =</span> <span class="fu">list</span>(<span class="fu">inv.logit</span>(p3), <span class="fu">inv.logit</span>(p4)),</span>
+<span id="cb36-567"><a href="#cb36-567" aria-hidden="true" tabindex="-1"></a>  <span class="at">lp =</span> <span class="fu">list</span>(p1, p2),</span>
+<span id="cb36-568"><a href="#cb36-568" aria-hidden="true" tabindex="-1"></a>  <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Product Marginals"</span>, <span class="st">"Train Set"</span>)</span>
+<span id="cb36-569"><a href="#cb36-569" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> </span>
+<span id="cb36-570"><a href="#cb36-570" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Rough Model Predictions"</span>, <span class="at">y =</span> <span class="st">"Strong Learner Predictions"</span>) <span class="sc">+</span> </span>
+<span id="cb36-571"><a href="#cb36-571" aria-hidden="true" tabindex="-1"></a>    theme_single</span>
+<span id="cb36-572"><a href="#cb36-572" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-573"><a href="#cb36-573" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-574"><a href="#cb36-574" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-575"><a href="#cb36-575" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb36-575"><a href="#cb36-575" aria-hidden="true" tabindex="-1"></a><span class="fu">## Variable importance</span></span>
 <span id="cb36-576"><a href="#cb36-576" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-577"><a href="#cb36-577" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-578"><a href="#cb36-578" aria-hidden="true" tabindex="-1"></a><span class="fu">### Logit scale, pm</span></span>
+<span id="cb36-577"><a href="#cb36-577" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb36-578"><a href="#cb36-578" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-579"><a href="#cb36-579" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-582"><a href="#cb36-582" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-583"><a href="#cb36-583" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
-<span id="cb36-584"><a href="#cb36-584" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
-<span id="cb36-585"><a href="#cb36-585" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-586"><a href="#cb36-586" aria-hidden="true" tabindex="-1"></a>vi_pm <span class="ot">&lt;-</span> <span class="fu">g_var_imp</span>(rs_pm, <span class="at">show_pdp_plot =</span> <span class="cn">FALSE</span>, <span class="at">textsize =</span> <span class="dv">16</span>, <span class="at">var_imp_type =</span> <span class="st">"ice"</span>, </span>
-<span id="cb36-587"><a href="#cb36-587" aria-hidden="true" tabindex="-1"></a>                   <span class="at">logodds_to_prob =</span> F)</span>
-<span id="cb36-588"><a href="#cb36-588" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vi_pm)</span>
-<span id="cb36-589"><a href="#cb36-589" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-590"><a href="#cb36-590" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-591"><a href="#cb36-591" aria-hidden="true" tabindex="-1"></a><span class="fu">### Prob scale, pm</span></span>
+<span id="cb36-580"><a href="#cb36-580" aria-hidden="true" tabindex="-1"></a><span class="fu">### Logit scale, pm</span></span>
+<span id="cb36-581"><a href="#cb36-581" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-584"><a href="#cb36-584" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-585"><a href="#cb36-585" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
+<span id="cb36-586"><a href="#cb36-586" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb36-587"><a href="#cb36-587" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-588"><a href="#cb36-588" aria-hidden="true" tabindex="-1"></a>vi_pm <span class="ot">&lt;-</span> <span class="fu">g_var_imp</span>(rs_pm, <span class="at">show_pdp_plot =</span> <span class="cn">FALSE</span>, <span class="at">textsize =</span> <span class="dv">16</span>, <span class="at">var_imp_type =</span> <span class="st">"ice"</span>, </span>
+<span id="cb36-589"><a href="#cb36-589" aria-hidden="true" tabindex="-1"></a>                   <span class="at">logodds_to_prob =</span> F)</span>
+<span id="cb36-590"><a href="#cb36-590" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vi_pm)</span>
+<span id="cb36-591"><a href="#cb36-591" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-592"><a href="#cb36-592" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-595"><a href="#cb36-595" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-596"><a href="#cb36-596" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
-<span id="cb36-597"><a href="#cb36-597" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
-<span id="cb36-598"><a href="#cb36-598" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-599"><a href="#cb36-599" aria-hidden="true" tabindex="-1"></a>vi_pm_prob <span class="ot">&lt;-</span> <span class="fu">g_var_imp</span>(rs_pm, <span class="at">show_pdp_plot =</span> <span class="cn">FALSE</span>, <span class="at">textsize =</span> <span class="dv">16</span>, <span class="at">var_imp_type =</span> <span class="st">"ice"</span>, </span>
-<span id="cb36-600"><a href="#cb36-600" aria-hidden="true" tabindex="-1"></a>                        <span class="at">logodds_to_prob =</span> T)</span>
-<span id="cb36-601"><a href="#cb36-601" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vi_pm_prob)</span>
-<span id="cb36-602"><a href="#cb36-602" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-603"><a href="#cb36-603" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-604"><a href="#cb36-604" aria-hidden="true" tabindex="-1"></a><span class="fu">### Logit scale, train</span></span>
+<span id="cb36-593"><a href="#cb36-593" aria-hidden="true" tabindex="-1"></a><span class="fu">### Prob scale, pm</span></span>
+<span id="cb36-594"><a href="#cb36-594" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-597"><a href="#cb36-597" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-598"><a href="#cb36-598" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
+<span id="cb36-599"><a href="#cb36-599" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb36-600"><a href="#cb36-600" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-601"><a href="#cb36-601" aria-hidden="true" tabindex="-1"></a>vi_pm_prob <span class="ot">&lt;-</span> <span class="fu">g_var_imp</span>(rs_pm, <span class="at">show_pdp_plot =</span> <span class="cn">FALSE</span>, <span class="at">textsize =</span> <span class="dv">16</span>, <span class="at">var_imp_type =</span> <span class="st">"ice"</span>, </span>
+<span id="cb36-602"><a href="#cb36-602" aria-hidden="true" tabindex="-1"></a>                        <span class="at">logodds_to_prob =</span> T)</span>
+<span id="cb36-603"><a href="#cb36-603" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vi_pm_prob)</span>
+<span id="cb36-604"><a href="#cb36-604" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-605"><a href="#cb36-605" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-608"><a href="#cb36-608" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-609"><a href="#cb36-609" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
-<span id="cb36-610"><a href="#cb36-610" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
-<span id="cb36-611"><a href="#cb36-611" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-612"><a href="#cb36-612" aria-hidden="true" tabindex="-1"></a>vi_train <span class="ot">&lt;-</span> <span class="fu">g_var_imp</span>(rs_train, <span class="at">show_pdp_plot =</span> <span class="cn">FALSE</span>, <span class="at">textsize =</span> <span class="dv">16</span>, <span class="at">var_imp_type =</span> <span class="st">"ice"</span>, </span>
-<span id="cb36-613"><a href="#cb36-613" aria-hidden="true" tabindex="-1"></a>                      <span class="at">logodds_to_prob =</span> F)</span>
-<span id="cb36-614"><a href="#cb36-614" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vi_train)</span>
-<span id="cb36-615"><a href="#cb36-615" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-616"><a href="#cb36-616" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-617"><a href="#cb36-617" aria-hidden="true" tabindex="-1"></a><span class="fu">### Prob scale, train</span></span>
+<span id="cb36-606"><a href="#cb36-606" aria-hidden="true" tabindex="-1"></a><span class="fu">### Logit scale, train</span></span>
+<span id="cb36-607"><a href="#cb36-607" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-610"><a href="#cb36-610" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-611"><a href="#cb36-611" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
+<span id="cb36-612"><a href="#cb36-612" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb36-613"><a href="#cb36-613" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-614"><a href="#cb36-614" aria-hidden="true" tabindex="-1"></a>vi_train <span class="ot">&lt;-</span> <span class="fu">g_var_imp</span>(rs_train, <span class="at">show_pdp_plot =</span> <span class="cn">FALSE</span>, <span class="at">textsize =</span> <span class="dv">16</span>, <span class="at">var_imp_type =</span> <span class="st">"ice"</span>, </span>
+<span id="cb36-615"><a href="#cb36-615" aria-hidden="true" tabindex="-1"></a>                      <span class="at">logodds_to_prob =</span> F)</span>
+<span id="cb36-616"><a href="#cb36-616" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vi_train)</span>
+<span id="cb36-617"><a href="#cb36-617" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-618"><a href="#cb36-618" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-621"><a href="#cb36-621" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-622"><a href="#cb36-622" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
-<span id="cb36-623"><a href="#cb36-623" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
-<span id="cb36-624"><a href="#cb36-624" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-625"><a href="#cb36-625" aria-hidden="true" tabindex="-1"></a>vi_train_prob <span class="ot">&lt;-</span> <span class="fu">g_var_imp</span>(rs_train, <span class="at">show_pdp_plot =</span> <span class="cn">FALSE</span>, <span class="at">textsize =</span> <span class="dv">16</span>, <span class="at">var_imp_type =</span> <span class="st">"ice"</span>, </span>
-<span id="cb36-626"><a href="#cb36-626" aria-hidden="true" tabindex="-1"></a>                           <span class="at">logodds_to_prob =</span> T)</span>
-<span id="cb36-627"><a href="#cb36-627" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vi_train_prob)</span>
-<span id="cb36-628"><a href="#cb36-628" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-629"><a href="#cb36-629" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-630"><a href="#cb36-630" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb36-619"><a href="#cb36-619" aria-hidden="true" tabindex="-1"></a><span class="fu">### Prob scale, train</span></span>
+<span id="cb36-620"><a href="#cb36-620" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-623"><a href="#cb36-623" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-624"><a href="#cb36-624" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
+<span id="cb36-625"><a href="#cb36-625" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb36-626"><a href="#cb36-626" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-627"><a href="#cb36-627" aria-hidden="true" tabindex="-1"></a>vi_train_prob <span class="ot">&lt;-</span> <span class="fu">g_var_imp</span>(rs_train, <span class="at">show_pdp_plot =</span> <span class="cn">FALSE</span>, <span class="at">textsize =</span> <span class="dv">16</span>, <span class="at">var_imp_type =</span> <span class="st">"ice"</span>, </span>
+<span id="cb36-628"><a href="#cb36-628" aria-hidden="true" tabindex="-1"></a>                           <span class="at">logodds_to_prob =</span> T)</span>
+<span id="cb36-629"><a href="#cb36-629" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vi_train_prob)</span>
+<span id="cb36-630"><a href="#cb36-630" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-631"><a href="#cb36-631" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-632"><a href="#cb36-632" aria-hidden="true" tabindex="-1"></a><span class="fu">## Calibration</span></span>
+<span id="cb36-632"><a href="#cb36-632" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb36-633"><a href="#cb36-633" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-636"><a href="#cb36-636" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-637"><a href="#cb36-637" aria-hidden="true" tabindex="-1"></a>preds_sculptures <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb36-638"><a href="#cb36-638" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]])),</span>
-<span id="cb36-639"><a href="#cb36-639" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs_fct =</span> <span class="fu">factor</span>(dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]], <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>)),</span>
-<span id="cb36-640"><a href="#cb36-640" aria-hidden="true" tabindex="-1"></a>  <span class="at">xgb_prob =</span> <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1,</span>
-<span id="cb36-641"><a href="#cb36-641" aria-hidden="true" tabindex="-1"></a>  <span class="at">rm_log =</span> <span class="fu">predict</span>(rs_pm, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
-<span id="cb36-642"><a href="#cb36-642" aria-hidden="true" tabindex="-1"></a>  <span class="at">pm_log =</span> <span class="fu">predict</span>(ps_pm_v2, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
-<span id="cb36-643"><a href="#cb36-643" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir_prob =</span> <span class="fu">predict</span>(xgb_fo, <span class="at">new_data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
-<span id="cb36-644"><a href="#cb36-644" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb36-645"><a href="#cb36-645" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb36-646"><a href="#cb36-646" aria-hidden="true" tabindex="-1"></a>    <span class="at">rm_prob =</span> <span class="fu">inv.logit</span>(rm_log),</span>
-<span id="cb36-647"><a href="#cb36-647" aria-hidden="true" tabindex="-1"></a>    <span class="at">pm_prob =</span> <span class="fu">inv.logit</span>(pm_log)</span>
-<span id="cb36-648"><a href="#cb36-648" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb36-649"><a href="#cb36-649" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb36-650"><a href="#cb36-650" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(obs, obs_fct),</span>
-<span id="cb36-651"><a href="#cb36-651" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">"Model"</span>, <span class="st">"type"</span>), <span class="at">names_sep =</span> <span class="st">"_"</span>,</span>
-<span id="cb36-652"><a href="#cb36-652" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"pred"</span></span>
-<span id="cb36-653"><a href="#cb36-653" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb36-654"><a href="#cb36-654" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">"prob"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb36-655"><a href="#cb36-655" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb36-656"><a href="#cb36-656" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> <span class="fu">c</span>(</span>
-<span id="cb36-657"><a href="#cb36-657" aria-hidden="true" tabindex="-1"></a>      <span class="st">"xgb"</span> <span class="ot">=</span> <span class="st">"XGBoost"</span>, <span class="st">"rm"</span> <span class="ot">=</span> <span class="st">"Rough Model"</span>,</span>
-<span id="cb36-658"><a href="#cb36-658" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pm"</span> <span class="ot">=</span> <span class="st">"Polished Model"</span>, <span class="st">"dir"</span> <span class="ot">=</span> <span class="st">"Direct Additive XGBoost"</span></span>
-<span id="cb36-659"><a href="#cb36-659" aria-hidden="true" tabindex="-1"></a>    )[Model],</span>
-<span id="cb36-660"><a href="#cb36-660" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> <span class="fu">factor</span>(</span>
-<span id="cb36-661"><a href="#cb36-661" aria-hidden="true" tabindex="-1"></a>      Model, </span>
-<span id="cb36-662"><a href="#cb36-662" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(</span>
-<span id="cb36-663"><a href="#cb36-663" aria-hidden="true" tabindex="-1"></a>        <span class="st">"XGBoost"</span>, <span class="st">"Rough Model"</span>, <span class="st">"Polished Model"</span>, <span class="st">"Direct Additive XGBoost"</span></span>
-<span id="cb36-664"><a href="#cb36-664" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb36-665"><a href="#cb36-665" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb36-666"><a href="#cb36-666" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb36-667"><a href="#cb36-667" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-668"><a href="#cb36-668" aria-hidden="true" tabindex="-1"></a>calib_plot_sculptures <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(preds_sculptures) <span class="sc">+</span> </span>
-<span id="cb36-669"><a href="#cb36-669" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> obs, <span class="at">colour =</span> Model), <span class="at">se =</span> F, <span class="at">method =</span> <span class="st">"gam"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x, </span>
-<span id="cb36-670"><a href="#cb36-670" aria-hidden="true" tabindex="-1"></a>              <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>)) <span class="sc">+</span> </span>
-<span id="cb36-671"><a href="#cb36-671" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
-<span id="cb36-672"><a href="#cb36-672" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Prediction"</span>, <span class="at">y =</span> <span class="st">"Truth"</span>) <span class="sc">+</span> </span>
-<span id="cb36-673"><a href="#cb36-673" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
-<span id="cb36-674"><a href="#cb36-674" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>))</span>
-<span id="cb36-675"><a href="#cb36-675" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-676"><a href="#cb36-676" aria-hidden="true" tabindex="-1"></a>calib_plot_sculptures</span>
-<span id="cb36-677"><a href="#cb36-677" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-678"><a href="#cb36-678" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-679"><a href="#cb36-679" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-680"><a href="#cb36-680" aria-hidden="true" tabindex="-1"></a><span class="fu">## Predictiveness curve</span></span>
+<span id="cb36-634"><a href="#cb36-634" aria-hidden="true" tabindex="-1"></a><span class="fu">## Calibration</span></span>
+<span id="cb36-635"><a href="#cb36-635" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-638"><a href="#cb36-638" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-639"><a href="#cb36-639" aria-hidden="true" tabindex="-1"></a>preds_sculptures <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb36-640"><a href="#cb36-640" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]])),</span>
+<span id="cb36-641"><a href="#cb36-641" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs_fct =</span> <span class="fu">factor</span>(dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]], <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>)),</span>
+<span id="cb36-642"><a href="#cb36-642" aria-hidden="true" tabindex="-1"></a>  <span class="at">xgb_prob =</span> <span class="fu">predict</span>(xgb, <span class="at">new_data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1,</span>
+<span id="cb36-643"><a href="#cb36-643" aria-hidden="true" tabindex="-1"></a>  <span class="at">rm_log =</span> <span class="fu">predict</span>(rs_pm, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb36-644"><a href="#cb36-644" aria-hidden="true" tabindex="-1"></a>  <span class="at">pm_log =</span> <span class="fu">predict</span>(ps_pm_v2, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb36-645"><a href="#cb36-645" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir_prob =</span> <span class="fu">predict</span>(xgb_fo, <span class="at">new_data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
+<span id="cb36-646"><a href="#cb36-646" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb36-647"><a href="#cb36-647" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb36-648"><a href="#cb36-648" aria-hidden="true" tabindex="-1"></a>    <span class="at">rm_prob =</span> <span class="fu">inv.logit</span>(rm_log),</span>
+<span id="cb36-649"><a href="#cb36-649" aria-hidden="true" tabindex="-1"></a>    <span class="at">pm_prob =</span> <span class="fu">inv.logit</span>(pm_log)</span>
+<span id="cb36-650"><a href="#cb36-650" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb36-651"><a href="#cb36-651" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb36-652"><a href="#cb36-652" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(obs, obs_fct),</span>
+<span id="cb36-653"><a href="#cb36-653" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">"Model"</span>, <span class="st">"type"</span>), <span class="at">names_sep =</span> <span class="st">"_"</span>,</span>
+<span id="cb36-654"><a href="#cb36-654" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"pred"</span></span>
+<span id="cb36-655"><a href="#cb36-655" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb36-656"><a href="#cb36-656" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">"prob"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-657"><a href="#cb36-657" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb36-658"><a href="#cb36-658" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> <span class="fu">c</span>(</span>
+<span id="cb36-659"><a href="#cb36-659" aria-hidden="true" tabindex="-1"></a>      <span class="st">"xgb"</span> <span class="ot">=</span> <span class="st">"XGBoost"</span>, <span class="st">"rm"</span> <span class="ot">=</span> <span class="st">"Rough Model"</span>,</span>
+<span id="cb36-660"><a href="#cb36-660" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pm"</span> <span class="ot">=</span> <span class="st">"Polished Model"</span>, <span class="st">"dir"</span> <span class="ot">=</span> <span class="st">"Direct Additive XGBoost"</span></span>
+<span id="cb36-661"><a href="#cb36-661" aria-hidden="true" tabindex="-1"></a>    )[Model],</span>
+<span id="cb36-662"><a href="#cb36-662" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> <span class="fu">factor</span>(</span>
+<span id="cb36-663"><a href="#cb36-663" aria-hidden="true" tabindex="-1"></a>      Model, </span>
+<span id="cb36-664"><a href="#cb36-664" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(</span>
+<span id="cb36-665"><a href="#cb36-665" aria-hidden="true" tabindex="-1"></a>        <span class="st">"XGBoost"</span>, <span class="st">"Rough Model"</span>, <span class="st">"Polished Model"</span>, <span class="st">"Direct Additive XGBoost"</span></span>
+<span id="cb36-666"><a href="#cb36-666" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb36-667"><a href="#cb36-667" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb36-668"><a href="#cb36-668" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-669"><a href="#cb36-669" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-670"><a href="#cb36-670" aria-hidden="true" tabindex="-1"></a>calib_plot_sculptures <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(preds_sculptures) <span class="sc">+</span> </span>
+<span id="cb36-671"><a href="#cb36-671" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> obs, <span class="at">colour =</span> Model), <span class="at">se =</span> F, <span class="at">method =</span> <span class="st">"gam"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x, </span>
+<span id="cb36-672"><a href="#cb36-672" aria-hidden="true" tabindex="-1"></a>              <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>)) <span class="sc">+</span> </span>
+<span id="cb36-673"><a href="#cb36-673" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
+<span id="cb36-674"><a href="#cb36-674" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Prediction"</span>, <span class="at">y =</span> <span class="st">"Truth"</span>) <span class="sc">+</span> </span>
+<span id="cb36-675"><a href="#cb36-675" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb36-676"><a href="#cb36-676" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>))</span>
+<span id="cb36-677"><a href="#cb36-677" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-678"><a href="#cb36-678" aria-hidden="true" tabindex="-1"></a>calib_plot_sculptures</span>
+<span id="cb36-679"><a href="#cb36-679" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-680"><a href="#cb36-680" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-681"><a href="#cb36-681" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-682"><a href="#cb36-682" aria-hidden="true" tabindex="-1"></a>The plot was generated using the <span class="in">`riskProfile`</span> function from the </span>
-<span id="cb36-683"><a href="#cb36-683" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`stats4phc`</span><span class="co">](https://genentech.github.io/stats4phc/main/index.html)</span> package.</span>
-<span id="cb36-684"><a href="#cb36-684" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-687"><a href="#cb36-687" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-688"><a href="#cb36-688" aria-hidden="true" tabindex="-1"></a>rp <span class="ot">&lt;-</span> <span class="fu">riskProfile</span>(</span>
-<span id="cb36-689"><a href="#cb36-689" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]])),</span>
-<span id="cb36-690"><a href="#cb36-690" aria-hidden="true" tabindex="-1"></a>  <span class="at">score =</span> <span class="fu">inv.logit</span>(<span class="fu">predict</span>(ps_pm_v2, dd<span class="sc">$</span>data<span class="sc">$</span>holdout))</span>
-<span id="cb36-691"><a href="#cb36-691" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-692"><a href="#cb36-692" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-693"><a href="#cb36-693" aria-hidden="true" tabindex="-1"></a>dm_corel <span class="ot">&lt;-</span> <span class="fu">define_model</span>(<span class="st">"corel_publication"</span>, dd)</span>
-<span id="cb36-694"><a href="#cb36-694" aria-hidden="true" tabindex="-1"></a>preds_corel <span class="ot">&lt;-</span> <span class="fu">predict</span>(dm_corel<span class="sc">$</span>workflow, <span class="at">new_data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout)<span class="sc">$</span>.pred_class</span>
-<span id="cb36-695"><a href="#cb36-695" aria-hidden="true" tabindex="-1"></a>preds_corel_fct <span class="ot">&lt;-</span> <span class="fu">factor</span>(preds_corel, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"0"</span>))</span>
-<span id="cb36-696"><a href="#cb36-696" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-697"><a href="#cb36-697" aria-hidden="true" tabindex="-1"></a>dat_corel <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb36-698"><a href="#cb36-698" aria-hidden="true" tabindex="-1"></a>  <span class="at">score_percentile =</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">mean</span>(preds_corel),</span>
-<span id="cb36-699"><a href="#cb36-699" aria-hidden="true" tabindex="-1"></a>  <span class="at">PPV =</span> <span class="fu">ppv_vec</span>(</span>
-<span id="cb36-700"><a href="#cb36-700" aria-hidden="true" tabindex="-1"></a>    <span class="at">truth =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]], </span>
-<span id="cb36-701"><a href="#cb36-701" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> preds_corel_fct, </span>
-<span id="cb36-702"><a href="#cb36-702" aria-hidden="true" tabindex="-1"></a>    <span class="at">event_level =</span> <span class="st">"first"</span></span>
-<span id="cb36-703"><a href="#cb36-703" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb36-704"><a href="#cb36-704" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">1-NPV</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">npv_vec</span>(</span>
-<span id="cb36-705"><a href="#cb36-705" aria-hidden="true" tabindex="-1"></a>    <span class="at">truth =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]], </span>
-<span id="cb36-706"><a href="#cb36-706" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> preds_corel_fct, </span>
-<span id="cb36-707"><a href="#cb36-707" aria-hidden="true" tabindex="-1"></a>    <span class="at">event_level =</span> <span class="st">"first"</span></span>
-<span id="cb36-708"><a href="#cb36-708" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb36-709"><a href="#cb36-709" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(PPV, <span class="st">`</span><span class="at">1-NPV</span><span class="st">`</span>))</span>
-<span id="cb36-710"><a href="#cb36-710" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-711"><a href="#cb36-711" aria-hidden="true" tabindex="-1"></a><span class="co"># final Predictiveness curve with corel alg.</span></span>
-<span id="cb36-712"><a href="#cb36-712" aria-hidden="true" tabindex="-1"></a>pc_plot <span class="ot">&lt;-</span> </span>
-<span id="cb36-713"><a href="#cb36-713" aria-hidden="true" tabindex="-1"></a>  rp<span class="sc">$</span>plot <span class="sc">+</span> </span>
-<span id="cb36-714"><a href="#cb36-714" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb36-715"><a href="#cb36-715" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat_corel,</span>
-<span id="cb36-716"><a href="#cb36-716" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> score_percentile, <span class="at">y =</span> value, <span class="at">colour =</span> name),</span>
-<span id="cb36-717"><a href="#cb36-717" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
-<span id="cb36-718"><a href="#cb36-718" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb36-719"><a href="#cb36-719" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-720"><a href="#cb36-720" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pc_plot)</span>
-<span id="cb36-721"><a href="#cb36-721" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-722"><a href="#cb36-722" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-723"><a href="#cb36-723" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-724"><a href="#cb36-724" aria-hidden="true" tabindex="-1"></a><span class="fu"># Compare with linear models</span></span>
+<span id="cb36-682"><a href="#cb36-682" aria-hidden="true" tabindex="-1"></a><span class="fu">## Predictiveness curve</span></span>
+<span id="cb36-683"><a href="#cb36-683" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-684"><a href="#cb36-684" aria-hidden="true" tabindex="-1"></a>The plot was generated using the <span class="in">`riskProfile`</span> function from the </span>
+<span id="cb36-685"><a href="#cb36-685" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`stats4phc`</span><span class="co">](https://genentech.github.io/stats4phc/main/index.html)</span> package.</span>
+<span id="cb36-686"><a href="#cb36-686" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-689"><a href="#cb36-689" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-690"><a href="#cb36-690" aria-hidden="true" tabindex="-1"></a>rp <span class="ot">&lt;-</span> <span class="fu">riskProfile</span>(</span>
+<span id="cb36-691"><a href="#cb36-691" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]])),</span>
+<span id="cb36-692"><a href="#cb36-692" aria-hidden="true" tabindex="-1"></a>  <span class="at">score =</span> <span class="fu">inv.logit</span>(<span class="fu">predict</span>(ps_pm_v2, dd<span class="sc">$</span>data<span class="sc">$</span>holdout))</span>
+<span id="cb36-693"><a href="#cb36-693" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-694"><a href="#cb36-694" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-695"><a href="#cb36-695" aria-hidden="true" tabindex="-1"></a>dm_corel <span class="ot">&lt;-</span> <span class="fu">define_model</span>(<span class="st">"corel_publication"</span>, dd)</span>
+<span id="cb36-696"><a href="#cb36-696" aria-hidden="true" tabindex="-1"></a>preds_corel <span class="ot">&lt;-</span> <span class="fu">predict</span>(dm_corel<span class="sc">$</span>workflow, <span class="at">new_data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout)<span class="sc">$</span>.pred_class</span>
+<span id="cb36-697"><a href="#cb36-697" aria-hidden="true" tabindex="-1"></a>preds_corel_fct <span class="ot">&lt;-</span> <span class="fu">factor</span>(preds_corel, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"0"</span>))</span>
+<span id="cb36-698"><a href="#cb36-698" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-699"><a href="#cb36-699" aria-hidden="true" tabindex="-1"></a>dat_corel <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb36-700"><a href="#cb36-700" aria-hidden="true" tabindex="-1"></a>  <span class="at">score_percentile =</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">mean</span>(preds_corel),</span>
+<span id="cb36-701"><a href="#cb36-701" aria-hidden="true" tabindex="-1"></a>  <span class="at">PPV =</span> <span class="fu">ppv_vec</span>(</span>
+<span id="cb36-702"><a href="#cb36-702" aria-hidden="true" tabindex="-1"></a>    <span class="at">truth =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]], </span>
+<span id="cb36-703"><a href="#cb36-703" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> preds_corel_fct, </span>
+<span id="cb36-704"><a href="#cb36-704" aria-hidden="true" tabindex="-1"></a>    <span class="at">event_level =</span> <span class="st">"first"</span></span>
+<span id="cb36-705"><a href="#cb36-705" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb36-706"><a href="#cb36-706" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">1-NPV</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">npv_vec</span>(</span>
+<span id="cb36-707"><a href="#cb36-707" aria-hidden="true" tabindex="-1"></a>    <span class="at">truth =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]], </span>
+<span id="cb36-708"><a href="#cb36-708" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> preds_corel_fct, </span>
+<span id="cb36-709"><a href="#cb36-709" aria-hidden="true" tabindex="-1"></a>    <span class="at">event_level =</span> <span class="st">"first"</span></span>
+<span id="cb36-710"><a href="#cb36-710" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-711"><a href="#cb36-711" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(PPV, <span class="st">`</span><span class="at">1-NPV</span><span class="st">`</span>))</span>
+<span id="cb36-712"><a href="#cb36-712" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-713"><a href="#cb36-713" aria-hidden="true" tabindex="-1"></a><span class="co"># final Predictiveness curve with corel alg.</span></span>
+<span id="cb36-714"><a href="#cb36-714" aria-hidden="true" tabindex="-1"></a>pc_plot <span class="ot">&lt;-</span> </span>
+<span id="cb36-715"><a href="#cb36-715" aria-hidden="true" tabindex="-1"></a>  rp<span class="sc">$</span>plot <span class="sc">+</span> </span>
+<span id="cb36-716"><a href="#cb36-716" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb36-717"><a href="#cb36-717" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat_corel,</span>
+<span id="cb36-718"><a href="#cb36-718" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> score_percentile, <span class="at">y =</span> value, <span class="at">colour =</span> name),</span>
+<span id="cb36-719"><a href="#cb36-719" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb36-720"><a href="#cb36-720" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-721"><a href="#cb36-721" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-722"><a href="#cb36-722" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pc_plot)</span>
+<span id="cb36-723"><a href="#cb36-723" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-724"><a href="#cb36-724" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-725"><a href="#cb36-725" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-726"><a href="#cb36-726" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load and sculpt</span></span>
+<span id="cb36-726"><a href="#cb36-726" aria-hidden="true" tabindex="-1"></a><span class="fu"># Compare with linear models</span></span>
 <span id="cb36-727"><a href="#cb36-727" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-730"><a href="#cb36-730" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-731"><a href="#cb36-731" aria-hidden="true" tabindex="-1"></a>elastic <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(<span class="st">"log_elastic"</span>)</span>
-<span id="cb36-732"><a href="#cb36-732" aria-hidden="true" tabindex="-1"></a>lasso <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(<span class="st">"log_lasso"</span>)</span>
-<span id="cb36-733"><a href="#cb36-733" aria-hidden="true" tabindex="-1"></a>ridge <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(<span class="st">"log_ridge"</span>)</span>
-<span id="cb36-734"><a href="#cb36-734" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-735"><a href="#cb36-735" aria-hidden="true" tabindex="-1"></a>dm_linm <span class="ot">&lt;-</span> <span class="fu">define_model</span>(<span class="at">type =</span> <span class="st">"logistic"</span>, <span class="at">data_info =</span> dd)</span>
-<span id="cb36-736"><a href="#cb36-736" aria-hidden="true" tabindex="-1"></a>linm <span class="ot">&lt;-</span> <span class="fu">fit</span>(dm_linm<span class="sc">$</span>workflow, <span class="at">data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>train)</span>
-<span id="cb36-737"><a href="#cb36-737" aria-hidden="true" tabindex="-1"></a>tg_linm <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(dm_linm<span class="sc">$</span>workflow, dd<span class="sc">$</span>cv)</span>
-<span id="cb36-738"><a href="#cb36-738" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-739"><a href="#cb36-739" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-742"><a href="#cb36-742" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-743"><a href="#cb36-743" aria-hidden="true" tabindex="-1"></a><span class="co"># sculptures on pm from different models</span></span>
-<span id="cb36-744"><a href="#cb36-744" aria-hidden="true" tabindex="-1"></a>rs_pm_elastic <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
-<span id="cb36-745"><a href="#cb36-745" aria-hidden="true" tabindex="-1"></a>  pm,</span>
-<span id="cb36-746"><a href="#cb36-746" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
-<span id="cb36-747"><a href="#cb36-747" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
-<span id="cb36-748"><a href="#cb36-748" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">predict</span>(elastic, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
-<span id="cb36-749"><a href="#cb36-749" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p)</span>
-<span id="cb36-750"><a href="#cb36-750" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb36-751"><a href="#cb36-751" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-752"><a href="#cb36-752" aria-hidden="true" tabindex="-1"></a>rs_pm_lasso <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
-<span id="cb36-753"><a href="#cb36-753" aria-hidden="true" tabindex="-1"></a>  pm,</span>
-<span id="cb36-754"><a href="#cb36-754" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
-<span id="cb36-755"><a href="#cb36-755" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
-<span id="cb36-756"><a href="#cb36-756" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">predict</span>(lasso, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
-<span id="cb36-757"><a href="#cb36-757" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p)</span>
-<span id="cb36-758"><a href="#cb36-758" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb36-759"><a href="#cb36-759" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-760"><a href="#cb36-760" aria-hidden="true" tabindex="-1"></a>rs_pm_ridge <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
-<span id="cb36-761"><a href="#cb36-761" aria-hidden="true" tabindex="-1"></a>  pm,</span>
-<span id="cb36-762"><a href="#cb36-762" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
-<span id="cb36-763"><a href="#cb36-763" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
-<span id="cb36-764"><a href="#cb36-764" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">predict</span>(ridge, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
-<span id="cb36-765"><a href="#cb36-765" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p)</span>
-<span id="cb36-766"><a href="#cb36-766" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb36-767"><a href="#cb36-767" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-768"><a href="#cb36-768" aria-hidden="true" tabindex="-1"></a>rs_pm_linm <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
-<span id="cb36-769"><a href="#cb36-769" aria-hidden="true" tabindex="-1"></a>  pm,</span>
-<span id="cb36-770"><a href="#cb36-770" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
-<span id="cb36-771"><a href="#cb36-771" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
-<span id="cb36-772"><a href="#cb36-772" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">predict</span>(linm, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
-<span id="cb36-773"><a href="#cb36-773" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p)</span>
-<span id="cb36-774"><a href="#cb36-774" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb36-775"><a href="#cb36-775" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-776"><a href="#cb36-776" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-777"><a href="#cb36-777" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-778"><a href="#cb36-778" aria-hidden="true" tabindex="-1"></a><span class="fu">## ICE</span></span>
+<span id="cb36-728"><a href="#cb36-728" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load and sculpt</span></span>
+<span id="cb36-729"><a href="#cb36-729" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-732"><a href="#cb36-732" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-733"><a href="#cb36-733" aria-hidden="true" tabindex="-1"></a>elastic <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(<span class="st">"log_elastic"</span>)</span>
+<span id="cb36-734"><a href="#cb36-734" aria-hidden="true" tabindex="-1"></a>lasso <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(<span class="st">"log_lasso"</span>)</span>
+<span id="cb36-735"><a href="#cb36-735" aria-hidden="true" tabindex="-1"></a>ridge <span class="ot">&lt;-</span> <span class="fu">load_model_if_trained</span>(<span class="st">"log_ridge"</span>)</span>
+<span id="cb36-736"><a href="#cb36-736" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-737"><a href="#cb36-737" aria-hidden="true" tabindex="-1"></a>dm_linm <span class="ot">&lt;-</span> <span class="fu">define_model</span>(<span class="at">type =</span> <span class="st">"logistic"</span>, <span class="at">data_info =</span> dd)</span>
+<span id="cb36-738"><a href="#cb36-738" aria-hidden="true" tabindex="-1"></a>linm <span class="ot">&lt;-</span> <span class="fu">fit</span>(dm_linm<span class="sc">$</span>workflow, <span class="at">data =</span> dd<span class="sc">$</span>data<span class="sc">$</span>train)</span>
+<span id="cb36-739"><a href="#cb36-739" aria-hidden="true" tabindex="-1"></a>tg_linm <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(dm_linm<span class="sc">$</span>workflow, dd<span class="sc">$</span>cv)</span>
+<span id="cb36-740"><a href="#cb36-740" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-741"><a href="#cb36-741" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-744"><a href="#cb36-744" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-745"><a href="#cb36-745" aria-hidden="true" tabindex="-1"></a><span class="co"># sculptures on pm from different models</span></span>
+<span id="cb36-746"><a href="#cb36-746" aria-hidden="true" tabindex="-1"></a>rs_pm_elastic <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb36-747"><a href="#cb36-747" aria-hidden="true" tabindex="-1"></a>  pm,</span>
+<span id="cb36-748"><a href="#cb36-748" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb36-749"><a href="#cb36-749" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb36-750"><a href="#cb36-750" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">predict</span>(elastic, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
+<span id="cb36-751"><a href="#cb36-751" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p)</span>
+<span id="cb36-752"><a href="#cb36-752" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb36-753"><a href="#cb36-753" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-754"><a href="#cb36-754" aria-hidden="true" tabindex="-1"></a>rs_pm_lasso <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb36-755"><a href="#cb36-755" aria-hidden="true" tabindex="-1"></a>  pm,</span>
+<span id="cb36-756"><a href="#cb36-756" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb36-757"><a href="#cb36-757" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb36-758"><a href="#cb36-758" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">predict</span>(lasso, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
+<span id="cb36-759"><a href="#cb36-759" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p)</span>
+<span id="cb36-760"><a href="#cb36-760" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb36-761"><a href="#cb36-761" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-762"><a href="#cb36-762" aria-hidden="true" tabindex="-1"></a>rs_pm_ridge <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb36-763"><a href="#cb36-763" aria-hidden="true" tabindex="-1"></a>  pm,</span>
+<span id="cb36-764"><a href="#cb36-764" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb36-765"><a href="#cb36-765" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb36-766"><a href="#cb36-766" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">predict</span>(ridge, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
+<span id="cb36-767"><a href="#cb36-767" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p)</span>
+<span id="cb36-768"><a href="#cb36-768" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb36-769"><a href="#cb36-769" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-770"><a href="#cb36-770" aria-hidden="true" tabindex="-1"></a>rs_pm_linm <span class="ot">&lt;-</span> <span class="fu">sculpt_rough</span>(</span>
+<span id="cb36-771"><a href="#cb36-771" aria-hidden="true" tabindex="-1"></a>  pm,</span>
+<span id="cb36-772"><a href="#cb36-772" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb36-773"><a href="#cb36-773" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_predict_fun =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb36-774"><a href="#cb36-774" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">predict</span>(linm, <span class="at">new_data =</span> x, <span class="at">type =</span> <span class="st">"prob"</span>)<span class="sc">$</span>.pred_1</span>
+<span id="cb36-775"><a href="#cb36-775" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p)</span>
+<span id="cb36-776"><a href="#cb36-776" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb36-777"><a href="#cb36-777" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-778"><a href="#cb36-778" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-779"><a href="#cb36-779" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-782"><a href="#cb36-782" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-783"><a href="#cb36-783" aria-hidden="true" tabindex="-1"></a>comp_models <span class="ot">&lt;-</span> <span class="fu">g_comparison</span>(</span>
-<span id="cb36-784"><a href="#cb36-784" aria-hidden="true" tabindex="-1"></a>  <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm_elastic, rs_pm_lasso, rs_pm_ridge, rs_pm_linm, ps_pm_v2),</span>
-<span id="cb36-785"><a href="#cb36-785" aria-hidden="true" tabindex="-1"></a>  <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Elastic Net"</span>, <span class="st">"Lasso"</span>, <span class="st">"Ridge"</span>, <span class="st">"Logistic Regression"</span>, <span class="st">"Polished"</span>),</span>
-<span id="cb36-786"><a href="#cb36-786" aria-hidden="true" tabindex="-1"></a>  <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb36-787"><a href="#cb36-787" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-788"><a href="#cb36-788" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-789"><a href="#cb36-789" aria-hidden="true" tabindex="-1"></a>comp_models<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
-<span id="cb36-790"><a href="#cb36-790" aria-hidden="true" tabindex="-1"></a>comp_models<span class="sc">$</span>discrete</span>
-<span id="cb36-791"><a href="#cb36-791" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-792"><a href="#cb36-792" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-793"><a href="#cb36-793" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-780"><a href="#cb36-780" aria-hidden="true" tabindex="-1"></a><span class="fu">## ICE</span></span>
+<span id="cb36-781"><a href="#cb36-781" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-784"><a href="#cb36-784" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-785"><a href="#cb36-785" aria-hidden="true" tabindex="-1"></a>comp_models <span class="ot">&lt;-</span> <span class="fu">g_comparison</span>(</span>
+<span id="cb36-786"><a href="#cb36-786" aria-hidden="true" tabindex="-1"></a>  <span class="at">sculptures =</span> <span class="fu">list</span>(rs_pm_elastic, rs_pm_lasso, rs_pm_ridge, rs_pm_linm, ps_pm_v2),</span>
+<span id="cb36-787"><a href="#cb36-787" aria-hidden="true" tabindex="-1"></a>  <span class="at">descriptions =</span> <span class="fu">c</span>(<span class="st">"Elastic Net"</span>, <span class="st">"Lasso"</span>, <span class="st">"Ridge"</span>, <span class="st">"Logistic Regression"</span>, <span class="st">"Polished"</span>),</span>
+<span id="cb36-788"><a href="#cb36-788" aria-hidden="true" tabindex="-1"></a>  <span class="at">facet_spec =</span> <span class="fu">facet_specification</span>(<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb36-789"><a href="#cb36-789" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-790"><a href="#cb36-790" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-791"><a href="#cb36-791" aria-hidden="true" tabindex="-1"></a>comp_models<span class="sc">$</span>continuous <span class="sc">+</span> theme_facets</span>
+<span id="cb36-792"><a href="#cb36-792" aria-hidden="true" tabindex="-1"></a>comp_models<span class="sc">$</span>discrete</span>
+<span id="cb36-793"><a href="#cb36-793" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-794"><a href="#cb36-794" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-795"><a href="#cb36-795" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-796"><a href="#cb36-796" aria-hidden="true" tabindex="-1"></a><span class="fu">## Calibration</span></span>
+<span id="cb36-796"><a href="#cb36-796" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-797"><a href="#cb36-797" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-800"><a href="#cb36-800" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-801"><a href="#cb36-801" aria-hidden="true" tabindex="-1"></a>preds_models <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb36-802"><a href="#cb36-802" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]])),</span>
-<span id="cb36-803"><a href="#cb36-803" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs_fct =</span> <span class="fu">factor</span>(dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]], <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>)),</span>
-<span id="cb36-804"><a href="#cb36-804" aria-hidden="true" tabindex="-1"></a>  <span class="at">xgbPol_log =</span> <span class="fu">predict</span>(ps_pm_v2, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
-<span id="cb36-805"><a href="#cb36-805" aria-hidden="true" tabindex="-1"></a>  <span class="at">linm_log =</span> <span class="fu">predict</span>(rs_pm_linm, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
-<span id="cb36-806"><a href="#cb36-806" aria-hidden="true" tabindex="-1"></a>  <span class="at">elastic_log =</span> <span class="fu">predict</span>(rs_pm_elastic, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
-<span id="cb36-807"><a href="#cb36-807" aria-hidden="true" tabindex="-1"></a>  <span class="at">lasso_log =</span> <span class="fu">predict</span>(rs_pm_lasso, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
-<span id="cb36-808"><a href="#cb36-808" aria-hidden="true" tabindex="-1"></a>  <span class="at">ridge_log =</span> <span class="fu">predict</span>(rs_pm_ridge, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout)</span>
-<span id="cb36-809"><a href="#cb36-809" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
-<span id="cb36-810"><a href="#cb36-810" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb36-811"><a href="#cb36-811" aria-hidden="true" tabindex="-1"></a>    <span class="at">xgbPol_prob =</span> <span class="fu">inv.logit</span>(xgbPol_log),</span>
-<span id="cb36-812"><a href="#cb36-812" aria-hidden="true" tabindex="-1"></a>    <span class="at">linm_prob =</span> <span class="fu">inv.logit</span>(linm_log),</span>
-<span id="cb36-813"><a href="#cb36-813" aria-hidden="true" tabindex="-1"></a>    <span class="at">elastic_prob =</span> <span class="fu">inv.logit</span>(elastic_log),</span>
-<span id="cb36-814"><a href="#cb36-814" aria-hidden="true" tabindex="-1"></a>    <span class="at">lasso_prob =</span> <span class="fu">inv.logit</span>(lasso_log),</span>
-<span id="cb36-815"><a href="#cb36-815" aria-hidden="true" tabindex="-1"></a>    <span class="at">ridge_prob =</span> <span class="fu">inv.logit</span>(ridge_log)</span>
-<span id="cb36-816"><a href="#cb36-816" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb36-817"><a href="#cb36-817" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb36-818"><a href="#cb36-818" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(obs, obs_fct),</span>
-<span id="cb36-819"><a href="#cb36-819" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">"Model"</span>, <span class="st">"type"</span>), <span class="at">names_sep =</span> <span class="st">"_"</span>,</span>
-<span id="cb36-820"><a href="#cb36-820" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"pred"</span></span>
-<span id="cb36-821"><a href="#cb36-821" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb36-822"><a href="#cb36-822" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">"prob"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb36-823"><a href="#cb36-823" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb36-824"><a href="#cb36-824" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> <span class="fu">c</span>(</span>
-<span id="cb36-825"><a href="#cb36-825" aria-hidden="true" tabindex="-1"></a>      <span class="st">"xgbPol"</span> <span class="ot">=</span> <span class="st">"Polished"</span>, </span>
-<span id="cb36-826"><a href="#cb36-826" aria-hidden="true" tabindex="-1"></a>      <span class="st">"linm"</span> <span class="ot">=</span> <span class="st">"Logistic"</span>, <span class="st">"elastic"</span> <span class="ot">=</span> <span class="st">"Elastic Net"</span>, <span class="st">"lasso"</span> <span class="ot">=</span> <span class="st">"Lasso"</span>, <span class="st">"ridge"</span> <span class="ot">=</span> <span class="st">"Ridge"</span> </span>
-<span id="cb36-827"><a href="#cb36-827" aria-hidden="true" tabindex="-1"></a>    )[Model]</span>
-<span id="cb36-828"><a href="#cb36-828" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb36-829"><a href="#cb36-829" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-830"><a href="#cb36-830" aria-hidden="true" tabindex="-1"></a><span class="co"># calibration plot on holdout based on pm sculptures of different linear models</span></span>
-<span id="cb36-831"><a href="#cb36-831" aria-hidden="true" tabindex="-1"></a>calib_plot_models <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(preds_models) <span class="sc">+</span> </span>
-<span id="cb36-832"><a href="#cb36-832" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> obs, <span class="at">colour =</span> Model), <span class="at">se =</span> F, <span class="at">method =</span> <span class="st">"gam"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x, </span>
-<span id="cb36-833"><a href="#cb36-833" aria-hidden="true" tabindex="-1"></a>              <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>)) <span class="sc">+</span> </span>
-<span id="cb36-834"><a href="#cb36-834" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
-<span id="cb36-835"><a href="#cb36-835" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Prediction"</span>, <span class="at">y =</span> <span class="st">"Truth"</span>) <span class="sc">+</span> </span>
-<span id="cb36-836"><a href="#cb36-836" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
-<span id="cb36-837"><a href="#cb36-837" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>))</span>
-<span id="cb36-838"><a href="#cb36-838" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-839"><a href="#cb36-839" aria-hidden="true" tabindex="-1"></a>calib_plot_models</span>
-<span id="cb36-840"><a href="#cb36-840" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-841"><a href="#cb36-841" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-842"><a href="#cb36-842" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-843"><a href="#cb36-843" aria-hidden="true" tabindex="-1"></a><span class="fu"># Session info</span></span>
+<span id="cb36-798"><a href="#cb36-798" aria-hidden="true" tabindex="-1"></a><span class="fu">## Calibration</span></span>
+<span id="cb36-799"><a href="#cb36-799" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-802"><a href="#cb36-802" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-803"><a href="#cb36-803" aria-hidden="true" tabindex="-1"></a>preds_models <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb36-804"><a href="#cb36-804" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]])),</span>
+<span id="cb36-805"><a href="#cb36-805" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs_fct =</span> <span class="fu">factor</span>(dd<span class="sc">$</span>data<span class="sc">$</span>holdout[[dd<span class="sc">$</span>response]], <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>)),</span>
+<span id="cb36-806"><a href="#cb36-806" aria-hidden="true" tabindex="-1"></a>  <span class="at">xgbPol_log =</span> <span class="fu">predict</span>(ps_pm_v2, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb36-807"><a href="#cb36-807" aria-hidden="true" tabindex="-1"></a>  <span class="at">linm_log =</span> <span class="fu">predict</span>(rs_pm_linm, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb36-808"><a href="#cb36-808" aria-hidden="true" tabindex="-1"></a>  <span class="at">elastic_log =</span> <span class="fu">predict</span>(rs_pm_elastic, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb36-809"><a href="#cb36-809" aria-hidden="true" tabindex="-1"></a>  <span class="at">lasso_log =</span> <span class="fu">predict</span>(rs_pm_lasso, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout),</span>
+<span id="cb36-810"><a href="#cb36-810" aria-hidden="true" tabindex="-1"></a>  <span class="at">ridge_log =</span> <span class="fu">predict</span>(rs_pm_ridge, <span class="at">newdata =</span> dd<span class="sc">$</span>data<span class="sc">$</span>holdout)</span>
+<span id="cb36-811"><a href="#cb36-811" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-812"><a href="#cb36-812" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb36-813"><a href="#cb36-813" aria-hidden="true" tabindex="-1"></a>    <span class="at">xgbPol_prob =</span> <span class="fu">inv.logit</span>(xgbPol_log),</span>
+<span id="cb36-814"><a href="#cb36-814" aria-hidden="true" tabindex="-1"></a>    <span class="at">linm_prob =</span> <span class="fu">inv.logit</span>(linm_log),</span>
+<span id="cb36-815"><a href="#cb36-815" aria-hidden="true" tabindex="-1"></a>    <span class="at">elastic_prob =</span> <span class="fu">inv.logit</span>(elastic_log),</span>
+<span id="cb36-816"><a href="#cb36-816" aria-hidden="true" tabindex="-1"></a>    <span class="at">lasso_prob =</span> <span class="fu">inv.logit</span>(lasso_log),</span>
+<span id="cb36-817"><a href="#cb36-817" aria-hidden="true" tabindex="-1"></a>    <span class="at">ridge_prob =</span> <span class="fu">inv.logit</span>(ridge_log)</span>
+<span id="cb36-818"><a href="#cb36-818" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb36-819"><a href="#cb36-819" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb36-820"><a href="#cb36-820" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(obs, obs_fct),</span>
+<span id="cb36-821"><a href="#cb36-821" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">"Model"</span>, <span class="st">"type"</span>), <span class="at">names_sep =</span> <span class="st">"_"</span>,</span>
+<span id="cb36-822"><a href="#cb36-822" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"pred"</span></span>
+<span id="cb36-823"><a href="#cb36-823" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb36-824"><a href="#cb36-824" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">"prob"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-825"><a href="#cb36-825" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb36-826"><a href="#cb36-826" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> <span class="fu">c</span>(</span>
+<span id="cb36-827"><a href="#cb36-827" aria-hidden="true" tabindex="-1"></a>      <span class="st">"xgbPol"</span> <span class="ot">=</span> <span class="st">"Polished"</span>, </span>
+<span id="cb36-828"><a href="#cb36-828" aria-hidden="true" tabindex="-1"></a>      <span class="st">"linm"</span> <span class="ot">=</span> <span class="st">"Logistic"</span>, <span class="st">"elastic"</span> <span class="ot">=</span> <span class="st">"Elastic Net"</span>, <span class="st">"lasso"</span> <span class="ot">=</span> <span class="st">"Lasso"</span>, <span class="st">"ridge"</span> <span class="ot">=</span> <span class="st">"Ridge"</span> </span>
+<span id="cb36-829"><a href="#cb36-829" aria-hidden="true" tabindex="-1"></a>    )[Model]</span>
+<span id="cb36-830"><a href="#cb36-830" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-831"><a href="#cb36-831" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-832"><a href="#cb36-832" aria-hidden="true" tabindex="-1"></a><span class="co"># calibration plot on holdout based on pm sculptures of different linear models</span></span>
+<span id="cb36-833"><a href="#cb36-833" aria-hidden="true" tabindex="-1"></a>calib_plot_models <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(preds_models) <span class="sc">+</span> </span>
+<span id="cb36-834"><a href="#cb36-834" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> obs, <span class="at">colour =</span> Model), <span class="at">se =</span> F, <span class="at">method =</span> <span class="st">"gam"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x, </span>
+<span id="cb36-835"><a href="#cb36-835" aria-hidden="true" tabindex="-1"></a>              <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>)) <span class="sc">+</span> </span>
+<span id="cb36-836"><a href="#cb36-836" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
+<span id="cb36-837"><a href="#cb36-837" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Prediction"</span>, <span class="at">y =</span> <span class="st">"Truth"</span>) <span class="sc">+</span> </span>
+<span id="cb36-838"><a href="#cb36-838" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb36-839"><a href="#cb36-839" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>))</span>
+<span id="cb36-840"><a href="#cb36-840" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-841"><a href="#cb36-841" aria-hidden="true" tabindex="-1"></a>calib_plot_models</span>
+<span id="cb36-842"><a href="#cb36-842" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-843"><a href="#cb36-843" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-844"><a href="#cb36-844" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-847"><a href="#cb36-847" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-848"><a href="#cb36-848" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span>
-<span id="cb36-849"><a href="#cb36-849" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-850"><a href="#cb36-850" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-851"><a href="#cb36-851" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-845"><a href="#cb36-845" aria-hidden="true" tabindex="-1"></a><span class="fu"># Session info</span></span>
+<span id="cb36-846"><a href="#cb36-846" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-849"><a href="#cb36-849" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-850"><a href="#cb36-850" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span>
+<span id="cb36-851"><a href="#cb36-851" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-852"><a href="#cb36-852" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-853"><a href="#cb36-853" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-854"><a href="#cb36-854" aria-hidden="true" tabindex="-1"></a></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
