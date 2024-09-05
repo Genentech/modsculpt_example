@@ -290,7 +290,8 @@ rs_train <- sculpt_rough(
   model_predict_fun = function(x) {
     p <- predict(xgb, new_data = x, type = "prob")$.pred_1
     logit(p)
-  }
+  },
+  data_as_marginals = TRUE
 )
 
 # rough model on pm on original scale
@@ -308,7 +309,8 @@ rs_train_prob <- sculpt_rough(
   seed = 1234,
   model_predict_fun = function(x) {
     predict(xgb, new_data = x, type = "prob")$.pred_1
-  }
+  },
+  data_as_marginals = TRUE
 )
 
 # First order model

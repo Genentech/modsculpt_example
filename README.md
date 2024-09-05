@@ -117,7 +117,7 @@ install_if_not_available <-
     # Install if necessary
     if (!is_installed | !version_ok) {
       if (from_github) {
-        remotes::install_github(pkg, ref = ref)
+        remotes::install_github(paste0("Genentech/", pkg), ref = ref)
       } else {
         install.packages(pkg)
       }
@@ -143,7 +143,7 @@ install_if_not_available("doParallel")
 
 # Install the following packages from GitHub
 install_if_not_available("remotes")
-install_if_not_available("modsculpt", from_github = TRUE, ref = "v0.1")
+install_if_not_available("modsculpt", from_github = TRUE, ref = "v0.1.1")
 install_if_not_available("stats4phc", from_github = TRUE, ref = "v0.1.1")
 ```
 

@@ -15,7 +15,7 @@ define_data <- function(type) {
     
     # check that data exist
     if (!file.exists(here::here("data", "processed", "compas_holdout.csv"))) {
-      stop("Please run R/prepare_data.R first.")
+      stop("Please run R/1_prepare_data.R first.")
     }
     
     # load preprocessed data
@@ -77,7 +77,7 @@ define_data <- function(type) {
     
     # check that data exist
     if (!file.exists(here::here("data", "processed", "bike_holdout.csv"))) {
-      stop("Please run R/prepare_data.R first.")
+      stop("Please run R/1_prepare_data.R first.")
     }
     
     # load preprocessed data
