@@ -634,7 +634,9 @@ The plot was generated using the `riskProfile` function from the
 
 rp <- riskProfile(
   outcome = as.numeric(as.character(dd$data$holdout[[dd$response]])),
-  score = inv.logit(predict(ps_pm_v2, dd$data$holdout))
+  score = inv.logit(predict(ps_pm_v2, dd$data$holdout)),
+  show.nonparam.pv = FALSE,
+  show.best.pv = FALSE
 )
 
 dm_corel <- define_model("corel_publication", dd)
@@ -664,7 +666,19 @@ pc_plot <-
     size = 3
   )
 
+
 plot(pc_plot)
+
+# # Below are to generate separate legends for slides
+# clrs <- stats4phc:::predictionColours(c("PC", "PPV", "1-NPV"), show.best = FALSE)
+# rp$plot + labs(color = "Predictive Quantity\n(Polished model)") +
+#        # Change the color legend item name from PC to Predictiveness Curve
+#        scale_color_manual(values = clrs, labels = c("PPV", "Predictiveness Curve", "1-NPV"))
+# ggplot(dat_corel, aes(x = score_percentile, y = value, colour = name)) +
+#   geom_point(size = 3) +
+#   scale_colour_manual(values = clrs, breaks = names(clrs)) +
+#   labs(color = "Predictive Quantity\n(CORELS)")
+
 ```
 
 
