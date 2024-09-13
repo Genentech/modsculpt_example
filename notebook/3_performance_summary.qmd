@@ -129,6 +129,7 @@ models_to_plot_compas <-
           "xgb", "orig.", "XGB",
           "xgb_1_order", "orig.", "XGB (Direct 1st order)",
           "xgb", "polished", "XGB (Polished)",
+          "logistic", "orig.", "Logistic",
           "log_ridge", "orig.", "Ridge",
           "log_lasso", "orig.", "Lasso",
           "log_elastic", "orig.", "Elastic Net") %>% 
